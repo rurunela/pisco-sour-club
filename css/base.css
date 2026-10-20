@@ -1,0 +1,158 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--arena);
+  color: var(--tinta);
+  font-family: var(--f-texto);
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+#app { outline: none; min-height: 100dvh; }
+
+h1, h2, h3, p { margin: 0; }
+img { display: block; max-width: 100%; }
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+a { color: var(--oceano); }
+
+:focus-visible {
+  outline: 3px solid var(--sol);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.saltar {
+  position: absolute;
+  left: 8px; top: -60px;
+  z-index: 100;
+  padding: 10px 14px;
+  background: var(--oceano);
+  color: var(--papel);
+  font-weight: 700;
+}
+.saltar:focus { top: 8px; }
+
+.noscript { padding: 24px; text-align: center; }
+
+.pixel { font-family: var(--f-pixel); font-weight: 500; }
+
+/* Franjas de olas pixel */
+.olas { height: 10px; background: repeating-linear-gradient(90deg, var(--oceano) 0 10px, var(--ola) 10px 20px); }
+.olas--claras { height: 10px; background: repeating-linear-gradient(90deg, var(--ola) 0 10px, var(--arena) 10px 20px); }
+
+/* Pantallas tipo app (celular primero, con max-width en escritorio) */
+.pantalla {
+  width: 100%;
+  max-width: var(--ancho-app);
+  min-height: 100dvh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.volver {
+  min-height: var(--toque);
+  min-width: var(--toque);
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--oceano);
+}
+
+/* Botones */
+.boton {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 18px;
+  border: none;
+  text-decoration: none;
+  font-family: var(--f-pixel);
+  font-size: 17px;
+  text-align: center;
+}
+.boton--oceano { background: var(--oceano); color: var(--papel); }
+.boton--coral { background: var(--coral); color: var(--papel); }
+.boton--borde {
+  background: transparent;
+  border: 3px solid var(--oceano);
+  color: var(--oceano);
+  font-family: var(--f-texto);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* Personajes (countryball / OC) */
+.pj {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: var(--t, 112px);
+  height: var(--t, 112px);
+  vertical-align: bottom;
+}
+.pj__img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+.pj--flip .pj__img { transform: scaleX(-1); }
+.pj__mano {
+  position: absolute;
+  width: 18%;
+  height: 18%;
+  border-radius: 30%;
+  border: max(2px, calc(var(--t, 112px) * 0.025)) solid #1A1A1A;
+}
+.pj__mano--a { left: -12%; bottom: 10%; }
+.pj__mano--b { right: -12%; bottom: 22%; }
+.pj--pe .pj__mano { background: var(--rojo-pe); }
+.pj--cl .pj__mano { background: #FFFFFF; }
+
+/* Globo de diálogo */
+.globo {
+  background: #FFFFFF;
+  border: 2px solid var(--tinta);
+  padding: 8px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.pie {
+  text-align: center;
+  font-size: 13px;
+  color: var(--gris-calido);
+  padding: 0 var(--gutter);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

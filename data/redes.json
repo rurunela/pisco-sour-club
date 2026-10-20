@@ -1,0 +1,21 @@
+{
+  "hashtag": "[#TU_HASHTAG]",
+  "playlist": {
+    "nombre": "[Nombre de tu playlist]",
+    "spotifyUrl": "[LINK_DE_LA_PLAYLIST]",
+    "embedUrl": "[LINK_EMBED_DE_SPOTIFY]"
+  },
+  "enlaces": [
+    {"red": "Discord", "url": "[LINK]", "detalle": "[servidor]"},
+    {"red": "Instagram", "url": "[LINK]", "detalle": "[@cuenta]"},
+    {"red": "X", "url": "[LINK]", "detalle": "[@cuenta]"},
+    {"red": "TikTok", "url": "[LINK]", "detalle": "[@cuenta]"},
+    {"red": "Webtoon", "url": "[LINK]", "detalle": "[cómics]"},
+    {"red": "Drive", "url": "[LINK]", "detalle": "[biblioteca]"}
+  ],
+  "publicaciones": [
+    {"red": "Instagram", "autor": "[@usuario]", "url": "[LINK]", "imagen": ""},
+    {"red": "X", "autor": "[@usuario]", "url": "[LINK]", "imagen": ""},
+    {"red": "Instagram", "autor": "[@usuario]", "url": "[LINK]", "imagen": ""}
+  ]
+}

@@ -1,0 +1,9 @@
+[
+  {"id": "d01", "geo": true, "texto": "El desierto de Atacama, en el norte de Chile, es uno de los lugares más secos del planeta: hay zonas donde casi nunca se registra lluvia.", "fuente": "[VERIFICAR Y AÑADIR FUENTE]", "url": ""},
+  {"id": "d02", "geo": true, "texto": "La corriente de Humboldt recorre las costas de Chile y Perú, y hace que su mar compartido sea uno de los más ricos en pesca del mundo.", "fuente": "[VERIFICAR Y AÑADIR FUENTE]", "url": ""},
+  {"id": "d03", "geo": false, "texto": "En Chile, la «once» es la comida de la tarde: té, pan, palta y algo dulce, muchas veces cerca de las cinco.", "fuente": "[VERIFICAR Y AÑADIR FUENTE]", "url": ""},
+  {"id": "d04", "geo": false, "texto": "El suspiro a la limeña es un postre de Lima hecho con manjar blanco y merengue.", "fuente": "[VERIFICAR Y AÑADIR FUENTE]", "url": ""},
+  {"id": "d05", "geo": true, "texto": "El lago Titicaca, que Perú comparte con Bolivia, es uno de los lagos navegables más altos del mundo.", "fuente": "[VERIFICAR Y AÑADIR FUENTE]", "url": ""},
+  {"id": "d06", "geo": true, "texto": "Rapa Nui (Isla de Pascua) pertenece a Chile y es famosa por sus moáis.", "fuente": "[VERIFICAR Y AÑADIR FUENTE]", "url": ""},
+  {"id": "d07", "geo": false, "texto": "Machu Picchu, en Cusco, fue declarado Patrimonio de la Humanidad por la UNESCO en 1983.", "fuente": "[VERIFICAR Y AÑADIR FUENTE]", "url": ""}
+]

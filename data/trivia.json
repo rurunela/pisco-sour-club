@@ -1,0 +1,14 @@
+[
+  {"id": "t01", "pregunta": "¿A qué hora suele tomarse la once en Chile?", "opciones": ["A las 11 de la mañana", "En la tarde, cerca de las cinco", "A medianoche"], "correcta": 1, "reaccion": "«A las cinco en punto, como debe ser.»"},
+  {"id": "t02", "pregunta": "¿Cómo se llama el desierto del norte de Chile?", "opciones": ["Sahara", "Atacama", "Sechura"], "correcta": 1, "reaccion": "«Lo estás cruzando ahora mismo, po.»"},
+  {"id": "t03", "pregunta": "¿Qué océano bañan las costas de Perú y Chile?", "opciones": ["Atlántico", "Índico", "Pacífico"], "correcta": 2, "reaccion": "«Mismo mar, distinta orilla.»"},
+  {"id": "t04", "pregunta": "¿Qué día celebra Perú su independencia?", "opciones": ["28 de julio", "18 de septiembre", "9 de diciembre"], "correcta": 0, "reaccion": "«¡Felices fiestas patrias, causa!»"},
+  {"id": "t05", "pregunta": "¿Qué día empiezan las fiestas patrias de Chile?", "opciones": ["28 de julio", "18 de septiembre", "12 de febrero"], "correcta": 1, "reaccion": "«Empanadas y cueca. Obvio.»"},
+  {"id": "t06", "pregunta": "¿Cuál es el baile nacional de Chile?", "opciones": ["La cueca", "La marinera", "El huayno"], "correcta": 0, "reaccion": "«Pañuelo en mano… no me mires así.»"},
+  {"id": "t07", "pregunta": "¿Qué baile ama Miguel?", "opciones": ["La cumbia", "La marinera", "El tango"], "correcta": 1, "reaccion": "«¡Esa es mía!»"},
+  {"id": "t08", "pregunta": "En Latin Hetalia, ¿cuál es el nombre humano de Chile?", "opciones": ["Manuel", "Martín", "Sebastián"], "correcta": 0, "reaccion": "«…Sí, ese soy yo.»"},
+  {"id": "t09", "pregunta": "En Latin Hetalia, ¿cuál es el nombre humano de Perú?", "opciones": ["Miguel", "Antonio", "Rafael"], "correcta": 0, "reaccion": "«¡Para servirte!»"},
+  {"id": "t10", "pregunta": "¿Con qué país comparte Perú el lago Titicaca?", "opciones": ["Chile", "Ecuador", "Bolivia"], "correcta": 2, "reaccion": "«Saludos a mi hermano.»"},
+  {"id": "t11", "pregunta": "¿A qué país pertenece Rapa Nui (Isla de Pascua)?", "opciones": ["Chile", "Perú", "Nueva Zelanda"], "correcta": 0, "reaccion": "«Queda lejos, pero es de la casa.»"},
+  {"id": "t12", "pregunta": "¿En qué región de Perú está Machu Picchu?", "opciones": ["Lima", "Arequipa", "Cusco"], "correcta": 2, "reaccion": "«Mi abuelo me la mostró primero.»"}
+]

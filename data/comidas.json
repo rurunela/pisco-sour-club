@@ -1,0 +1,15 @@
+{
+  "conocidas": [
+    {"clave": "ceviche", "nombre": "Ceviche", "miguel": "¡Esto es ceviche de verdad, causa!", "manuel": "…Está bueno. No le digas a nadie."},
+    {"clave": "chicha", "nombre": "Chicha morada", "miguel": "¡Chicha morada! Igualito que en casa.", "manuel": "Es dulce. Me gusta. …No te emociones."},
+    {"clave": "pan con palta", "nombre": "Pan con palta", "miguel": "Rico… pero le falta ají.", "manuel": "Pan con palta. Así se empieza la once."},
+    {"clave": "empanada", "nombre": "Empanada", "miguel": "Ya, ya, está buena. Pero la mía tiene más relleno.", "manuel": "De pino, como debe ser."},
+    {"clave": "pastel de choclo", "nombre": "Pastel de choclo", "miguel": "¿Choclo dulce? …Bueno, pásame otro.", "manuel": "Este sí lo hago yo. Siéntate."},
+    {"clave": "lomo saltado", "nombre": "Lomo saltado", "miguel": "¡Mi lomo saltado! Con sus papitas, ¿ah?", "manuel": "…Me sirvo de nuevo. No digas nada."},
+    {"clave": "suspiro", "nombre": "Suspiro a la limeña", "miguel": "El postre más bonito del mundo, causa.", "manuel": "Muy dulce. Me como todo igual."}
+  ],
+  "genericas": {
+    "miguel": ["¡Qué rico! ¿Quién lo hizo?", "Le falta un poquito de sazón… pero está bien.", "¡Gracias, causa!"],
+    "manuel": ["Gracias. Está bueno.", "…No estaba con hambre. Me lo como igual.", "Ya, rico."]
+  }
+}

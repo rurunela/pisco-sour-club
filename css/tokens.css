@@ -1,0 +1,37 @@
+/* Postales del Pacífico + pixel art (docs/BOSQUEJO.md §3) */
+:root {
+  --arena: #F3E8D6;
+  --papel: #FFFBF3;
+  --oceano: #1F4E79;
+  --ola: #3E78A8;
+  --coral: #B4452F;
+  --sol: #F2C14E;
+  --cielo: #CFE2EE;
+  --tinta: #2B2622;
+  --gris-calido: #5B4F45;
+  --rojo-pe: #D91023;
+  --azul-cl: #0039A6;
+  --rojo-cl: #D52B1E;
+
+  /* Derivados usados en el prototipo */
+  --coral-oscuro: #8E3524;
+  --mar: #2C6094;
+  --playa: #EBD5B0;
+  --madera: #C99A6E;
+  --madera-oscura: #B5875C;
+  --borde-postal: #D8C7AE;
+  --sombra-postal: #E2D2B8;
+  --azul-claro: #EAF1F6;
+  --noche: #1C2F4A;
+  --noche-oscura: #0E1A2B;
+
+  --f-titulo: 'Fraunces', Georgia, serif;
+  --f-texto: 'Karla', system-ui, sans-serif;
+  --f-pixel: 'Pixelify Sans', ui-monospace, monospace;
+  --f-mano: 'Caveat', cursive;
+
+  --toque: 44px;
+  --gutter: 16px;
+  --ancho-app: 430px;
+  --ancho-home: 1200px;
+}

@@ -1,0 +1,92 @@
+# CLAUDE.md — Pisco Sour Club
+
+Instrucciones para Claude Code. Léelas completas antes de escribir código.
+
+## Qué es
+
+**Pisco Sour Club — una página al Chirú.** Web fan (no oficial) para el fandom Perú × Chile de Latin Hetalia, hecha por Rurú (GitHub: `rurunela`). Es un "malecón" con cuartos escondidos: casi nada dice "juega"; la gente toca cosas y descubre juegos, un taller para dibujar sus OCs, un depa donde viven, un creador de animaciones, fotos descargables, una radio con recuerdos y un chat con IA.
+
+Lee en este orden:
+
+1. `docs/BOSQUEJO.md` — concepto, personajes, identidad visual, módulos.
+2. `docs/PANTALLAS.md` — las 28 pantallas, una por una, con interacciones y enlaces.
+3. `docs/DATOS.md` — modelos de datos, almacenamiento local, Supabase (SQL) y contrato del chat.
+4. `docs/ANIMACION.md` — motor de "Acción" (fotogramas → animación).
+5. `docs/FASES.md` — orden de construcción y criterios de aceptación.
+6. `prototipo/` — las pantallas diseñadas (referencia visual; ver `prototipo/LEEME.md`).
+7. `data/` — contenido inicial (prompts, datos, trivia, personajes, etc.).
+
+## Stack y restricciones
+
+- **Hosting:** GitHub Pages (estático, HTTPS). Nada de servidor propio.
+- **Frontend:** HTML + CSS + JavaScript (ES modules), **sin framework y sin paso de build**. Debe funcionar subiendo la carpeta tal cual.
+- **Router:** una sola `index.html` con rutas por hash (`#/depa/sala`). Cada pantalla es un módulo en `js/pantallas/`.
+- **Gráficos:** `<canvas>` para dibujo, juegos, animaciones y exportar imágenes. SVG/CSS para la interfaz.
+- **Guardado local:** `localStorage` para datos pequeños (récords, progreso, ajustes) e **IndexedDB** para imágenes (dibujos, fondos, comidas, imágenes subidas, animaciones). Usa un solo módulo `js/almacen.js` para todo.
+- **Servicios externos (solo en las fases indicadas):**
+  - **Supabase** para el buzón de dibujos, sugerencias de canciones y recuerdos (fase 9).
+  - **Cloudflare Worker** como intermediario del chat con IA (fase 10). La API key **nunca** va en el frontend.
+- **Librerías:** solo si son imprescindibles, cargadas desde `cdn.jsdelivr.net` con versión fija (por ejemplo, `@supabase/supabase-js` en la fase 9). Nada de jQuery ni frameworks.
+
+## Reglas que no se rompen
+
+1. **Celular primero.** Se diseña a 390 px de ancho y se prueba a 360 px. Toques de 44 px como mínimo. Nada depende del hover. En escritorio la web se abre con `max-width`.
+2. **Gestos:** dibujo, arrastre, pellizco y giro con **Pointer Events** (`touch-action: none` en lienzos y escenarios). Lienzos escalados con `devicePixelRatio`.
+3. **Accesibilidad:** botones reales (`<button>`, `<a href>`), `aria-label` en botones de icono, contraste AA, `prefers-reduced-motion` desactiva rebotes, giros y parallax.
+4. **Idioma:** toda la interfaz en **español** (de Perú y Chile, sin voseo).
+5. **Contenido:** SFW siempre. El romance es tierno (sonrojos, abrazo, besito). Nada de la Guerra del Pacífico, tratados ni límites marítimos como chiste. Ver límites en `docs/BOSQUEJO.md` §2.
+6. **Derechos:** no incrustar canciones comerciales ni personajes de otras obras. La música de la sala son pistas libres de derechos que Rurú pondrá en `assets/audio/` (deja el código listo y archivos de ejemplo vacíos o tonos simples). La playlist va por el reproductor oficial de Spotify (iframe).
+7. **Privacidad:** las fotos de cámara, los dibujos y las animaciones **no salen del dispositivo** salvo que la persona use explícitamente "Mandar al buzón".
+8. **Sin secretos en el repo:** las claves públicas de Supabase van en `js/config.js`; la API key de la IA vive solo en el Worker (`wrangler secret`).
+9. **Proyecto fan:** el pie de página siempre dice que es un proyecto fan hecho por Rurú y que no es la cuenta oficial del fandom. La ficha de Perú pide no usar al personaje en proyectos pagados sin consultar a su creadora (Kuraudia): **todo es gratis**.
+10. **Rendimiento:** los countryballs se dibujan una vez en canvas y se cachean como imagen (en el prototipo son 400 divs: **no** copiar eso). Spotify y las redes se cargan con lazy load. El runner y las animaciones usan `requestAnimationFrame` y se pausan con `visibilitychange`.
+
+## Estructura de carpetas
+
+```
+/
+├── index.html
+├── admin.html              (panel de Rurú, fase 9)
+├── manifest.json           (fase 11)
+├── css/
+│   ├── tokens.css          (colores, tipos, espacios)
+│   ├── base.css
+│   └── pantallas/*.css
+├── js/
+│   ├── main.js             (arranque + router)
+│   ├── router.js
+│   ├── config.js           (URLs y claves públicas)
+│   ├── almacen.js          (localStorage + IndexedDB)
+│   ├── personajes.js       (balls, OCs, caras, ropa → imágenes)
+│   ├── lienzo.js           (motor de dibujo reutilizable)
+│   ├── escenario.js        (stickers: mover, escalar, girar, voltear)
+│   ├── exportar.js         (PNG, video)
+│   ├── animacion/          (motor de Acción)
+│   ├── juegos/runner.js
+│   └── pantallas/*.js      (una por pantalla)
+├── data/*.json
+├── assets/
+│   ├── sprites/  fondos/  audio/  fuentes/
+└── worker/chat-worker.js   (se despliega en Cloudflare, no en Pages)
+```
+
+## Cómo trabajar
+
+- Construye **por fases** (`docs/FASES.md`). No empieces una fase sin cerrar la anterior.
+- Al terminar cada fase, recorre sus criterios "Validar que…" en un celular real o en el emulador del navegador a 390×844 y 360×740. Si algo falla, arréglalo antes de seguir.
+- Un commit por tarea lógica, con mensaje en español: `fase 2: lienzo con deshacer y borrador`.
+- Servidor local: `npx serve .` o `python3 -m http.server`. La cámara necesita `localhost` o HTTPS.
+- Si un dato falta (hashtag, link de la playlist, redes, correo de admin, URLs de Supabase o del Worker), **no lo inventes**: deja el marcador entre corchetes (`[#TU_HASHTAG]`) en `data/` o `js/config.js` y anótalo en `PENDIENTES.md`.
+- Si algo del diseño no se puede hacer en celular con buen rendimiento, propón la alternativa más simple que conserve la idea y anótala en `PENDIENTES.md`.
+- Ante la duda, gana el prototipo en lo visual y `docs/` en el comportamiento.
+
+## Arquitectura (fase 1 en adelante)
+
+- `js/router.js` define la tabla de rutas. Cada pantalla exporta `render(app, ctx)` y puede devolver una función de limpieza. `ctx` trae `params` (query del hash) y `ruta`.
+- Las rutas que aún no existen usan `js/pantallas/proximamente.js` con su pantalla madre para "‹ Volver"; al construir una fase, cambia su entrada en la tabla por el módulo real.
+- `js/datos.js` carga y cachea `data/*.json`. `diaLima()` da el índice del día en hora de Lima (UTC−5) para el pisco y la cita del día.
+- `js/personajes.js`: `htmlPersonaje({pais, cara, size, flip, manos})` para la interfaz y `ballCanvas(pais, cara)` para exportar.
+
+## Datos pendientes de Rurú
+
+Ver `PENDIENTES.md`.
