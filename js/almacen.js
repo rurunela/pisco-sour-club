@@ -1,5 +1,5 @@
 // Todo el guardado local pasa por aquí (docs/DATOS.md §2). Prefijo de claves: "psc.".
-// Fase 1: solo localStorage. IndexedDB llega en la fase 2.
+// localStorage para datos pequeños; IndexedDB "psc" para imágenes.
 
 const PREFIJO = 'psc.';
 
@@ -48,4 +48,50 @@ export function numeroSocio() {
     guardar('socio', n);
   }
   return n;
+}
+
+// ---------- IndexedDB (docs/DATOS.md §2.2) ----------
+
+const DB_NOMBRE = 'psc';
+const DB_VERSION = 1;
+export const STORES = ['caras', 'ropa', 'fondos', 'comidas', 'objetos', 'animaciones'];
+
+let conexion = null;
+
+function abrir() {
+  if (!conexion) {
+    conexion = new Promise((resolve, reject) => {
+      if (!('indexedDB' in window)) { reject(new Error('Sin IndexedDB')); return; }
+      const req = indexedDB.open(DB_NOMBRE, DB_VERSION);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        for (const s of STORES) if (!db.objectStoreNames.contains(s)) db.createObjectStore(s, { keyPath: 'id' });
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+      req.onblocked = () => reject(new Error('IndexedDB bloqueada'));
+    });
+    conexion.catch(() => { conexion = null; });
+  }
+  return conexion;
+}
+
+async function operar(store, modo, accion) {
+  const db = await abrir();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, modo);
+    const req = accion(tx.objectStore(store));
+    tx.oncomplete = () => resolve(req ? req.result : undefined);
+    tx.onerror = () => reject(tx.error);
+    tx.onabort = () => reject(tx.error || new Error('Transacción cancelada'));
+  });
+}
+
+export const idbLeer = (store, id) => operar(store, 'readonly', (s) => s.get(id));
+export const idbTodos = (store) => operar(store, 'readonly', (s) => s.getAll());
+export const idbGuardar = (store, objeto) => operar(store, 'readwrite', (s) => s.put(objeto));
+export const idbBorrar = (store, id) => operar(store, 'readwrite', (s) => s.delete(id));
+
+export async function idbDisponible() {
+  try { await abrir(); return true; } catch { return false; }
 }
