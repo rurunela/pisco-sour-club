@@ -3,7 +3,7 @@
 // Fondos: 4 espacios de 1080×1350 con plantillas de inicio.
 import { Lienzo } from '../lienzo.js';
 import { CARAS, ballURL, ponerOC, tieneOC, urlOC, usaOC, elegirOC } from '../personajes.js';
-import { leer, guardar, idbDisponible, idbLeer, idbGuardar, idbTodos } from '../almacen.js';
+import { leer, guardar, idbDisponible, idbLeer, idbGuardar, idbTodos, pedirPersistencia } from '../almacen.js';
 import { t, tp, attr } from '../textos.js';
 
 const PESTANAS = [
@@ -382,6 +382,8 @@ export async function render(app, { def, params }) {
         elegirOC(s.tab, true);
       }
       lienzo.marcarGuardado();
+      // Desde el primer dibujo guardado, pedimos que el navegador no lo borre por falta de espacio.
+      await pedirPersistencia();
       // La primera vez que se guarda un OC se celebra en "Tus OCs ya viven en el club".
       if (store !== 'fondos' && !leer('ocListo')) {
         guardar('ocListo', true);

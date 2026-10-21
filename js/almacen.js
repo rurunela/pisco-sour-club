@@ -97,6 +97,21 @@ export const idbTodos = (store) => operar(store, 'readonly', (s) => s.getAll());
 export const idbGuardar = (store, objeto) => operar(store, 'readwrite', (s) => s.put(objeto));
 export const idbBorrar = (store, id) => operar(store, 'readwrite', (s) => s.delete(id));
 
+// Pide al navegador que no borre los dibujos cuando le falte espacio.
+export async function pedirPersistencia() {
+  try {
+    if (!navigator.storage || !navigator.storage.persist) return false;
+    if (await navigator.storage.persisted()) return true;
+    return await navigator.storage.persist();
+  } catch {
+    return false;
+  }
+}
+
+export async function esPersistente() {
+  try { return !!(navigator.storage && navigator.storage.persisted && await navigator.storage.persisted()); } catch { return false; }
+}
+
 export async function idbDisponible() {
   try { await abrir(); return true; } catch { return false; }
 }
