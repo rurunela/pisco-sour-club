@@ -1,0 +1,268 @@
+/* La casita · Taller (ref: prototipo/Taller.dc.html) y OCs guardados (TallerListo.dc.html).
+   Celular: una columna (pestañas → lienzo → herramientas).
+   ≥ 1024 px y celular horizontal: lienzo a la izquierda, herramientas a la derecha con scroll propio. */
+.taller {
+  --techo: clamp(64px, 16vw, 84px);
+  min-height: 100dvh;
+  background: #FBF1E4;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.taller__techo {
+  position: relative;
+  height: var(--techo);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--e-2) max(var(--gutter), env(safe-area-inset-right)) 0 max(var(--gutter), env(safe-area-inset-left));
+}
+.taller__techo::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 26% 0;
+  background: var(--coral);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.taller__techo::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 14%;
+  height: 12%;
+  background: #7A3B2E;
+}
+.taller__boton {
+  position: relative;
+  z-index: 1;
+  min-height: var(--toque);
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--e-2);
+  background: var(--papel);
+  border: 3px solid var(--tinta);
+  color: var(--tinta);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: var(--t-s);
+}
+.taller__boton--sol { background: var(--sol); }
+
+.taller__cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-3);
+  width: 100%;
+  max-width: var(--ancho-app);
+  margin: 0 auto;
+  padding: 0 max(var(--gutter), env(safe-area-inset-right)) var(--e-4) max(var(--gutter), env(safe-area-inset-left));
+}
+/* En celular el panel "desaparece" para intercalar el lienzo entre sus dos partes. */
+.taller__panel { display: contents; }
+.taller__arriba { order: 1; display: flex; flex-direction: column; gap: var(--e-2); min-width: 0; }
+.taller__lienzo-col { order: 2; min-width: 0; }
+.taller__abajo { order: 3; display: flex; flex-direction: column; gap: var(--e-2); min-width: 0; }
+
+/* Pestañas */
+.taller__pestanas { display: flex; border: 3px solid var(--tinta); }
+.taller__pestana {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 46px;
+  padding: var(--e-1);
+  border: none;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--f-pixel);
+  font-size: var(--t-s);
+  overflow-wrap: anywhere;
+}
+.taller__pestana[aria-selected="true"] { background: var(--color); color: #FFFFFF; }
+
+.taller__selector { display: flex; flex-direction: column; gap: var(--e-2); }
+.taller__fila { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--e-2); }
+.taller__partes { display: flex; border: 2px solid var(--tinta); }
+.parte {
+  min-height: var(--toque);
+  padding: 0 var(--e-3);
+  border: none;
+  background: var(--papel);
+  font-weight: 700;
+  font-size: var(--t-s);
+}
+.parte[aria-pressed="true"] { background: var(--tinta); color: var(--papel); }
+.taller__progreso { font-size: var(--t-xs); color: var(--gris-calido); }
+
+/* Tira de caras / conjuntos / fondos */
+.taller__tira {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(58px, 1fr);
+  gap: var(--e-1);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding-bottom: 2px;
+}
+.mini {
+  min-width: 0;
+  min-height: var(--toque);
+  padding: var(--e-1) 2px;
+  border: 3px solid var(--tinta);
+  background: var(--papel);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.mini[aria-pressed="true"] { border-color: var(--coral); background: #FFF1D6; }
+.mini img { width: clamp(32px, 9vw, 44px); aspect-ratio: 1; object-fit: contain; }
+.mini__ball { image-rendering: pixelated; opacity: 0.35; }
+.mini__capas { position: relative; display: block; }
+.mini__capas img + img { position: absolute; inset: 0; }
+.mini__nombre { font-size: var(--t-xs); font-weight: 700; color: var(--tinta); overflow-wrap: anywhere; text-align: center; line-height: 1.15; }
+.mini__estado { font-size: var(--t-xs); color: #4F7A45; }
+.mini--falta .mini__estado { color: var(--coral-oscuro); }
+.taller__tira--fondos { grid-auto-columns: minmax(64px, 1fr); }
+.mini--fondo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.mini__mas { display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 4 / 5; border: 2px dashed #A8774F; color: var(--coral-oscuro); font-weight: 700; font-size: var(--t-l); }
+
+.taller__plantillas { display: flex; flex-wrap: wrap; align-items: center; gap: var(--e-1) var(--e-2); font-size: var(--t-s); font-weight: 700; color: var(--gris-calido); }
+.plantilla {
+  min-height: var(--toque);
+  padding: 0 var(--e-2);
+  border: 2px solid var(--tinta);
+  background: var(--papel);
+  font-weight: 700;
+  font-size: var(--t-s);
+  text-decoration: underline;
+}
+.taller__ball {
+  align-self: flex-start;
+  min-height: var(--toque);
+  padding: 0 var(--e-3);
+  border: 2px dashed var(--oceano);
+  background: transparent;
+  color: var(--oceano);
+  font-weight: 700;
+  font-size: var(--t-s);
+}
+
+/* Hoja de dibujo: calco + lienzo. --ar = ancho/alto (1 caras, 0.8 fondos). */
+.taller__hoja {
+  --ar: 1;
+  position: relative;
+  width: min(100%, calc((100dvh - var(--techo) - 2 * var(--e-3)) * var(--ar)));
+  aspect-ratio: var(--ar);
+  margin-inline: auto;
+  background-color: #FFFFFF;
+  background-image: linear-gradient(rgba(43,38,34,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(43,38,34,0.05) 1px, transparent 1px);
+  background-size: 14px 14px;
+  border: 4px solid #A8774F;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.taller__calco { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0.18; pointer-events: none; }
+.taller__calco--ropa { opacity: 0.35; }
+.taller__canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+.taller__dibujando {
+  position: absolute; left: var(--e-2); top: var(--e-2);
+  max-width: calc(100% - 2 * var(--e-2));
+  background: var(--papel);
+  border: 2px solid var(--tinta);
+  padding: 2px var(--e-2);
+  font-size: var(--t-xs);
+  pointer-events: none;
+  overflow-wrap: anywhere;
+}
+.taller__guia {
+  position: absolute; left: var(--e-2); right: var(--e-2); bottom: var(--e-1);
+  font-size: var(--t-xs);
+  color: var(--gris-calido);
+  pointer-events: none;
+}
+
+/* Herramientas */
+.taller__herramientas, .taller__colores { display: flex; flex-wrap: wrap; align-items: center; gap: var(--e-1); }
+.herr {
+  width: var(--toque);
+  height: var(--toque);
+  border: 3px solid var(--tinta);
+  background: var(--papel);
+  color: var(--tinta);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.herr[aria-pressed="true"] { background: var(--sol); }
+.herr:disabled { opacity: 0.35; cursor: default; }
+.herr--grosor span { width: var(--punto); height: var(--punto); border-radius: 999px; background: var(--tinta); }
+.taller__sep { width: 1px; height: 30px; background: #C9B596; margin: 0 2px; }
+.color {
+  width: var(--toque);
+  height: var(--toque);
+  border: 2px solid var(--tinta);
+  background: var(--c);
+  padding: 0;
+}
+.color[aria-pressed="true"] { outline: 3px solid var(--sol); outline-offset: 1px; border-width: 3px; }
+.color--libre {
+  position: relative;
+  display: inline-flex;
+  background: conic-gradient(#D91023, #F2C14E, #6E8F5E, #3E78A8, #0039A6, #B4452F, #D91023);
+  cursor: pointer;
+}
+.color--libre input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; border: none; padding: 0; }
+.color--libre:focus-within { outline: 3px solid var(--sol); outline-offset: 2px; }
+
+.taller__guardar { font-size: var(--t-m); }
+.taller__estado { min-height: 1.4em; font-size: var(--t-s); font-weight: 700; color: var(--oceano); }
+.taller__nota { font-size: var(--t-xs); color: var(--gris-calido); }
+
+/* Dos columnas: escritorio desde 1024 px y celular en horizontal */
+@media (min-width: 1024px), (orientation: landscape) and (max-height: 540px) and (min-width: 600px) {
+  .taller__cuerpo {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 1fr);
+    align-items: start;
+    max-width: 1200px;
+  }
+  .taller__lienzo-col { grid-column: 1; grid-row: 1; position: sticky; top: var(--e-2); }
+  .taller__panel {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-3);
+    max-height: calc(100dvh - var(--techo) - var(--e-2));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 2px;
+  }
+}
+
+/* OCs guardados */
+.listo { background: #FBF1E4; }
+.listo__cuerpo {
+  padding: var(--e-3) max(var(--gutter), env(safe-area-inset-right)) var(--e-5) max(var(--gutter), env(safe-area-inset-left));
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-3);
+}
+.listo__cuerpo > .volver { align-self: flex-start; }
+.listo__ante { font-size: var(--t-s); color: var(--coral); }
+.listo__titulo { font-family: var(--f-titulo); font-size: var(--t-xl); line-height: 1.1; color: var(--oceano); overflow-wrap: anywhere; }
+.listo__texto { font-size: var(--t-m); color: var(--gris-calido); }
+.listo__postal { transform: rotate(1.5deg); padding: var(--e-2); }
+.listo__pjs { --fila-b: 20; --fila-gap: 30; }
+.listo__etiqueta {
+  position: absolute;
+  left: var(--e-2); top: var(--e-2);
+  background: var(--papel);
+  border: 2px solid var(--tinta);
+  padding: 2px var(--e-2);
+  font-size: var(--t-xs);
+}
+.listo__acciones { display: flex; flex-direction: column; gap: var(--e-2); }
+.listo__fila { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(10em, 100%), 1fr)); gap: var(--e-2); }
+.listo__nota { font-size: var(--t-xs); color: var(--gris-calido); text-align: center; }
