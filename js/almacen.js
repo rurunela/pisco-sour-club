@@ -67,7 +67,12 @@ function abrir() {
         const db = req.result;
         for (const s of STORES) if (!db.objectStoreNames.contains(s)) db.createObjectStore(s, { keyPath: 'id' });
       };
-      req.onsuccess = () => resolve(req.result);
+      req.onsuccess = () => {
+        const db = req.result;
+        // Si otra pestaña abre una versión nueva de la base, cerramos esta para no bloquearla.
+        db.onversionchange = () => { db.close(); conexion = null; };
+        resolve(db);
+      };
       req.onerror = () => reject(req.error);
       req.onblocked = () => reject(new Error('IndexedDB bloqueada'));
     });
