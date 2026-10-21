@@ -7,12 +7,14 @@ body {
   background: var(--arena);
   color: var(--tinta);
   font-family: var(--f-texto);
-  font-size: 16px;
+  font-size: var(--t-m);
   line-height: 1.5;
   overflow-x: hidden;
 }
 
 #app { outline: none; min-height: 100dvh; }
+
+[hidden] { display: none !important; }
 
 h1, h2, h3, p { margin: 0; }
 img { display: block; max-width: 100%; }
@@ -42,7 +44,10 @@ a { color: var(--oceano); }
   position: absolute;
   left: 8px; top: -60px;
   z-index: 100;
-  padding: 10px 14px;
+  min-height: var(--toque);
+  display: inline-flex;
+  align-items: center;
+  padding: 0 14px;
   background: var(--oceano);
   color: var(--papel);
   font-weight: 700;
@@ -57,7 +62,7 @@ a { color: var(--oceano); }
 .olas { height: 10px; background: repeating-linear-gradient(90deg, var(--oceano) 0 10px, var(--ola) 10px 20px); }
 .olas--claras { height: 10px; background: repeating-linear-gradient(90deg, var(--ola) 0 10px, var(--arena) 10px 20px); }
 
-/* Pantallas tipo app (celular primero, con max-width en escritorio) */
+/* Pantallas tipo app: completas en celular, columna centrada desde 600 px */
 .pantalla {
   width: 100%;
   max-width: var(--ancho-app);
@@ -65,6 +70,7 @@ a { color: var(--oceano); }
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .volver {
@@ -83,24 +89,38 @@ a { color: var(--oceano); }
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 0 18px;
+  gap: var(--e-2);
+  padding: var(--e-2) var(--e-4);
   border: none;
   text-decoration: none;
   font-family: var(--f-pixel);
-  font-size: 17px;
+  font-size: var(--t-m);
   text-align: center;
+  overflow-wrap: anywhere;
 }
 .boton--oceano { background: var(--oceano); color: var(--papel); }
 .boton--coral { background: var(--coral); color: var(--papel); }
-.boton--borde {
-  background: transparent;
-  border: 3px solid var(--oceano);
-  color: var(--oceano);
-  font-family: var(--f-texto);
-  font-weight: 700;
-  font-size: 16px;
+
+/* Escenas ilustradas: tamaño lógico fijo que se escala entero (docs/RESPONSIVE.md §3).
+   style="--ancho:400;--alto:330"; las piezas usan px lógicos multiplicados por --u. */
+.escena {
+  position: relative;
+  overflow: hidden;
+  container-type: inline-size;
+  aspect-ratio: var(--ancho) / var(--alto);
+  --u: calc(100cqw / var(--ancho));
 }
+.pz {
+  position: absolute;
+  display: block;
+  left: calc(var(--x) * var(--u));
+  bottom: calc(var(--b, 0) * var(--u));
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--h) * var(--u));
+}
+.pz--arriba { bottom: auto; top: calc(var(--y) * var(--u)); }
+.pz--borde { border: max(2px, calc(4 * var(--u))) solid var(--tinta); }
+.pz--borde3 { border: max(1.5px, calc(3 * var(--u))) solid var(--tinta); }
 
 /* Personajes (countryball / OC) */
 .pj {
@@ -118,13 +138,14 @@ a { color: var(--oceano); }
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;
 }
+@supports (image-rendering: pixelated) { .pj__img { image-rendering: pixelated; } }
 .pj--flip .pj__img { transform: scaleX(-1); }
 .pj__mano {
   position: absolute;
   width: 18%;
   height: 18%;
   border-radius: 30%;
-  border: max(2px, calc(var(--t, 112px) * 0.025)) solid #1A1A1A;
+  border: max(1.5px, calc(var(--t, 112px) * 0.025)) solid #1A1A1A;
 }
 .pj__mano--a { left: -12%; bottom: 10%; }
 .pj__mano--b { right: -12%; bottom: 22%; }
@@ -135,18 +156,33 @@ a { color: var(--oceano); }
 .globo {
   background: #FFFFFF;
   border: 2px solid var(--tinta);
-  padding: 8px 10px;
-  font-size: 13px;
+  padding: var(--e-2);
+  font-size: var(--t-s);
   font-weight: 700;
   line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 .pie {
   text-align: center;
-  font-size: 13px;
+  font-size: var(--t-s);
   color: var(--gris-calido);
   padding: 0 var(--gutter);
 }
+
+/* Postal de error */
+.postal-caida__tarjeta {
+  margin: var(--e-5) var(--gutter);
+  padding: var(--e-4);
+  background: var(--papel);
+  border: 1px solid var(--borde-postal);
+  box-shadow: 0 6px 0 var(--sombra-postal);
+  transform: rotate(-1deg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-3);
+}
+.postal-caida__texto { font-family: var(--f-titulo); font-size: var(--t-l); color: var(--oceano); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

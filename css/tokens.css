@@ -1,4 +1,4 @@
-/* Postales del Pacífico + pixel art (docs/BOSQUEJO.md §3) */
+/* Postales del Pacífico + pixel art (docs/BOSQUEJO.md §3) · escalas fluidas (docs/RESPONSIVE.md §2) */
 :root {
   --arena: #F3E8D6;
   --papel: #FFFBF3;
@@ -30,8 +30,24 @@
   --f-pixel: 'Pixelify Sans', ui-monospace, monospace;
   --f-mano: 'Caveat', cursive;
 
+  /* Tipografía fluida: ninguna pantalla define font-size suelto */
+  --t-xs: clamp(11px, 2.9vw, 12px);
+  --t-s: clamp(13px, 3.4vw, 14px);
+  --t-m: clamp(15px, 4vw, 17px);
+  --t-l: clamp(19px, 5vw, 24px);
+  --t-xl: clamp(28px, 8vw, 44px);
+  --t-xxl: clamp(44px, 12vw, 92px);
+
+  /* Espacios fluidos */
+  --e-1: clamp(4px, 1vw, 6px);
+  --e-2: clamp(8px, 2vw, 10px);
+  --e-3: clamp(12px, 3vw, 16px);
+  --e-4: clamp(16px, 4vw, 24px);
+  --e-5: clamp(24px, 6vw, 40px);
+  --e-6: clamp(32px, 8vw, 64px);
+  --gutter: clamp(12px, 4vw, 32px);
+
   --toque: 44px;
-  --gutter: 16px;
-  --ancho-app: 430px;
+  --ancho-app: 560px;
   --ancho-home: 1200px;
 }

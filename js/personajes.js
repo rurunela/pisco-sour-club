@@ -141,16 +141,16 @@ export function dibujarBall(ctx, pais, cara, x, y, tamano, voltear = false) {
   ctx.restore();
 }
 
-const NOMBRES = { pe: 'Miguel (Perú)', cl: 'Manuel (Chile)' };
+const escAttr = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 /**
  * HTML de un personaje para la interfaz.
- * size: número (px) o cualquier longitud CSS (por ejemplo "clamp(80px, 26vw, 112px)").
- * etiqueta: si se da, el personaje se anuncia como imagen; si no, es decorativo.
+ * size: número (px) o cualquier longitud CSS (por ejemplo "calc(112 * var(--u))" dentro de una escena).
+ * etiqueta: texto plano (de tp()); si se da, el personaje se anuncia como imagen; si no, es decorativo.
  */
 export function htmlPersonaje({ pais, cara = 'normal', size = 112, flip = false, manos = false, etiqueta = null, clase = '' }) {
   const t = typeof size === 'number' ? size + 'px' : size;
-  const rol = etiqueta === null ? 'aria-hidden="true"' : `role="img" aria-label="${etiqueta || NOMBRES[pais]}"`;
+  const rol = etiqueta === null ? 'aria-hidden="true"' : `role="img" aria-label="${escAttr(etiqueta)}"`;
   const mano = manos ? '<span class="pj__mano pj__mano--a"></span><span class="pj__mano pj__mano--b"></span>' : '';
   return `<span class="pj pj--${pais}${flip ? ' pj--flip' : ''}${clase ? ' ' + clase : ''}" style="--t:${t}" data-pais="${pais}" ${rol}><img class="pj__img" src="${ballURL(pais, cara)}" alt="" draggable="false">${mano}</span>`;
 }

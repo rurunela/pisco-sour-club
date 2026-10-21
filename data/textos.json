@@ -1,0 +1,162 @@
+{
+  "comun": {
+    "volver": "‹ Volver",
+    "alClub": "AL CLUB",
+    "pie": "Pisco Sour Club es un proyecto fan hecho por Rurú. Personajes de Latin Hetalia; no es la cuenta oficial del fandom.",
+    "enlacePendiente": "Enlace pendiente",
+    "fuente": "Fuente: {fuente}",
+    "manuel": "Manuel",
+    "miguel": "Miguel"
+  },
+  "errores": {
+    "postalCaida": "Se nos cayó una postal, vuelve en un ratito.",
+    "reintentar": "Volver a intentar"
+  },
+  "rutas": {
+    "pestana": "{titulo} · Pisco Sour Club",
+    "home": "Pisco Sour Club · una página al Chirú",
+    "bienvenida": "Bienvenida",
+    "faro": "El faro",
+    "barra": "Conversa en la barra",
+    "barraCierre": "Cierre del día",
+    "tarjeta": "Tarjeta de prompt",
+    "runner": "Ruta del desierto",
+    "runnerJugar": "Ruta del desierto",
+    "runnerFinal": "Ruta del desierto · Final",
+    "runnerPerdiste": "Ruta del desierto · Game over",
+    "casitaTaller": "La casita · Taller",
+    "casitaListo": "Tus OCs",
+    "casitaFotos": "Estudio de fotos",
+    "foto": "Foto con texto",
+    "depa": "El depa",
+    "depaSala": "La sala",
+    "depaCocina": "La cocina",
+    "depaAfuera": "Afuera",
+    "depaPortal": "El portal",
+    "depaEditor": "Modo editor",
+    "depaAccion": "Acción",
+    "depaSecretos": "Escenas secretas",
+    "quiosco": "Quiosco de recuerdos",
+    "buzon": "El buzón del club",
+    "galeria": "La pared del club",
+    "radio": "Radio del muelle"
+  },
+  "home": {
+    "nav": {
+      "aria": "Secciones",
+      "marca": "PSC ✉",
+      "barra": "La barra",
+      "dato": "Dato",
+      "malecon": "Malecón",
+      "redes": "Redes"
+    },
+    "hero": {
+      "antetitulo": "Saludos desde la costa del Pacífico",
+      "titulo": "Pisco Sour",
+      "tituloCursiva": "Club",
+      "sub": "Una página al Chirú. Pasea, toca lo que te dé curiosidad y llévate una idea para crear.",
+      "postalIzquierda": "LIMA ⇄ SANTIAGO",
+      "postalDerecha": "tócalos ✦",
+      "tocarManuel": "Tocar a Manuel (Chile)",
+      "tocarMiguel": "Tocar a Miguel (Perú)"
+    },
+    "barra": {
+      "etiqueta": "Postal n.º 1",
+      "titulo": "La barra",
+      "intro": "El pisco del día ya está servido. Si quieres quedarte a conversar con ellos, toca la copa.",
+      "estampilla": "PE\n×\nCL",
+      "linea": "**{nombre}:** {texto}",
+      "copa": "Tocar la copa: conversar en la barra",
+      "pisco": "Pisco del día · n.º {numero} · {tipo}",
+      "pie": "Mañana se sirve otro ✦"
+    },
+    "dato": {
+      "etiqueta": "Postal n.º 2 · ¿Sabías que…?",
+      "contador": "{n} / {total}",
+      "anterior": "Dato anterior",
+      "siguiente": "Dato siguiente"
+    },
+    "malecon": {
+      "titulo": "El malecón",
+      "nota": "Toca algo… ✦",
+      "ayuda": "Cada cosa del malecón esconde algo. Toca una.",
+      "desliza": "desliza →",
+      "entrar": "Entrar →",
+      "letreroQuiosco": "RECUERDOS",
+      "casita": {
+        "nombre": "La casita",
+        "descripcion": "Aquí viven tus OCs. Dibuja a tu Perú y tu Chile."
+      },
+      "depa": {
+        "nombre": "El depa",
+        "descripcion": "Miguel y Manuel viven juntos… y necesitan que alguien los cuide."
+      },
+      "quiosco": {
+        "nombre": "Quiosco de recuerdos",
+        "descripcion": "Carnet de socio, postales, wallpapers y stickers para llevar."
+      },
+      "buzon": {
+        "nombre": "El buzón",
+        "descripcion": "Déjale un dibujito al club. Rurú lo recibe y lo cuelga si le gusta."
+      },
+      "faro": {
+        "nombre": "El faro",
+        "descripcion": "Desde aquí se ven todas las redes del fandom."
+      }
+    },
+    "radio": {
+      "etiqueta": "Postal n.º 3 · Radio del muelle",
+      "nota": "Curada por Rurú · gira el dial",
+      "dial": "Girar el dial: abrir la radio",
+      "spotify": "Abrir en Spotify →"
+    },
+    "cita": {
+      "etiqueta": "Postal n.º 4 · Cita",
+      "estampilla": "Estampilla: convertir la cita en postal descargable",
+      "autor": "— {autor}",
+      "preparando": "Preparando la postal…",
+      "lista": "✦ ¡Postal lista! Revisa tus descargas.",
+      "error": "No se pudo crear la postal. Inténtalo otra vez."
+    },
+    "correo": {
+      "titulo": "Llegado por correo",
+      "vacia": "[Publicación de {red}]",
+      "pie": "{autor} · {red}",
+      "alt": "Publicación de {autor} en {red}"
+    }
+  },
+  "bienvenida": {
+    "antetitulo": "UNA PÁGINA AL CHIRÚ",
+    "titulo": "Pisco Sour",
+    "tituloCursiva": "Club",
+    "pregunta": "Aquí casi nada dice «juega». Toca lo que te dé curiosidad. ¿De qué lado de la barra te sientas?",
+    "equipoPe": "Perú",
+    "equipoCl": "Chile",
+    "equipoAmbos": "Los dos",
+    "entrar": "ENTRAR AL CLUB",
+    "credito": "Proyecto fan de Rurú · Personajes de Latin Hetalia",
+    "saludoManuel": "Manuel (Chile) saluda",
+    "saludoMiguel": "Miguel (Perú) saluda"
+  },
+  "faro": {
+    "volver": "‹ Malecón",
+    "titulo": "Desde el faro se ve todo",
+    "ultimo": "LO ÚLTIMO CON {hashtag}",
+    "postVacio": "[Post {red}]\n{autor}",
+    "alt": "Publicación de {autor} en {red}"
+  },
+  "proximamente": {
+    "antetitulo": "PRÓXIMAMENTE",
+    "manuel": "**Manuel:** …Todavía lo estamos armando. No mires.",
+    "miguel": "**Miguel:** ¡Ya casi, causa! Vuelve prontito, que te guardo un plato."
+  },
+  "descargas": {
+    "cita": {
+      "etiqueta": "Postal n.º 4 · Cita",
+      "autor": "— {autor}",
+      "ruta": "LIMA ⇄ SANTIAGO",
+      "marca": "Pisco Sour Club",
+      "archivo": "pisco-sour-club-cita-{id}.png"
+    }
+  }
+}

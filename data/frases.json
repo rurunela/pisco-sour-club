@@ -9,23 +9,29 @@
     {"manuel": "Limón de Pica, el mejor.", "miguel": "Limón sutil. Siguiente pregunta."},
     {"manuel": "Toma. Y no me mires así.", "miguel": "¡Te quedó rico! …casi como el mío."}
   ],
-  "bienvenida": {"manuel": "…Hola. Pasa, nomás.", "miguel": "¡Bienvenid@, causa! ¿Ya comiste?"},
+  "bienvenida": [
+    {"manuel": "…Hola. Pasa, nomás.", "miguel": "¡Bienvenid@, causa! ¿Ya comiste?"}
+  ],
   "afuera": [
-    {"habla": "manuel", "texto": "Hace frío. Me encanta.", "caras": {"cl": "feliz", "pe": "triste"}},
-    {"habla": "miguel", "texto": "¡Préstame tu gorro, causa!", "caras": {"cl": "enojado", "pe": "feliz"}},
-    {"habla": "manuel", "texto": "…Ya, toma. Pero me lo devuelves.", "caras": {"cl": "sonrojo", "pe": "sonrojo"}}
+    [
+      {"habla": "manuel", "texto": "Hace frío. Me encanta.", "caras": {"cl": "feliz", "pe": "triste"}},
+      {"habla": "miguel", "texto": "¡Préstame tu gorro, causa!", "caras": {"cl": "enojado", "pe": "feliz"}},
+      {"habla": "manuel", "texto": "…Ya, toma. Pero me lo devuelves.", "caras": {"cl": "sonrojo", "pe": "sonrojo"}}
+    ]
   ],
   "sala": {
-    "marinera": {"manuel": "…Ya, pero yo marco el paso.", "miguel": "¡Pañuelo arriba, causa!"},
-    "regueton": {"manuel": "¿Desde cuándo sé bailar esto?", "miguel": "¡Dale, que tú puedes!"},
+    "marinera": [{"manuel": "…Ya, pero yo marco el paso.", "miguel": "¡Pañuelo arriba, causa!"}],
+    "regueton": [{"manuel": "¿Desde cuándo sé bailar esto?", "miguel": "¡Dale, que tú puedes!"}],
     "tele": [
-      {"manuel": "¡Ese penal no fue!", "miguel": "¡Claro que fue, ciego!", "caras": {"cl": "enojado", "pe": "enojado"}},
-      {"manuel": "…Ya. Lo siento.", "miguel": "Yo también, tonto.", "caras": {"cl": "triste", "pe": "sonrojo"}},
-      {"manuel": "", "miguel": "", "caras": {"cl": "sonrojo", "pe": "sonrojo"}, "efecto": "besito"}
+      [
+        {"manuel": "¡Ese penal no fue!", "miguel": "¡Claro que fue, ciego!", "caras": {"cl": "enojado", "pe": "enojado"}},
+        {"manuel": "…Ya. Lo siento.", "miguel": "Yo también, tonto.", "caras": {"cl": "triste", "pe": "sonrojo"}},
+        {"manuel": "", "miguel": "", "caras": {"cl": "sonrojo", "pe": "sonrojo"}, "efecto": "besito"}
+      ]
     ]
   },
   "runner": {
-    "gameOver": "¿Ya vienes? Se enfría la comida… ya fue, la recaliento.",
-    "final": "Miguel te esperaba con la cena lista"
+    "gameOver": ["¿Ya vienes? Se enfría la comida… ya fue, la recaliento."],
+    "final": ["Miguel te esperaba con la cena lista"]
   }
 }

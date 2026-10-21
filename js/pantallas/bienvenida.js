@@ -1,44 +1,49 @@
 // Bienvenida: solo en la primera visita (ref: prototipo/Bienvenida.dc.html).
-import { cargar } from '../datos.js';
+import { cargar, alAzar } from '../datos.js';
 import { leer, guardar } from '../almacen.js';
 import { htmlPersonaje } from '../personajes.js';
-import { esc } from '../ui.js';
+import { t, tp, formato } from '../textos.js';
 
 const EQUIPOS = [
-  { id: 'pe', label: 'Perú', color: 'var(--rojo-pe)' },
-  { id: 'cl', label: 'Chile', color: 'var(--azul-cl)' },
-  { id: 'ambos', label: 'Los dos', color: 'var(--coral)' }
+  { id: 'pe', label: 'bienvenida.equipoPe', color: 'var(--rojo-pe)' },
+  { id: 'cl', label: 'bienvenida.equipoCl', color: 'var(--azul-cl)' },
+  { id: 'ambos', label: 'bienvenida.equipoAmbos', color: 'var(--coral)' }
 ];
+
+const pzArriba = (x, y, w, h, estilo) => `<span class="pz pz--arriba" style="--x:${x};--y:${y};--w:${w};--h:${h};${estilo}"></span>`;
 
 export async function render(app) {
   const frases = await cargar('frases');
+  const saludo = alAzar(frases.bienvenida) || { manuel: '', miguel: '' };
   let equipo = leer('equipo', 'ambos');
 
   app.innerHTML = `
 <div class="pantalla bienvenida">
   <div class="olas"></div>
-  <div class="bienvenida__postal">
-    <div class="nube" style="left:30px;top:40px;width:50px;height:12px"></div>
-    <div class="bienvenida__sol"></div>
-    <div class="playa__mar"></div>
-    <div class="playa__arena"></div>
-    <p class="globo bienvenida__globo bienvenida__globo--cl">${esc(frases.bienvenida.manuel)}</p>
-    <p class="globo bienvenida__globo bienvenida__globo--pe">${esc(frases.bienvenida.miguel)}</p>
-    <div class="bienvenida__pjs">
-      ${htmlPersonaje({ pais: 'cl', size: 'clamp(84px, 27vw, 104px)', manos: true, etiqueta: 'Manuel (Chile) saluda' })}
-      ${htmlPersonaje({ pais: 'pe', cara: 'feliz', size: 'clamp(84px, 27vw, 104px)', flip: true, manos: true, etiqueta: 'Miguel (Perú) saluda' })}
+  <div class="bienvenida__marco">
+    <div class="escena bienvenida__escena" style="--ancho:358;--alto:330">
+      ${pzArriba(30, 40, 50, 12, 'background:#FFFFFF')}
+      ${pzArriba(284, 24, 44, 44, 'background:var(--sol)')}
+      <span class="playa__mar"></span>
+      <span class="playa__arena"></span>
+      <p class="globo escena__globo escena__globo--izq bienvenida__globo">${formato(saludo.manuel)}</p>
+      <p class="globo escena__globo escena__globo--der bienvenida__globo">${formato(saludo.miguel)}</p>
+      <div class="escena__fila bienvenida__pjs">
+        ${htmlPersonaje({ pais: 'cl', size: 'calc(104 * var(--u))', manos: true, etiqueta: tp('bienvenida.saludoManuel') })}
+        ${htmlPersonaje({ pais: 'pe', cara: 'feliz', size: 'calc(104 * var(--u))', flip: true, manos: true, etiqueta: tp('bienvenida.saludoMiguel') })}
+      </div>
     </div>
   </div>
 
   <div class="bienvenida__cuerpo">
-    <span class="pixel bienvenida__ante">UNA PÁGINA AL CHIRÚ</span>
-    <h1 class="bienvenida__titulo">Pisco Sour <span>Club</span></h1>
-    <p class="bienvenida__texto" id="pregunta-equipo">Aquí casi nada dice «juega». Toca lo que te dé curiosidad. ¿De qué lado de la barra te sientas?</p>
+    <span class="pixel bienvenida__ante">${t('bienvenida.antetitulo')}</span>
+    <h1 class="bienvenida__titulo">${t('bienvenida.titulo')} <span>${t('bienvenida.tituloCursiva')}</span></h1>
+    <p class="bienvenida__texto" id="pregunta-equipo">${t('bienvenida.pregunta')}</p>
     <div class="bienvenida__equipos" role="group" aria-labelledby="pregunta-equipo">
-      ${EQUIPOS.map((t) => `<button type="button" class="equipo" data-equipo="${t.id}" style="--color:${t.color}">${t.label}</button>`).join('')}
+      ${EQUIPOS.map((e) => `<button type="button" class="equipo" data-equipo="${e.id}" style="--color:${e.color}">${t(e.label)}</button>`).join('')}
     </div>
-    <button type="button" class="boton boton--oceano bienvenida__entrar" id="entrar">ENTRAR AL CLUB</button>
-    <span class="bienvenida__credito">Proyecto fan de Rurú · Personajes de Latin Hetalia</span>
+    <button type="button" class="boton boton--oceano bienvenida__entrar" id="entrar">${t('bienvenida.entrar')}</button>
+    <span class="bienvenida__credito">${t('bienvenida.credito')}</span>
   </div>
 </div>`;
 

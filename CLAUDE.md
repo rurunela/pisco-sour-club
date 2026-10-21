@@ -13,6 +13,7 @@ Lee en este orden:
 3. `docs/DATOS.md` — modelos de datos, almacenamiento local, Supabase (SQL) y contrato del chat.
 4. `docs/ANIMACION.md` — motor de "Acción" (fotogramas → animación).
 5. `docs/FASES.md` — orden de construcción y criterios de aceptación.
+5b. `docs/CONTENIDO.md` y `docs/RESPONSIVE.md` — textos editables y reglas de responsive (aplican a todas las fases).
 6. `prototipo/` — las pantallas diseñadas (referencia visual; ver `prototipo/LEEME.md`).
 7. `data/` — contenido inicial (prompts, datos, trivia, personajes, etc.).
 
@@ -40,6 +41,8 @@ Lee en este orden:
 8. **Sin secretos en el repo:** las claves públicas de Supabase van en `js/config.js`; la API key de la IA vive solo en el Worker (`wrangler secret`).
 9. **Proyecto fan:** el pie de página siempre dice que es un proyecto fan hecho por Rurú y que no es la cuenta oficial del fandom. La ficha de Perú pide no usar al personaje en proyectos pagados sin consultar a su creadora (Kuraudia): **todo es gratis**.
 10. **Rendimiento:** los countryballs se dibujan una vez en canvas y se cachean como imagen (en el prototipo son 400 divs: **no** copiar eso). Spotify y las redes se cargan con lazy load. El runner y las animaciones usan `requestAnimationFrame` y se pausan con `visibilitychange`.
+11. **Textos editables:** ningún texto visible va escrito en `js/`. Todo sale de `data/textos.json` (interfaz) o de las listas de `data/` (frases, prompts…), y el código se adapta al largo de cada lista. Ver `docs/CONTENIDO.md`. Al agregar una pantalla, sus textos van a `textos.json`, sus claves a `data/esquema-textos.json` y, si hace falta, un ejemplo a `data/LEEME.md`.
+12. **Totalmente responsive:** de 320 px a 1440 px, vertical y horizontal, sin anchos fijos en contenedores, con tipografía y espacios fluidos y escenas que se escalan enteras. Ver `docs/RESPONSIVE.md`; su matriz de pruebas y sus criterios se suman a los de cada fase.
 
 ## Estructura de carpetas
 
@@ -82,10 +85,14 @@ Lee en este orden:
 
 ## Arquitectura (fase 1 en adelante)
 
-- `js/router.js` define la tabla de rutas. Cada pantalla exporta `render(app, ctx)` y puede devolver una función de limpieza. `ctx` trae `params` (query del hash) y `ruta`.
+- `js/main.js` carga `data/textos.json` (`cargarTextos()`) y arranca el router.
+- `js/router.js` define la tabla de rutas. Cada pantalla exporta `render(app, ctx)` y puede devolver una función de limpieza. `ctx` trae `params` (query del hash), `ruta` y `def`. El título de cada ruta es una clave de `rutas.*`. Si un JSON no carga, el router muestra la postal de error (`postalCaida` en `js/ui.js`).
 - Las rutas que aún no existen usan `js/pantallas/proximamente.js` con su pantalla madre para "‹ Volver"; al construir una fase, cambia su entrada en la tabla por el módulo real.
-- `js/datos.js` carga y cachea `data/*.json`. `diaLima()` da el índice del día en hora de Lima (UTC−5) para el pisco y la cita del día.
-- `js/personajes.js`: `htmlPersonaje({pais, cara, size, flip, manos})` para la interfaz y `ballCanvas(pais, cara)` para exportar.
+- `js/textos.js`: `t(clave, vars)` → HTML seguro; `tp()` → texto plano (canvas, `document.title`); `attr()` → texto plano escapado para atributos (`aria-label`). `formato()`/`plano()` para textos de las listas. Las claves se escriben siempre literales y completas (`'home.barra.titulo'`).
+- Tras agregar o quitar textos: `node .github/scripts/generar-esquema.mjs` y luego `node .github/scripts/validar-datos.mjs`.
+- `js/datos.js` carga y cachea `data/*.json`. `activos()`, `delDia()` (hora de Lima, UTC−5) y `alAzar()` respetan `"activo": false` y el largo real de cada lista.
+- Escenas: clase `.escena` con `style="--ancho:N;--alto:M"` y piezas `.pz` en px lógicos (`--x`, `--b`/`--y`, `--w`, `--h`), ver `docs/RESPONSIVE.md` §3. Tipografía y espacios solo con los tokens `--t-*` y `--e-*` de `css/tokens.css`.
+- `js/personajes.js`: `htmlPersonaje({pais, cara, size, flip, manos, etiqueta})` para la interfaz (`size` puede ser `'calc(112 * var(--u))'`) y `ballCanvas(pais, cara)` / `dibujarBall()` para exportar.
 
 ## Datos pendientes de Rurú
 

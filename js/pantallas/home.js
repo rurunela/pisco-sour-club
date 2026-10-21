@@ -1,213 +1,221 @@
 // Home: hero, la barra, ¿Sabías que…?, malecón, radio, cita, llegado por correo y pie.
-import { cargar, delDia, diaLima } from '../datos.js';
+import { cargar, delDia, diaLima, activos } from '../datos.js';
 import { htmlPersonaje, dibujarBall } from '../personajes.js';
-import { esc, svgCopa, PIE } from '../ui.js';
+import { t, tp, attr, formato, plano } from '../textos.js';
+import { esc, svgCopa } from '../ui.js';
+import { leer, guardar } from '../almacen.js';
 import { esPendiente } from '../config.js';
 import { descargarCanvas, fuentesListas, lineas } from '../exportar.js';
 
 const LUGARES = {
-  casita: { t: 'La casita', d: 'Aquí viven tus OCs. Dibuja a tu Perú y tu Chile.', href: '#/casita/taller' },
-  depa: { t: 'El depa', d: 'Miguel y Manuel viven juntos… y necesitan que alguien los cuide.', href: '#/depa' },
-  quiosco: { t: 'Quiosco de recuerdos', d: 'Carnet de socio, postales, wallpapers y stickers para llevar.', href: '#/quiosco' },
-  buzon: { t: 'El buzón', d: 'Déjale un dibujito al club. Rurú lo recibe y lo cuelga si le gusta.', href: '#/buzon' },
-  faro: { t: 'El faro', d: 'Desde aquí se ven todas las redes del fandom.', href: '#/faro' }
+  casita: { nombre: 'home.malecon.casita.nombre', desc: 'home.malecon.casita.descripcion', href: '#/casita/taller' },
+  depa: { nombre: 'home.malecon.depa.nombre', desc: 'home.malecon.depa.descripcion', href: '#/depa' },
+  quiosco: { nombre: 'home.malecon.quiosco.nombre', desc: 'home.malecon.quiosco.descripcion', href: '#/quiosco' },
+  buzon: { nombre: 'home.malecon.buzon.nombre', desc: 'home.malecon.buzon.descripcion', href: '#/buzon' },
+  faro: { nombre: 'home.malecon.faro.nombre', desc: 'home.malecon.faro.descripcion', href: '#/faro' }
 };
 
 const SECCIONES = [
-  { id: 'barra', label: 'La barra' },
-  { id: 'dato', label: 'Dato' },
-  { id: 'malecon', label: 'Malecón' },
-  { id: 'redes', label: 'Redes' }
+  { id: 'barra', label: 'home.nav.barra' },
+  { id: 'dato', label: 'home.nav.dato' },
+  { id: 'malecon', label: 'home.nav.malecon' },
+  { id: 'redes', label: 'home.nav.redes' }
 ];
 
-function enlaceOPendiente(url, contenido, clase) {
+// Pieza de escena en px lógicos (ver docs/RESPONSIVE.md §3).
+const pz = (x, b, w, h, estilo = '', clase = '') => `<span class="pz ${clase}" style="--x:${x};--b:${b};--w:${w};--h:${h};${estilo}"></span>`;
+const pzArriba = (x, y, w, h, estilo = '') => `<span class="pz pz--arriba" style="--x:${x};--y:${y};--w:${w};--h:${h};${estilo}"></span>`;
+
+function enlaceOPendiente(url, contenidoHtml, clase) {
   return esPendiente(url)
-    ? `<span class="${clase} es-pendiente" title="Enlace pendiente">${contenido}</span>`
-    : `<a class="${clase}" href="${esc(url)}" target="_blank" rel="noopener">${contenido}</a>`;
+    ? `<span class="${clase} es-pendiente" title="${attr('comun.enlacePendiente')}">${contenidoHtml}</span>`
+    : `<a class="${clase}" href="${esc(url)}" target="_blank" rel="noopener">${contenidoHtml}</a>`;
 }
 
 function htmlFuente(dato) {
-  const texto = esc(dato.fuente);
-  return dato.url && !esPendiente(dato.url)
-    ? `Fuente: <a href="${esc(dato.url)}" target="_blank" rel="noopener">${texto}</a>`
-    : `Fuente: ${texto}`;
+  const fuente = dato.url && !esPendiente(dato.url)
+    ? `<a href="${esc(dato.url)}" target="_blank" rel="noopener">${esc(dato.fuente)}</a>`
+    : esc(dato.fuente);
+  return t('comun.fuente', { fuente: '\u0000' }).replace('\u0000', fuente);
+}
+
+function objeto(id, x, w, h, piezas) {
+  return `<button type="button" class="malecon__obj" data-lugar="${id}" aria-label="${attr(LUGARES[id].nombre)}" aria-controls="malecon-tarjeta" aria-pressed="false" style="--x:${x};--w:${w};--h:${h}">${piezas}</button>`;
 }
 
 function htmlMalecon() {
+  const borde = 'pz--borde', borde3 = 'pz--borde3';
   return `
-<div class="malecon__scroll" tabindex="-1">
-  <div class="malecon__escena">
-    <div class="nube" style="left:40px;top:30px;width:60px"></div>
-    <div class="nube" style="left:540px;top:50px;width:46px"></div>
-    <div class="malecon__mar"></div>
-    <div class="malecon__muelle"></div>
-
-    <button type="button" class="malecon__obj" data-lugar="casita" aria-label="La casita" aria-controls="malecon-tarjeta" style="left:40px;width:160px;height:170px">
-      <span class="pz" style="left:5px;bottom:96px;width:150px;height:70px;background:#B4452F;clip-path:polygon(50% 0,100% 100%,0 100%)"></span>
-      <span class="pz pz--borde" style="left:20px;bottom:0;width:120px;height:96px;background:#FFFBF3"></span>
-      <span class="pz" style="left:36px;bottom:0;width:26px;height:46px;background:#8E3524"></span>
-      <span class="pz pz--borde3" style="left:88px;bottom:40px;width:30px;height:28px;background:#F2C14E"></span>
-    </button>
-
-    <button type="button" class="malecon__obj" data-lugar="depa" aria-label="El edificio" aria-controls="malecon-tarjeta" style="left:240px;width:150px;height:230px">
-      <span class="pz pz--borde" style="left:0;bottom:0;width:150px;height:220px;background:#E9B872"></span>
-      <span class="pz pz--borde3" style="left:18px;bottom:150px;width:30px;height:30px;background:#CFE2EE"></span>
-      <span class="pz pz--borde3" style="left:60px;bottom:150px;width:30px;height:30px;background:#CFE2EE"></span>
-      <span class="pz pz--borde3" style="left:102px;bottom:150px;width:30px;height:30px;background:#CFE2EE"></span>
-      <span class="pz pz--borde3 malecon__ventana" style="left:18px;bottom:60px;width:72px;height:60px;background:#F2C14E">${htmlPersonaje({ pais: 'cl', size: 26 })}${htmlPersonaje({ pais: 'pe', size: 26, flip: true })}</span>
-      <span class="pz pz--borde3" style="left:102px;bottom:90px;width:30px;height:30px;background:#CFE2EE"></span>
-      <span class="pz" style="left:58px;bottom:0;width:34px;height:44px;background:#8E3524"></span>
-    </button>
-
-    <button type="button" class="malecon__obj" data-lugar="quiosco" aria-label="El quiosco" aria-controls="malecon-tarjeta" style="left:430px;width:150px;height:130px">
-      <span class="pz pz--borde3" style="left:0;bottom:84px;width:150px;height:30px;background:repeating-linear-gradient(90deg,#B4452F 0 15px,#FFFBF3 15px 30px)"></span>
-      <span class="pz pz--borde pixel" style="left:12px;bottom:0;width:126px;height:84px;background:#FFFBF3;display:flex;align-items:center;justify-content:center;font-size:13px;color:#1F4E79">RECUERDOS</span>
-    </button>
-
-    <button type="button" class="malecon__obj" data-lugar="buzon" aria-label="El buzón" aria-controls="malecon-tarjeta" style="left:630px;width:70px;height:110px">
-      <span class="pz" style="left:30px;bottom:0;width:10px;height:60px;background:#5B4F45"></span>
-      <span class="pz pz--borde" style="left:6px;bottom:56px;width:58px;height:48px;background:#1F4E79;border-radius:24px 24px 0 0"></span>
-      <span class="pz" style="left:20px;bottom:78px;width:30px;height:5px;background:#2B2622"></span>
-    </button>
-
-    <button type="button" class="malecon__obj" data-lugar="faro" aria-label="El faro" aria-controls="malecon-tarjeta" style="left:790px;width:110px;height:236px">
-      <span class="pz" style="left:25px;bottom:210px;width:60px;height:26px;background:#2B2622;clip-path:polygon(50% 0,100% 100%,0 100%)"></span>
-      <span class="pz pz--borde" style="left:30px;bottom:180px;width:50px;height:30px;background:#F2C14E"></span>
-      <span class="pz pz--borde" style="left:32px;bottom:0;width:46px;height:180px;background:repeating-linear-gradient(0deg,#FFFBF3 0 30px,#B4452F 30px 60px)"></span>
-    </button>
+<div class="malecon__scroll" id="malecon-scroll">
+  <div class="escena malecon__escena" style="--ancho:1000;--alto:320">
+    ${pzArriba(40, 30, 60, 14, 'background:#FFFFFF')}
+    ${pzArriba(540, 50, 46, 12, 'background:#FFFFFF')}
+    ${pz(0, 0, 1000, 44, '', 'malecon__mar')}
+    ${pz(0, 44, 1000, 30, '', 'malecon__muelle')}
+    ${objeto('casita', 40, 160, 170,
+      pz(5, 96, 150, 70, 'background:#B4452F;clip-path:polygon(50% 0,100% 100%,0 100%)') +
+      pz(20, 0, 120, 96, 'background:#FFFBF3', borde) +
+      pz(36, 0, 26, 46, 'background:#8E3524') +
+      pz(88, 40, 30, 28, 'background:#F2C14E', borde3))}
+    ${objeto('depa', 240, 150, 230,
+      pz(0, 0, 150, 220, 'background:#E9B872', borde) +
+      pz(18, 150, 30, 30, 'background:#CFE2EE', borde3) +
+      pz(60, 150, 30, 30, 'background:#CFE2EE', borde3) +
+      pz(102, 150, 30, 30, 'background:#CFE2EE', borde3) +
+      `<span class="pz pz--borde3 malecon__ventana" style="--x:18;--b:60;--w:72;--h:60;background:#F2C14E">${htmlPersonaje({ pais: 'cl', size: 'calc(26 * var(--u))' })}${htmlPersonaje({ pais: 'pe', size: 'calc(26 * var(--u))', flip: true })}</span>` +
+      pz(102, 90, 30, 30, 'background:#CFE2EE', borde3) +
+      pz(58, 0, 34, 44, 'background:#8E3524'))}
+    ${objeto('quiosco', 430, 150, 130,
+      pz(0, 84, 150, 30, 'background:repeating-linear-gradient(90deg,#B4452F 0 10%,#FFFBF3 10% 20%)', borde3) +
+      `<span class="pz pz--borde malecon__letrero pixel" style="--x:12;--b:0;--w:126;--h:84">${t('home.malecon.letreroQuiosco')}</span>`)}
+    ${objeto('buzon', 630, 70, 110,
+      pz(30, 0, 10, 60, 'background:#5B4F45') +
+      pz(6, 56, 58, 48, 'background:#1F4E79;border-radius:calc(24 * var(--u)) calc(24 * var(--u)) 0 0', borde) +
+      pz(20, 78, 30, 5, 'background:#2B2622'))}
+    ${objeto('faro', 790, 110, 236,
+      pz(25, 210, 60, 26, 'background:#2B2622;clip-path:polygon(50% 0,100% 100%,0 100%)') +
+      pz(30, 180, 50, 30, 'background:#F2C14E', borde) +
+      pz(32, 0, 46, 180, 'background:repeating-linear-gradient(0deg,#FFFBF3 0 16.66%,#B4452F 16.66% 33.33%)', borde))}
   </div>
+  <span class="malecon__desliza pixel" id="malecon-desliza" hidden>${t('home.malecon.desliza')}</span>
 </div>`;
 }
 
 export async function render(app, { params }) {
-  const [prompts, frases, datos, citas, redes] = await Promise.all(
+  const [prompts, frases, datosLista, citas, redes] = await Promise.all(
     ['prompts', 'frases', 'datos', 'citas', 'redes'].map(cargar)
   );
 
   const ahora = Date.now();
-  const pisco = delDia(prompts, ahora);
-  const numeroPisco = String((diaLima(ahora) % prompts.length) + 1).padStart(2, '0');
+  const listaPrompts = activos(prompts);
+  const pisco = delDia(listaPrompts, ahora);
+  const numeroPisco = String((diaLima(ahora) % listaPrompts.length) + 1).padStart(2, '0');
   const charla = delDia(frases.barra, ahora);
   const cita = delDia(citas, ahora);
+  const datos = activos(datosLista);
+  const publicaciones = activos(redes.publicaciones);
+  const enlaces = activos(redes.enlaces);
+  const ball = (opc) => htmlPersonaje(opc);
 
   app.innerHTML = `
 <div class="home">
   <div class="olas"></div><div class="olas--claras"></div>
   <div class="home__contenido">
 
-    <nav class="home__nav" aria-label="Secciones">
-      <a class="home__marca pixel" href="#/">PSC ✉</a>
+    <nav class="home__nav" aria-label="${attr('home.nav.aria')}">
+      <a class="home__marca pixel" href="#/">${t('home.nav.marca')}</a>
       <div class="home__nav-links">
-        ${SECCIONES.map((s) => `<button type="button" class="home__nav-link" data-ir="${s.id}">${s.label}</button>`).join('')}
+        ${SECCIONES.map((s) => `<button type="button" class="home__nav-link" data-ir="${s.id}">${t(s.label)}</button>`).join('')}
       </div>
     </nav>
 
     <header class="hero">
       <div class="hero__texto">
-        <span class="pixel hero__antetitulo">Saludos desde la costa del Pacífico</span>
-        <h1 class="hero__titulo">Pisco Sour<br><span>Club</span></h1>
-        <p class="hero__sub">Una página al Chirú. Pasea, toca lo que te dé curiosidad y llévate una idea para crear.</p>
+        <span class="pixel hero__antetitulo">${t('home.hero.antetitulo')}</span>
+        <h1 class="hero__titulo">${t('home.hero.titulo')}<br><span>${t('home.hero.tituloCursiva')}</span></h1>
+        <p class="hero__sub">${t('home.hero.sub')}</p>
       </div>
       <div class="postal hero__postal">
-        <div class="playa">
-          <div class="nube" style="left:10%;top:34px;width:54px"></div>
-          <div class="nube" style="left:calc(10% + 12px);top:24px;width:28px;height:10px"></div>
-          <div class="nube" style="right:30%;top:64px;width:40px;height:10px"></div>
-          <div class="playa__sol"></div>
-          <div class="playa__mar"></div>
-          <div class="playa__arena"></div>
-          <p class="globo hero__globo hero__globo--cl" id="globo-cl" hidden aria-live="polite"></p>
-          <p class="globo hero__globo hero__globo--pe" id="globo-pe" hidden aria-live="polite"></p>
-          <div class="hero__pjs">
-            <button type="button" class="hero__pj" data-pais="cl" aria-label="Tocar a Manuel (Chile)" aria-describedby="globo-cl">${htmlPersonaje({ pais: 'cl', size: 'clamp(76px, 25vw, 112px)', manos: true })}</button>
-            <span class="hero__copa">${svgCopa(52, 60)}</span>
-            <button type="button" class="hero__pj" data-pais="pe" aria-label="Tocar a Miguel (Perú)" aria-describedby="globo-pe">${htmlPersonaje({ pais: 'pe', size: 'clamp(76px, 25vw, 112px)', flip: true, manos: true })}</button>
+        <div class="escena playa" style="--ancho:400;--alto:330">
+          ${pzArriba(40, 34, 54, 14, 'background:#FFFFFF')}
+          ${pzArriba(52, 24, 28, 10, 'background:#FFFFFF')}
+          ${pzArriba(240, 64, 40, 10, 'background:#FFFFFF')}
+          ${pzArriba(308, 28, 52, 52, 'background:var(--sol)')}
+          <span class="playa__mar"></span>
+          <span class="playa__arena"></span>
+          <p class="globo escena__globo escena__globo--izq" id="globo-cl" hidden aria-live="polite"></p>
+          <p class="globo escena__globo escena__globo--der" id="globo-pe" hidden aria-live="polite"></p>
+          <div class="escena__fila hero__pjs">
+            <button type="button" class="hero__pj" data-pais="cl" aria-label="${attr('home.hero.tocarManuel')}" aria-describedby="globo-cl">${ball({ pais: 'cl', size: 'calc(112 * var(--u))', manos: true })}</button>
+            ${svgCopa('calc(52 * var(--u))', 'calc(60 * var(--u))')}
+            <button type="button" class="hero__pj" data-pais="pe" aria-label="${attr('home.hero.tocarMiguel')}" aria-describedby="globo-pe">${ball({ pais: 'pe', size: 'calc(112 * var(--u))', flip: true, manos: true })}</button>
           </div>
         </div>
-        <div class="postal__pie pixel"><span>LIMA ⇄ SANTIAGO</span><span>tócalos ✦</span></div>
+        <div class="postal__pie pixel"><span>${t('home.hero.postalIzquierda')}</span><span>${t('home.hero.postalDerecha')}</span></div>
       </div>
     </header>
 
-    <div class="home__fila">
+    <div class="home__fila home__fila--barra">
       <section id="barra" class="postal postal--texto barra" aria-labelledby="barra-titulo">
-        <div class="estampilla pixel" aria-hidden="true">PE<br>×<br>CL</div>
-        <span class="pixel postal__etiqueta">Postal n.º 1</span>
-        <h2 id="barra-titulo" class="postal__titulo">La barra</h2>
-        <p class="barra__intro">El pisco del día ya está servido. Si quieres quedarte a conversar con ellos, toca la copa.</p>
+        <div class="estampilla pixel" aria-hidden="true">${t('home.barra.estampilla')}</div>
+        <span class="pixel postal__etiqueta">${t('home.barra.etiqueta')}</span>
+        <h2 id="barra-titulo" class="postal__titulo">${t('home.barra.titulo')}</h2>
+        <p class="barra__intro">${t('home.barra.intro')}</p>
         <div class="barra__cuerpo">
           <div class="barra__charla">
-            <p class="barra__linea barra__linea--cl">${htmlPersonaje({ pais: 'cl', size: 40 })}<span><strong>Manuel:</strong> ${esc(charla.manuel)}</span></p>
-            <p class="barra__linea barra__linea--pe">${htmlPersonaje({ pais: 'pe', size: 40, flip: true })}<span><strong>Miguel:</strong> ${esc(charla.miguel)}</span></p>
+            <p class="barra__linea barra__linea--cl">${ball({ pais: 'cl', size: 40 })}<span>${t('home.barra.linea', { nombre: tp('comun.manuel'), texto: plano(charla.manuel) })}</span></p>
+            <p class="barra__linea barra__linea--pe">${ball({ pais: 'pe', size: 40, flip: true })}<span>${t('home.barra.linea', { nombre: tp('comun.miguel'), texto: plano(charla.miguel) })}</span></p>
           </div>
           <div class="barra__pisco">
-            <a class="barra__copa" href="#/barra" aria-label="Tocar la copa: conversar en la barra">${svgCopa(64, 74, true)}</a>
+            <a class="barra__copa" href="#/barra" aria-label="${attr('home.barra.copa')}">${svgCopa('64px', '74px', true)}</a>
             <div class="barra__prompt">
-              <span class="pixel barra__prompt-etiqueta">Pisco del día · n.º ${numeroPisco} · ${esc(pisco.tipo)}</span>
-              <p class="barra__prompt-texto">${esc(pisco.texto)}</p>
+              <span class="pixel barra__prompt-etiqueta">${t('home.barra.pisco', { numero: numeroPisco, tipo: pisco.tipo })}</span>
+              <p class="barra__prompt-texto">${formato(pisco.texto)}</p>
             </div>
           </div>
         </div>
-        <span class="pixel postal__pie-texto">Mañana se sirve otro ✦</span>
+        <span class="pixel postal__pie-texto">${t('home.barra.pie')}</span>
       </section>
 
       <section id="dato" class="postal dato" aria-labelledby="dato-titulo">
         <div class="dato__cabeza">
-          <h2 id="dato-titulo" class="pixel dato__etiqueta">Postal n.º 2 · ¿Sabías que…?</h2>
+          <h2 id="dato-titulo" class="pixel dato__etiqueta">${t('home.dato.etiqueta')}</h2>
           <span class="pixel dato__contador" id="dato-contador"></span>
         </div>
         <p class="dato__texto" id="dato-texto" aria-live="polite"></p>
         <span class="dato__fuente" id="dato-fuente"></span>
         <div class="dato__flechas">
-          <button type="button" class="dato__flecha pixel" data-paso="-1" aria-label="Dato anterior">‹</button>
-          <button type="button" class="dato__flecha pixel" data-paso="1" aria-label="Dato siguiente">›</button>
+          <button type="button" class="dato__flecha pixel" data-paso="-1" aria-label="${attr('home.dato.anterior')}">‹</button>
+          <button type="button" class="dato__flecha pixel" data-paso="1" aria-label="${attr('home.dato.siguiente')}">›</button>
         </div>
       </section>
     </div>
 
     <section id="malecon" class="malecon" aria-labelledby="malecon-titulo">
       <div class="seccion__cabeza">
-        <h2 id="malecon-titulo" class="seccion__titulo">El malecón</h2>
-        <span class="pixel seccion__nota">Toca algo… ✦</span>
+        <h2 id="malecon-titulo" class="seccion__titulo">${t('home.malecon.titulo')}</h2>
+        <span class="pixel seccion__nota">${t('home.malecon.nota')}</span>
       </div>
       <div class="malecon__marco">${htmlMalecon()}</div>
       <div class="malecon__tarjeta" id="malecon-tarjeta" aria-live="polite">
-        <span class="pixel malecon__ayuda">Cada cosa del malecón esconde algo. Toca una.</span>
+        <span class="pixel malecon__ayuda">${t('home.malecon.ayuda')}</span>
       </div>
     </section>
 
-    <div class="home__fila">
+    <div class="home__fila home__fila--dos">
       <section id="radio" class="postal postal--texto radio" aria-labelledby="radio-titulo">
-        <span class="pixel postal__etiqueta">Postal n.º 3 · Radio del muelle</span>
+        <span class="pixel postal__etiqueta">${t('home.radio.etiqueta')}</span>
         <div class="radio__fila">
-          <a class="radio__dial" href="#/radio" aria-label="Girar el dial: abrir la radio"></a>
+          <a class="radio__dial" href="#/radio" aria-label="${attr('home.radio.dial')}"></a>
           <div class="radio__info">
-            <h2 id="radio-titulo" class="radio__nombre">${esc(redes.playlist.nombre)}</h2>
-            <span class="radio__nota">Curada por Rurú · gira el dial</span>
+            <h2 id="radio-titulo" class="radio__nombre">${formato(redes.playlist.nombre)}</h2>
+            <span class="radio__nota">${t('home.radio.nota')}</span>
           </div>
         </div>
-        ${enlaceOPendiente(redes.playlist.spotifyUrl, 'Abrir en Spotify →', 'radio__spotify')}
+        ${enlaceOPendiente(redes.playlist.spotifyUrl, t('home.radio.spotify'), 'radio__spotify')}
       </section>
 
       <section id="cita" class="postal postal--texto cita" aria-labelledby="cita-etiqueta">
-        <button type="button" class="cita__estampilla" id="cita-estampilla" aria-label="Estampilla: convertir la cita en postal descargable">${htmlPersonaje({ pais: 'pe', size: 40 })}</button>
-        <h2 id="cita-etiqueta" class="pixel postal__etiqueta">Postal n.º 4 · Cita</h2>
-        <blockquote class="cita__texto">“${esc(cita.texto)}”</blockquote>
-        <span class="cita__autor">— ${esc(cita.autor)}</span>
+        <button type="button" class="cita__estampilla" id="cita-estampilla" aria-label="${attr('home.cita.estampilla')}">${ball({ pais: 'pe', size: 40 })}</button>
+        <h2 id="cita-etiqueta" class="pixel postal__etiqueta">${t('home.cita.etiqueta')}</h2>
+        <blockquote class="cita__texto">“${formato(cita.texto)}”</blockquote>
+        <span class="cita__autor">${t('home.cita.autor', { autor: cita.autor })}</span>
         <span class="pixel cita__estado" id="cita-estado" aria-live="polite"></span>
       </section>
     </div>
 
     <section id="redes" class="correo" aria-labelledby="redes-titulo">
       <div class="seccion__cabeza">
-        <h2 id="redes-titulo" class="seccion__titulo">Llegado por correo</h2>
+        <h2 id="redes-titulo" class="seccion__titulo">${t('home.correo.titulo')}</h2>
         <span class="pixel seccion__nota">${esc(redes.hashtag)}</span>
       </div>
       <div class="correo__grilla">
-        ${redes.publicaciones.map((p, i) => {
+        ${publicaciones.map((p, i) => {
+          const vars = { red: p.red, autor: p.autor };
           const foto = p.imagen
-            ? `<img class="correo__img" src="${esc(p.imagen)}" alt="Publicación de ${esc(p.autor)} en ${esc(p.red)}" loading="lazy">`
-            : `<div class="correo__img correo__img--vacia">[Publicación de ${esc(p.red)}]</div>`;
-          const pie = `<div class="correo__pie">${esc(p.autor)} · ${esc(p.red)}</div>`;
+            ? `<img class="correo__img" src="${esc(p.imagen)}" alt="${attr('home.correo.alt', vars)}" loading="lazy">`
+            : `<div class="correo__img correo__img--vacia">${t('home.correo.vacia', vars)}</div>`;
+          const pie = `<div class="correo__pie">${t('home.correo.pie', vars)}</div>`;
           const giro = [-1, 1, -0.5][i % 3];
           return esPendiente(p.url)
             ? `<div class="correo__polaroid" style="--giro:${giro}deg">${foto}${pie}</div>`
@@ -215,11 +223,11 @@ export async function render(app, { params }) {
         }).join('')}
       </div>
       <div class="correo__redes">
-        ${redes.enlaces.map((r) => enlaceOPendiente(r.url, esc(r.red), 'pildora')).join('')}
+        ${enlaces.map((r) => enlaceOPendiente(r.url, esc(r.red), 'pildora')).join('')}
       </div>
     </section>
 
-    <footer class="pie">${PIE}</footer>
+    <footer class="pie">${t('comun.pie')}</footer>
   </div>
   <div class="olas--claras"></div><div class="olas"></div>
 </div>`;
@@ -232,14 +240,16 @@ export async function render(app, { params }) {
   app.querySelectorAll('[data-ir]').forEach((b) => b.addEventListener('click', () => irA(b.dataset.ir)));
   if (params.ir) requestAnimationFrame(() => irA(params.ir, false));
 
-  // Hero: cada toque muestra la siguiente frase (3 por personaje).
+  // Hero: cada toque muestra la siguiente frase de la lista.
   const turnos = { cl: -1, pe: -1 };
-  const lineasHero = { cl: frases.hero.manuel, pe: frases.hero.miguel };
+  const lineasHero = { cl: activos(frases.hero.manuel), pe: activos(frases.hero.miguel) };
   app.querySelectorAll('.hero__pj').forEach((b) => b.addEventListener('click', () => {
     const pais = b.dataset.pais;
-    turnos[pais] = (turnos[pais] + 1) % lineasHero[pais].length;
+    const lista = lineasHero[pais];
+    if (!lista.length) return;
+    turnos[pais] = (turnos[pais] + 1) % lista.length;
     const globo = app.querySelector('#globo-' + pais);
-    globo.textContent = lineasHero[pais][turnos[pais]];
+    globo.innerHTML = formato(lista[turnos[pais]]);
     globo.hidden = false;
     b.classList.remove('salta');
     void b.offsetWidth;
@@ -250,8 +260,9 @@ export async function render(app, { params }) {
   let iDato = 0;
   const pintarDato = () => {
     const d = datos[iDato];
-    app.querySelector('#dato-texto').textContent = d.texto;
-    app.querySelector('#dato-contador').textContent = `${iDato + 1} / ${datos.length}`;
+    if (!d) return;
+    app.querySelector('#dato-texto').innerHTML = formato(d.texto);
+    app.querySelector('#dato-contador').innerHTML = t('home.dato.contador', { n: iDato + 1, total: datos.length });
     app.querySelector('#dato-fuente').innerHTML = htmlFuente(d);
   };
   pintarDato();
@@ -271,21 +282,31 @@ export async function render(app, { params }) {
     app.querySelectorAll('.malecon__obj').forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
     tarjeta.innerHTML = `
       <div class="malecon__info">
-        <strong class="malecon__nombre">${esc(lugar.t)}</strong>
-        <span class="malecon__desc">${esc(lugar.d)}</span>
+        <strong class="malecon__nombre">${t(lugar.nombre)}</strong>
+        <span class="malecon__desc">${t(lugar.desc)}</span>
       </div>
-      <a class="malecon__entrar" href="${lugar.href}">Entrar →</a>`;
+      <a class="malecon__entrar" href="${lugar.href}">${t('home.malecon.entrar')}</a>`;
   }));
+
+  // Pista "desliza →" la primera vez (solo se ve en pantallas angostas, por CSS).
+  const scroll = app.querySelector('#malecon-scroll');
+  const pista = app.querySelector('#malecon-desliza');
+  if (!leer('pistaMalecon')) {
+    pista.hidden = false;
+    scroll.addEventListener('scroll', () => {
+      if (scroll.scrollLeft > 24) { pista.hidden = true; guardar('pistaMalecon', true); }
+    }, { passive: true });
+  }
 
   // Cita: la estampilla genera la postal descargable.
   const estado = app.querySelector('#cita-estado');
   app.querySelector('#cita-estampilla').addEventListener('click', async () => {
-    estado.textContent = 'Preparando la postal…';
+    estado.innerHTML = t('home.cita.preparando');
     try {
-      await descargarCanvas(await postalCita(cita), `pisco-sour-club-cita-${cita.id}.png`);
-      estado.textContent = '✦ ¡Postal lista! Revisa tus descargas.';
+      await descargarCanvas(await postalCita(cita), tp('descargas.cita.archivo', { id: cita.id }));
+      estado.innerHTML = t('home.cita.lista');
     } catch {
-      estado.textContent = 'No se pudo crear la postal. Inténtalo otra vez.';
+      estado.innerHTML = t('home.cita.error');
     }
   });
 }
@@ -322,16 +343,22 @@ async function postalCita(cita) {
 
   ctx.fillStyle = '#B4452F';
   ctx.font = '500 36px "Pixelify Sans", monospace';
-  ctx.fillText('Postal n.º 4 · Cita', 140, 210);
+  ctx.fillText(tp('descargas.cita.etiqueta'), 140, 210);
 
+  // La cita se achica si es muy larga, para que siempre quepa.
+  let tam = 68, ls;
+  do {
+    tam -= 4;
+    ctx.font = `italic 500 ${tam}px Fraunces, Georgia, serif`;
+    ls = lineas(ctx, `“${plano(cita.texto)}”`, W - 300);
+  } while (ls.length * (tam + 24) > 620 && tam > 32);
+  const alto = tam + 24;
   ctx.fillStyle = '#1F4E79';
-  ctx.font = 'italic 500 64px Fraunces, Georgia, serif';
-  const ls = lineas(ctx, `“${cita.texto}”`, W - 300);
-  ls.forEach((l, i) => ctx.fillText(l, 140, 460 + i * 88));
+  ls.forEach((l, i) => ctx.fillText(l, 140, 460 + i * alto));
 
   ctx.fillStyle = '#5B4F45';
   ctx.font = '600 32px Karla, sans-serif';
-  ctx.fillText(`— ${cita.autor}`, 140, 460 + ls.length * 88 + 40);
+  ctx.fillText(tp('descargas.cita.autor', { autor: plano(cita.autor) }), 140, 460 + ls.length * alto + 40);
 
   dibujarBall(ctx, 'cl', 'sonrojo', 140, H - 360, 150);
   dibujarBall(ctx, 'pe', 'feliz', 300, H - 360, 150, true);
@@ -339,7 +366,7 @@ async function postalCita(cita) {
   ctx.fillStyle = '#5B4F45';
   ctx.font = '500 32px "Pixelify Sans", monospace';
   ctx.textAlign = 'right';
-  ctx.fillText('Pisco Sour Club', W - 140, H - 170);
-  ctx.fillText('LIMA ⇄ SANTIAGO', W - 140, H - 220);
+  ctx.fillText(tp('descargas.cita.marca'), W - 140, H - 170);
+  ctx.fillText(tp('descargas.cita.ruta'), W - 140, H - 220);
   return c;
 }

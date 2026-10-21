@@ -1,4 +1,4 @@
-// Carga y cachea el contenido estático de data/.
+// Carga y cachea el contenido estático de data/. Las listas nunca asumen un largo fijo.
 
 const cache = new Map();
 
@@ -14,11 +14,20 @@ export function cargar(nombre) {
   return cache.get(nombre);
 }
 
+// Quita los elementos con "activo": false.
+export const activos = (lista) => (Array.isArray(lista) ? lista : [lista]).filter((x) => !(x && x.activo === false));
+
 // Índice del día en hora de Lima (UTC−5), igual para todos durante el día.
 export function diaLima(ahora = Date.now()) {
   return Math.floor((ahora - 5 * 3600 * 1000) / 86400000);
 }
 
 export function delDia(lista, ahora) {
-  return lista[diaLima(ahora) % lista.length];
+  const l = activos(lista);
+  return l[diaLima(ahora) % l.length];
+}
+
+export function alAzar(lista) {
+  const l = activos(lista);
+  return l[Math.floor(Math.random() * l.length)];
 }
