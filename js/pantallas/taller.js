@@ -3,8 +3,10 @@
 // Fondos: 4 espacios de 1080×1350 con plantillas de inicio.
 import { Lienzo } from '../lienzo.js';
 import { CARAS, ballURL, ponerOC, tieneOC, urlOC, usaOC, elegirOC } from '../personajes.js';
-import { leer, guardar, idbDisponible, idbLeer, idbGuardar, idbTodos, pedirPersistencia } from '../almacen.js';
+import { leer, guardar, idbDisponible, idbLeer, idbGuardar, idbTodos, pedirPersistencia, esPersistente } from '../almacen.js';
 import { t, tp, attr } from '../textos.js';
+import { crearCopia, recuperarCopia, contarDibujos } from '../copia.js';
+import { descargarBlob } from '../exportar.js';
 
 const PESTANAS = [
   { id: 'pe', label: 'taller.pestanaPe', color: 'var(--rojo-pe)' },
@@ -149,6 +151,16 @@ export async function render(app, { def, params }) {
         <button type="button" class="boton boton--oceano taller__guardar" id="taller-guardar"></button>
         <p class="taller__estado" id="taller-estado" aria-live="polite">${hayAlmacen ? '' : t('taller.sinAlmacen')}</p>
         <p class="taller__nota">${t('taller.nota')}</p>
+        <section class="taller__copia" aria-labelledby="copia-titulo">
+          <h2 class="taller__copia-titulo pixel" id="copia-titulo">${t('taller.copiaTitulo')}</h2>
+          <p class="taller__aviso" id="taller-aviso" hidden>${t('taller.avisoPersistente')}</p>
+          <p class="taller__nota">${t('taller.copiaTexto')}</p>
+          <div class="taller__copia-botones">
+            <button type="button" class="boton boton--borde" id="copia-guardar">${t('taller.copiaGuardar')}</button>
+            <label class="boton boton--borde taller__recuperar">${t('taller.copiaRecuperar')}<input type="file" id="copia-archivo" accept=".psc,application/json" class="sr-only"></label>
+          </div>
+          <p class="taller__estado" id="copia-estado" aria-live="polite"></p>
+        </section>
       </div>
     </div>
     <div class="taller__lienzo-col">
@@ -384,6 +396,7 @@ export async function render(app, { def, params }) {
       lienzo.marcarGuardado();
       // Desde el primer dibujo guardado, pedimos que el navegador no lo borre por falta de espacio.
       await pedirPersistencia();
+      revisarAviso();
       // La primera vez que se guarda un OC se celebra en "Tus OCs ya viven en el club".
       if (store !== 'fondos' && !leer('ocListo')) {
         guardar('ocListo', true);
@@ -401,9 +414,57 @@ export async function render(app, { def, params }) {
     }
   });
 
+  // Copia de seguridad (.psc)
+  const copiaEstado = $('#copia-estado');
+  // Si hay dibujos y el navegador no concedió el guardado persistente, recomendamos la copia.
+  async function revisarAviso() {
+    if (!hayAlmacen) return;
+    const hay = await contarDibujos().catch(() => 0);
+    $('#taller-aviso').hidden = !hay || await esPersistente();
+  }
+  $('#copia-guardar').addEventListener('click', async () => {
+    if (!hayAlmacen) { copiaEstado.innerHTML = t('taller.sinAlmacen'); return; }
+    copiaEstado.innerHTML = t('taller.copiaPreparando');
+    try {
+      const blob = await crearCopia();
+      if (!blob) { copiaEstado.innerHTML = t('taller.copiaVacia'); return; }
+      descargarBlob(blob, tp('taller.copiaArchivo', { fecha: new Date().toISOString().slice(0, 10) }));
+      copiaEstado.innerHTML = t('taller.copiaLista');
+    } catch (err) {
+      console.error(err);
+      copiaEstado.innerHTML = t('taller.errorGuardar');
+    }
+  });
+  $('#copia-archivo').addEventListener('change', async (e) => {
+    const archivo = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!archivo) return;
+    if (!hayAlmacen) { copiaEstado.innerHTML = t('taller.sinAlmacen'); return; }
+    copiaEstado.innerHTML = t('taller.copiaRecuperando');
+    try {
+      const r = await recuperarCopia(archivo);
+      for (const store of ['caras', 'ropa']) for (const reg of r[store]) ponerOC(store, reg.id, reg.blob);
+      for (const reg of r.fondos) {
+        const previo = fondos.get(reg.id);
+        if (previo) URL.revokeObjectURL(previo.url);
+        fondos.set(reg.id, { blob: reg.blob, url: URL.createObjectURL(reg.blob) });
+      }
+      if (r.caras.length || r.ropa.length) guardar('ocListo', true);
+      pintarSelector();
+      if (!lienzo || !lienzo.sucio) await abrirDibujo();
+      copiaEstado.innerHTML = t('taller.copiaRecuperada', { caras: r.caras.length, ropa: r.ropa.length, fondos: r.fondos.length });
+      await pedirPersistencia();
+      revisarAviso();
+    } catch (err) {
+      console.error(err);
+      copiaEstado.innerHTML = t('taller.copiaError');
+    }
+  });
+
   pintarPestanas();
   pintarSelector();
   await abrirDibujo();
+  revisarAviso();
 
   return () => {
     if (lienzo) lienzo.destruir();

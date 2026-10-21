@@ -215,7 +215,19 @@
     "usandoBall": "Ahora se ve el ball original. Tu dibujo sigue guardado.",
     "usandoOc": "Tu OC volvió a aparecer en el club.",
     "nota": "Todo se guarda solo en este celular. En el depa y en las fotos eliges qué cara poner.",
-    "sinAlmacen": "Este navegador no deja guardar dibujos (modo privado o sin espacio). Puedes dibujar, pero no se guardará."
+    "sinAlmacen": "Este navegador no deja guardar dibujos (modo privado o sin espacio). Puedes dibujar, pero no se guardará.",
+    "copiaTitulo": "Copia de seguridad",
+    "copiaTexto": "Tus dibujos viven solo en este navegador. Con una copia los puedes recuperar aquí o en otro celular.",
+    "copiaGuardar": "Guardar copia de mis OCs",
+    "copiaRecuperar": "Recuperar copia",
+    "copiaPreparando": "Preparando la copia…",
+    "copiaLista": "✦ Copia descargada. Guárdala donde no se pierda.",
+    "copiaVacia": "Todavía no hay dibujos para copiar.",
+    "copiaRecuperando": "Recuperando tu copia…",
+    "copiaRecuperada": "✦ Copia recuperada: {caras} caras, {ropa} conjuntos y {fondos} fondos.",
+    "copiaError": "Ese archivo no es una copia del Pisco Sour Club.",
+    "copiaArchivo": "mis-ocs-pisco-sour-club-{fecha}.psc",
+    "avisoPersistente": "Este navegador podría borrar tus dibujos si se queda sin espacio. Guarda una copia de tus OCs de vez en cuando."
   },
   "listo": {
     "volver": "‹ La casita",

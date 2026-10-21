@@ -219,6 +219,29 @@
 .taller__estado { min-height: 1.4em; font-size: var(--t-s); font-weight: 700; color: var(--oceano); }
 .taller__nota { font-size: var(--t-xs); color: var(--gris-calido); }
 
+/* Copia de seguridad */
+.taller__copia {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-2);
+  margin-top: var(--e-2);
+  padding: var(--e-3);
+  background: var(--papel);
+  border: 2px dashed var(--borde-postal);
+}
+.taller__copia-titulo { font-size: var(--t-s); color: var(--coral); }
+.taller__copia-botones { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(12em, 100%), 1fr)); gap: var(--e-2); }
+.taller__copia-botones .boton { font-size: var(--t-s); }
+.taller__recuperar { position: relative; cursor: pointer; }
+.taller__recuperar:focus-within { outline: 3px solid var(--sol); outline-offset: 2px; }
+.taller__aviso {
+  padding: var(--e-2);
+  background: #FFF1D6;
+  border-left: 4px solid var(--sol);
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+
 /* Dos columnas: escritorio desde 1024 px y celular en horizontal */
 @media (min-width: 1024px), (orientation: landscape) and (max-height: 540px) and (min-width: 600px) {
   .taller__cuerpo {
