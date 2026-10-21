@@ -7,6 +7,8 @@ import { leer, guardar, idbDisponible, idbLeer, idbGuardar, idbTodos, pedirPersi
 import { t, tp, attr } from '../textos.js';
 import { crearCopia, recuperarCopia, contarDibujos } from '../copia.js';
 import { descargarBlob } from '../exportar.js';
+import { preguntar } from '../dialogo.js';
+import { ponerGuardia } from '../router.js';
 
 const PESTANAS = [
   { id: 'pe', label: 'taller.pestanaPe', color: 'var(--rojo-pe)' },
@@ -191,8 +193,23 @@ export async function render(app, { def, params }) {
   };
   const guardadoEn = (store, id) => (store === 'fondos' ? fondos.has(id) : tieneOC(store, id));
 
-  // Antes de cambiar de dibujo, avisa si hay trazos sin guardar.
-  const puedeSalir = () => !lienzo || !lienzo.sucio || window.confirm(tp('taller.descartar'));
+  // Antes de cambiar de dibujo o salir, pregunta si hay trazos sin guardar.
+  // Devuelve true si se puede seguir (guardó o descartó).
+  async function puedeSalir() {
+    if (!lienzo || !lienzo.sucio) return true;
+    const r = await preguntar({
+      titulo: tp('taller.salirTitulo'),
+      texto: tp('taller.salirTexto', { nombre: nombreActual() }),
+      opciones: [
+        { id: 'guardar', texto: tp('taller.salirGuardar'), clase: 'boton--oceano' },
+        { id: 'descartar', texto: tp('taller.salirDescartar') },
+        { id: 'seguir', texto: tp('taller.salirSeguir') }
+      ],
+      alCancelar: 'seguir'
+    });
+    if (r === 'guardar') return guardarActual({ celebrar: false });
+    return r === 'descartar';
+  }
 
   function pintarPestanas() {
     app.querySelectorAll('.taller__pestana').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === s.tab)));
@@ -325,8 +342,8 @@ export async function render(app, { def, params }) {
     pintarHerramientas();
   }
 
-  function cambiar(cambio) {
-    if (!puedeSalir()) return;
+  async function cambiar(cambio) {
+    if (!(await puedeSalir())) return;
     Object.assign(s, cambio);
     estado.innerHTML = hayAlmacen ? '' : t('taller.sinAlmacen');
     pintarPestanas();
@@ -374,8 +391,10 @@ export async function render(app, { def, params }) {
   $('#color-libre').addEventListener('input', (e) => ponerColor(e.target.value));
   app.querySelectorAll('[data-accion]').forEach((b) => b.addEventListener('click', () => lienzo[b.dataset.accion]()));
 
-  $('#taller-guardar').addEventListener('click', async () => {
-    if (!hayAlmacen) { estado.innerHTML = t('taller.sinAlmacen'); return; }
+  // Guarda el dibujo abierto. Devuelve true si se guardó.
+  // celebrar: la primera vez que se guarda un OC se va a "Tus OCs ya viven en el club".
+  async function guardarActual({ celebrar = true } = {}) {
+    if (!hayAlmacen) { estado.innerHTML = t('taller.sinAlmacen'); return false; }
     const boton = $('#taller-guardar');
     boton.disabled = true;
     estado.innerHTML = t('taller.guardando');
@@ -397,22 +416,32 @@ export async function render(app, { def, params }) {
       // Desde el primer dibujo guardado, pedimos que el navegador no lo borre por falta de espacio.
       await pedirPersistencia();
       revisarAviso();
-      // La primera vez que se guarda un OC se celebra en "Tus OCs ya viven en el club".
-      if (store !== 'fondos' && !leer('ocListo')) {
+      if (celebrar && store !== 'fondos' && !leer('ocListo')) {
         guardar('ocListo', true);
         location.hash = '#/casita/listo';
-        return;
+        return true;
       }
       pintarSelector();
       pintarEtiquetas();
       estado.innerHTML = t('taller.guardado');
+      return true;
     } catch (err) {
       console.error(err);
       estado.innerHTML = t('taller.errorGuardar');
+      return false;
     } finally {
       boton.disabled = false;
     }
-  });
+  }
+  $('#taller-guardar').addEventListener('click', () => guardarActual());
+
+  // Al cerrar la pestaña con trazos sin guardar, el navegador pregunta.
+  const alCerrar = (e) => {
+    if (lienzo && lienzo.sucio) { e.preventDefault(); e.returnValue = ''; }
+  };
+  window.addEventListener('beforeunload', alCerrar);
+  // Al salir del taller (‹ Volver, botón atrás o un enlace), pregunta con el diálogo.
+  ponerGuardia(puedeSalir);
 
   // Copia de seguridad (.psc)
   const copiaEstado = $('#copia-estado');
@@ -420,7 +449,9 @@ export async function render(app, { def, params }) {
   async function revisarAviso() {
     if (!hayAlmacen) return;
     const hay = await contarDibujos().catch(() => 0);
-    $('#taller-aviso').hidden = !hay || await esPersistente();
+    const ocultar = !hay || await esPersistente();
+    const aviso = $('#taller-aviso');
+    if (aviso) aviso.hidden = ocultar;
   }
   $('#copia-guardar').addEventListener('click', async () => {
     if (!hayAlmacen) { copiaEstado.innerHTML = t('taller.sinAlmacen'); return; }
@@ -456,7 +487,7 @@ export async function render(app, { def, params }) {
       await pedirPersistencia();
       revisarAviso();
     } catch (err) {
-      console.error(err);
+      if (err.message !== 'copia-invalida') console.error(err);
       copiaEstado.innerHTML = t('taller.copiaError');
     }
   });
@@ -467,6 +498,7 @@ export async function render(app, { def, params }) {
   revisarAviso();
 
   return () => {
+    window.removeEventListener('beforeunload', alCerrar);
     if (lienzo) lienzo.destruir();
     for (const f of fondos.values()) URL.revokeObjectURL(f.url);
   };

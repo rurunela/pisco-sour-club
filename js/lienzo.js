@@ -74,8 +74,11 @@ export class Lienzo {
     this.rehechos = [];
     this.actual = null;
     this.punteroId = null;
-    this.sucio = false;
     this._pendiente = false;
+    // "Sin guardar" = el dibujo es distinto del último guardado (deshacer hasta ahí lo deja limpio).
+    this._versionBase = 0;
+    this._marca = null;
+    this._marcaBase = 0;
 
     this._abajo = (e) => this.abajo(e);
     this._mover = (e) => this.mover(e);
@@ -99,7 +102,8 @@ export class Lienzo {
     if (imagen) c.drawImage(imagen, 0, 0, this.ancho, this.alto);
     this.pasos = [];
     this.rehechos = [];
-    this.sucio = false;
+    this._versionBase++;
+    this.marcar();
     this.redibujar();
     this.onCambio(this);
   }
@@ -178,8 +182,8 @@ export class Lienzo {
     this.rehechos = [];
     while (this.pasos.length > MAX_PASOS) {
       pintar(this.base.getContext('2d'), this.pasos.shift(), this.ancho, this.alto, this.relleno);
+      this._versionBase++;
     }
-    this.sucio = true;
     this.redibujar();
     this.onCambio(this);
   }
@@ -190,7 +194,6 @@ export class Lienzo {
   deshacer() {
     if (!this.pasos.length) return;
     this.rehechos.push(this.pasos.pop());
-    this.sucio = true;
     this.redibujar();
     this.onCambio(this);
   }
@@ -198,7 +201,6 @@ export class Lienzo {
   rehacer() {
     if (!this.rehechos.length) return;
     this.pasos.push(this.rehechos.pop());
-    this.sucio = true;
     this.redibujar();
     this.onCambio(this);
   }
@@ -207,8 +209,17 @@ export class Lienzo {
     this.agregarPaso({ tipo: 'limpiar' });
   }
 
+  marcar() {
+    this._marca = this.pasos[this.pasos.length - 1] || null;
+    this._marcaBase = this._versionBase;
+  }
+
+  get sucio() {
+    return (this.pasos[this.pasos.length - 1] || null) !== this._marca || this._versionBase !== this._marcaBase;
+  }
+
   marcarGuardado() {
-    this.sucio = false;
+    this.marcar();
     this.onCambio(this);
   }
 

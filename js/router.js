@@ -46,10 +46,20 @@ export function leerHash() {
 
 let limpiar = null;
 let turno = 0;
+let guardia = null;
+let hashActual = location.hash;
+
+// Una pantalla puede pedir permiso antes de que se salga de ella (por ejemplo, trazos sin guardar).
+// fn() devuelve una promesa: true = se puede salir. Se borra sola al cambiar de pantalla.
+export function ponerGuardia(fn) {
+  guardia = fn;
+}
 
 export function iniciarRouter(app) {
   async function render() {
     const yo = ++turno;
+    hashActual = location.hash;
+    guardia = null;
     const { ruta, params } = leerHash();
 
     // La primera visita pasa por la bienvenida.
@@ -81,6 +91,25 @@ export function iniciarRouter(app) {
     if (!params.ir) window.scrollTo(0, 0);
     app.focus({ preventScroll: true });
   }
-  window.addEventListener('hashchange', render);
+  // Si la pantalla tiene guardia, se vuelve a la dirección anterior mientras pregunta;
+  // si da permiso, se continúa hacia el destino (sirve para enlaces, ‹ Volver y el botón atrás).
+  let preguntando = false;
+  async function alCambiarHash() {
+    const destino = location.hash;
+    if (guardia && destino !== hashActual) {
+      history.replaceState(null, '', hashActual || '#/');
+      if (preguntando) return;
+      preguntando = true;
+      const fn = guardia;
+      let seguir = false;
+      try { seguir = await fn(); } finally { preguntando = false; }
+      if (!seguir || guardia !== fn) return;
+      guardia = null;
+      location.hash = destino;
+      return;
+    }
+    render();
+  }
+  window.addEventListener('hashchange', alCambiarHash);
   render();
 }

@@ -209,7 +209,6 @@
     "guardando": "Guardando…",
     "guardado": "✦ Guardado en este celular.",
     "errorGuardar": "No se pudo guardar. Revisa el espacio del celular e inténtalo otra vez.",
-    "descartar": "Tienes trazos sin guardar. ¿Los descartas?",
     "usarBall": "Usar el ball original",
     "usarOc": "Usar mi OC otra vez",
     "usandoBall": "Ahora se ve el ball original. Tu dibujo sigue guardado.",
@@ -224,10 +223,15 @@
     "copiaLista": "✦ Copia descargada. Guárdala donde no se pierda.",
     "copiaVacia": "Todavía no hay dibujos para copiar.",
     "copiaRecuperando": "Recuperando tu copia…",
-    "copiaRecuperada": "✦ Copia recuperada: {caras} caras, {ropa} conjuntos y {fondos} fondos.",
+    "copiaRecuperada": "✦ Copia recuperada · caras: {caras} · conjuntos: {ropa} · fondos: {fondos}",
     "copiaError": "Ese archivo no es una copia del Pisco Sour Club.",
     "copiaArchivo": "mis-ocs-pisco-sour-club-{fecha}.psc",
-    "avisoPersistente": "Este navegador podría borrar tus dibujos si se queda sin espacio. Guarda una copia de tus OCs de vez en cuando."
+    "avisoPersistente": "Este navegador podría borrar tus dibujos si se queda sin espacio. Guarda una copia de tus OCs de vez en cuando.",
+    "salirTitulo": "¿Guardas tu dibujo?",
+    "salirTexto": "Tienes trazos sin guardar en «{nombre}».",
+    "salirGuardar": "GUARDAR",
+    "salirDescartar": "Descartar",
+    "salirSeguir": "Seguir dibujando"
   },
   "listo": {
     "volver": "‹ La casita",

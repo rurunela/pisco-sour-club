@@ -27,7 +27,10 @@ Notas:
 - Los 4 espacios de fondos empiezan vacíos (en blanco); las plantillas Playa, Cocina, Cielo y En blanco reemplazan el lienzo y se pueden deshacer.
 - La pantalla "Tus OCs ya viven en el club" aparece solo la primera vez que se guarda una cara o un conjunto (`psc.ocListo`). Guardar un dibujo vuelve a activar el OC si se había elegido "Usar el ball original".
 - Un OC se muestra cuando existe su cara **normal**; si falta otra cara, se usa la normal.
-- Si hay trazos sin guardar y se cambia de cara, conjunto o fondo, se pregunta con el diálogo del navegador antes de descartarlos.
+- Si hay trazos sin guardar, el diálogo propio (`js/dialogo.js`: Guardar / Descartar / Seguir dibujando) salta al cambiar de cara, conjunto o fondo y al salir del taller por ‹ Volver, el botón atrás o cualquier enlace (guardia del router). Al cerrar o recargar la pestaña pregunta el navegador (`beforeunload`). Si se guarda desde el diálogo, no se muestra la pantalla de celebración.
+- "Sin guardar" significa distinto del último guardado: si se deshace hasta ese punto, ya no pregunta.
+- Al guardar se pide `navigator.storage.persist()`. Si el navegador no lo concede, el taller recomienda guardar una copia.
+- Copia de seguridad: archivo `.psc` (JSON con las imágenes en base64 y la preferencia OC/ball). Recuperar una copia reemplaza los dibujos con el mismo nombre y deja los demás.
 - **Pendiente para la fase 4:** los conjuntos de ejemplo (2 = bufanda, 3 = gorro) de `docs/DATOS.md` §2.5 todavía no se dibujan cuando la persona no hizo su propia ropa.
 
 ## Decisiones de la fase 1

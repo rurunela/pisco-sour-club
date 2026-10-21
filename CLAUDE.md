@@ -87,6 +87,7 @@ Lee en este orden:
 
 - `js/main.js` carga `data/textos.json` (`cargarTextos()`) y arranca el router.
 - `js/router.js` define la tabla de rutas. Cada pantalla exporta `render(app, ctx)` y puede devolver una función de limpieza. `ctx` trae `params` (query del hash), `ruta` y `def`. El título de cada ruta es una clave de `rutas.*`. Si un JSON no carga, el router muestra la postal de error (`postalCaida` en `js/ui.js`).
+- Una pantalla puede llamar a `ponerGuardia(fn)` (`js/router.js`) para pedir permiso antes de salir: `fn()` devuelve una promesa con `true` para seguir. Se borra sola al cambiar de pantalla. Para preguntar, usar `preguntar()` de `js/dialogo.js` (diálogo con estilo de postal), nunca `confirm()`.
 - Las rutas que aún no existen usan `js/pantallas/proximamente.js` con su pantalla madre para "‹ Volver"; al construir una fase, cambia su entrada en la tabla por el módulo real.
 - `js/textos.js`: `t(clave, vars)` → HTML seguro; `tp()` → texto plano (canvas, `document.title`); `attr()` → texto plano escapado para atributos (`aria-label`). `formato()`/`plano()` para textos de las listas. Las claves se escriben siempre literales y completas (`'home.barra.titulo'`).
 - Tras agregar o quitar textos: `node .github/scripts/generar-esquema.mjs` y luego `node .github/scripts/validar-datos.mjs`.
