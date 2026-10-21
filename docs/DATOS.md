@@ -7,13 +7,44 @@
 | `prompts.json` | Prompts del pisco del día: `{id, texto, tipo}` (`tipo`: dibujo, escena, diálogo, au) |
 | `datos.json` | ¿Sabías que…?: `{id, texto, fuente, url, geo}` — **verificar fuentes antes de publicar** |
 | `citas.json` | Citas originales del club: `{id, texto, autor}` |
-| `frases.json` | Líneas cortas: `hero`, `barra`, `afuera`, `radio` por personaje |
+| `frases.json` | Líneas de los personajes, **siempre como listas** (ver abajo) |
 | `trivia.json` | Preguntas del runner: `{id, pregunta, opciones[3], correcta, reaccion}` |
 | `comidas.json` | Reacciones a comidas conocidas: `{clave, nombre, miguel, manuel}` |
 | `cartas-tema.json` | Cartas del chat: `{etiqueta, texto}` |
 | `personajes.json` | Fichas de Miguel y Manuel (para la UI y la IA) |
 | `redes.json` | Enlaces y publicaciones curadas (marcadores pendientes) |
 | `chat-system-prompt.md` | Instrucciones del chat para el Worker |
+| `textos.json` | Todos los textos de la interfaz, por pantalla (ver `docs/CONTENIDO.md`) |
+| `esquema-textos.json` | Lista automática de las claves de `textos.json` que usa el código (no se edita a mano) |
+
+Todas las listas aceptan `"activo": false` para esconder un elemento sin borrarlo, y el código nunca asume cuántos hay.
+
+### Forma de `frases.json`
+
+| Clave | Tipo | Uso |
+| --- | --- | --- |
+| `hero.manuel`, `hero.miguel` | lista de textos | Rotan al tocar a cada uno en la portada |
+| `barra` | lista de pares `{manuel, miguel}` | Uno por día (hora de Lima) |
+| `bienvenida` | lista de pares `{manuel, miguel}` | Uno al azar en la bienvenida |
+| `afuera` | lista de **escenas**; cada escena es una lista de pasos `{habla, texto, caras: {cl, pe}}` | Se elige una escena al azar; tocar avanza un paso |
+| `sala.marinera`, `sala.regueton` | lista de pares `{manuel, miguel}` | Uno al azar cuando suena esa música |
+| `sala.tele` | lista de **escenas**; cada escena es una lista de pasos `{manuel, miguel, caras: {cl, pe}, efecto?}` | Una al azar al prender la tele (pelea → perdón → besito) |
+| `runner.gameOver`, `runner.final` | lista de textos | Uno al azar |
+
+```json
+{
+  "hero": { "manuel": ["…¿Qué miras?"], "miguel": ["¡Hola, causa! ¿Ya comiste?"] },
+  "barra": [{ "manuel": "Ya, ¿qué te sirvo?", "miguel": "¡Uno de la casa!" }],
+  "bienvenida": [{ "manuel": "…Hola. Pasa, nomás.", "miguel": "¡Bienvenid@, causa!" }],
+  "afuera": [[{ "habla": "manuel", "texto": "Hace frío. Me encanta.", "caras": { "cl": "feliz", "pe": "triste" } }]],
+  "sala": {
+    "marinera": [{ "manuel": "…Ya, pero yo marco el paso.", "miguel": "¡Pañuelo arriba, causa!" }],
+    "regueton": [{ "manuel": "¿Desde cuándo sé bailar esto?", "miguel": "¡Dale, que tú puedes!" }],
+    "tele": [[{ "manuel": "¡Ese penal no fue!", "miguel": "¡Claro que fue, ciego!", "caras": { "cl": "enojado", "pe": "enojado" } }]]
+  },
+  "runner": { "gameOver": ["¿Ya vienes? Se enfría la comida…"], "final": ["Miguel te esperaba con la cena lista"] }
+}
+```
 
 El pisco del día y la cita del día se eligen con `Math.floor(Date.now() / 86400000) % total` en hora local de Lima (UTC−5), para que todos vean lo mismo el mismo día.
 
