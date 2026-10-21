@@ -20,6 +20,16 @@ Notas:
 - La ficha de Perú pide consultar a su creadora (Kuraudia) antes de cualquier uso pagado. La web y los descargables son gratis.
 - Mientras un enlace de `data/redes.json` sea un marcador (no empieza con `http`), la web lo muestra como "pendiente" y no lo enlaza.
 
+## Decisiones de la fase 2
+
+- El lienzo (`js/lienzo.js`) guarda los trazos como vectores: se ve nítido en cualquier pantalla y se exporta a la resolución final (512×512 caras y ropa, 1080×1350 fondos). Se pueden deshacer los últimos 20 trazos; los anteriores quedan fijos.
+- "Borrar todo" también se puede deshacer.
+- Los 4 espacios de fondos empiezan vacíos (en blanco); las plantillas Playa, Cocina, Cielo y En blanco reemplazan el lienzo y se pueden deshacer.
+- La pantalla "Tus OCs ya viven en el club" aparece solo la primera vez que se guarda una cara o un conjunto (`psc.ocListo`). Guardar un dibujo vuelve a activar el OC si se había elegido "Usar el ball original".
+- Un OC se muestra cuando existe su cara **normal**; si falta otra cara, se usa la normal.
+- Si hay trazos sin guardar y se cambia de cara, conjunto o fondo, se pregunta con el diálogo del navegador antes de descartarlos.
+- **Pendiente para la fase 4:** los conjuntos de ejemplo (2 = bufanda, 3 = gorro) de `docs/DATOS.md` §2.5 todavía no se dibujan cuando la persona no hizo su propia ropa.
+
 ## Decisiones de la fase 1
 
 - Las frases de `data/frases.json` ahora son siempre listas (`bienvenida`, `sala.*`, `runner.*`; `afuera` y `sala.tele` son listas de escenas), como pide `docs/CONTENIDO.md`.

@@ -92,7 +92,9 @@ Lee en este orden:
 - Tras agregar o quitar textos: `node .github/scripts/generar-esquema.mjs` y luego `node .github/scripts/validar-datos.mjs`.
 - `js/datos.js` carga y cachea `data/*.json`. `activos()`, `delDia()` (hora de Lima, UTC−5) y `alAzar()` respetan `"activo": false` y el largo real de cada lista.
 - Escenas: clase `.escena` con `style="--ancho:N;--alto:M"` y piezas `.pz` en px lógicos (`--x`, `--b`/`--y`, `--w`, `--h`), ver `docs/RESPONSIVE.md` §3. Tipografía y espacios solo con los tokens `--t-*` y `--e-*` de `css/tokens.css`.
-- `js/personajes.js`: `htmlPersonaje({pais, cara, size, flip, manos, etiqueta})` para la interfaz (`size` puede ser `'calc(112 * var(--u))'`) y `ballCanvas(pais, cara)` / `dibujarBall()` para exportar.
+- `js/personajes.js`: `htmlPersonaje({pais, cara, ropa, size, flip, manos, etiqueta})` devuelve el OC si existe (y no se eligió el ball) o el countryball; `size` puede ser `'calc(112 * var(--u))'`. Para exportar: `await dibujarPersonaje(ctx, {pais, cara, ropa, x, y, tamano, voltear})`. `cargarOCs()` se llama al arrancar; `ponerOC()` actualiza la caché al guardar.
+- `js/almacen.js`: `leer/guardar` (localStorage) e `idbLeer/idbGuardar/idbTodos/idbBorrar` (IndexedDB `psc`, stores de `docs/DATOS.md` §2.2).
+- `js/lienzo.js`: clase `Lienzo` (Pointer Events, trazos vectoriales, deshacer/rehacer 20 pasos, `exportarBlob()`). El calco va en un `<img>` debajo del canvas, nunca dentro del dibujo.
 
 ## Datos pendientes de Rurú
 

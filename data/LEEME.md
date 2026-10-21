@@ -28,12 +28,14 @@ Dónde está cada cosa:
 
 | Sección de `textos.json` | Qué tiene |
 | --- | --- |
-| `comun` | Botón "Volver", pie de página, nombres cortos |
+| `comun` | Botón "Volver", pie de página, nombres cortos y los nombres de las 5 caras (`comun.caras`) |
 | `errores` | Mensaje cuando algo no carga |
 | `rutas` | Nombre de cada pantalla (se ve en la pestaña del navegador y en "Próximamente") |
 | `home` | Todo lo de la página principal: `hero`, `barra`, `dato`, `malecon`, `radio`, `cita`, `correo` |
 | `bienvenida` | La pantalla de la primera visita |
 | `faro` | La pantalla de redes |
+| `taller` | La casita: pestañas, nombres de conjuntos y fondos, herramientas, colores, botón de guardar y avisos |
+| `listo` | La pantalla "Tus OCs ya viven en el club" |
 | `proximamente` | Lo que dicen Manuel y Miguel en las partes que aún no están listas |
 | `descargas` | Textos que salen dentro de las imágenes descargables (postal de la cita) |
 
