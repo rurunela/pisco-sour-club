@@ -1,5 +1,6 @@
 import { cargarTextos } from './textos.js';
+import { cargarOCs } from './personajes.js';
 import { iniciarRouter } from './router.js';
 
-await cargarTextos();
+await Promise.all([cargarTextos(), cargarOCs()]);
 iniciarRouter(document.getElementById('app'));

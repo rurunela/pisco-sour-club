@@ -1,6 +1,6 @@
 // Home: hero, la barra, ¿Sabías que…?, malecón, radio, cita, llegado por correo y pie.
 import { cargar, delDia, diaLima, activos } from '../datos.js';
-import { htmlPersonaje, dibujarBall } from '../personajes.js';
+import { htmlPersonaje, dibujarPersonaje } from '../personajes.js';
 import { t, tp, attr, formato, plano } from '../textos.js';
 import { esc, svgCopa } from '../ui.js';
 import { leer, guardar } from '../almacen.js';
@@ -339,7 +339,7 @@ async function postalCita(cita) {
   ctx.fillRect(W - 290, 150, 160, 190);
   ctx.strokeRect(W - 290, 150, 160, 190);
   ctx.setLineDash([]);
-  dibujarBall(ctx, 'pe', 'feliz', W - 270, 185, 120);
+  await dibujarPersonaje(ctx, { pais: 'pe', cara: 'feliz', x: W - 270, y: 185, tamano: 120 });
 
   ctx.fillStyle = '#B4452F';
   ctx.font = '500 36px "Pixelify Sans", monospace';
@@ -360,8 +360,8 @@ async function postalCita(cita) {
   ctx.font = '600 32px Karla, sans-serif';
   ctx.fillText(tp('descargas.cita.autor', { autor: plano(cita.autor) }), 140, 460 + ls.length * alto + 40);
 
-  dibujarBall(ctx, 'cl', 'sonrojo', 140, H - 360, 150);
-  dibujarBall(ctx, 'pe', 'feliz', 300, H - 360, 150, true);
+  await dibujarPersonaje(ctx, { pais: 'cl', cara: 'sonrojo', x: 140, y: H - 360, tamano: 150 });
+  await dibujarPersonaje(ctx, { pais: 'pe', cara: 'feliz', x: 300, y: H - 360, tamano: 150, voltear: true });
 
   ctx.fillStyle = '#5B4F45';
   ctx.font = '500 32px "Pixelify Sans", monospace';

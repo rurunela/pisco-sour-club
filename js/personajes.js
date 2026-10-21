@@ -1,5 +1,6 @@
-// Personajes: countryballs pixel (20×20) con 5 caras, generados por código y cacheados.
-// En la fase 2 los OCs de la persona reemplazan a los balls (docs/DATOS.md §2.3).
+// Personajes: countryballs pixel (20×20) con 5 caras, generados por código y cacheados,
+// y los OCs que la persona dibuja en el taller, que los reemplazan (docs/DATOS.md §2.3).
+import { leer, guardar, idbTodos } from './almacen.js';
 
 export const CARAS = ['normal', 'feliz', 'enojado', 'sonrojo', 'triste'];
 
@@ -141,22 +142,89 @@ export function dibujarBall(ctx, pais, cara, x, y, tamano, voltear = false) {
   ctx.restore();
 }
 
+// ---------- OCs dibujados (IndexedDB: caras "pe:normal", ropa "pe:1") ----------
+
+const ocs = { caras: new Map(), ropa: new Map() };
+
+export async function cargarOCs() {
+  for (const store of ['caras', 'ropa']) {
+    try {
+      for (const r of await idbTodos(store)) if (r && r.blob) ponerOC(store, r.id, r.blob);
+    } catch { /* sin IndexedDB: se usan los balls */ }
+  }
+}
+
+export function ponerOC(store, id, blob) {
+  const previo = ocs[store].get(id);
+  if (previo) URL.revokeObjectURL(previo.url);
+  ocs[store].set(id, { blob, url: URL.createObjectURL(blob) });
+}
+
+export const tieneOC = (store, id) => ocs[store].has(id);
+export const urlOC = (store, id) => (ocs[store].get(id) || {}).url || null;
+
+// Se usa el OC si existe su cara normal y la persona no eligió "Usar el ball original".
+export function usaOC(pais) {
+  const pref = leer('usarOC', {}) || {};
+  return pref[pais] !== false && ocs.caras.has(pais + ':normal');
+}
+
+export function elegirOC(pais, usar) {
+  const pref = leer('usarOC', {}) || {};
+  pref[pais] = usar;
+  guardar('usarOC', pref);
+}
+
+// Si falta una cara del OC, se usa la normal.
+function fuenteCara(pais, cara) {
+  if (!usaOC(pais)) return null;
+  return ocs.caras.get(pais + ':' + cara) || ocs.caras.get(pais + ':normal');
+}
+
 const escAttr = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 /**
- * HTML de un personaje para la interfaz.
+ * HTML de un personaje para la interfaz: el OC si existe, si no el countryball.
  * size: número (px) o cualquier longitud CSS (por ejemplo "calc(112 * var(--u))" dentro de una escena).
+ * ropa: conjunto 1, 2 o 3 (capa del OC si está dibujada).
+ * manos: manos flotantes (solo en los balls).
  * etiqueta: texto plano (de tp()); si se da, el personaje se anuncia como imagen; si no, es decorativo.
  */
-export function htmlPersonaje({ pais, cara = 'normal', size = 112, flip = false, manos = false, etiqueta = null, clase = '' }) {
+export function htmlPersonaje({ pais, cara = 'normal', ropa = 1, size = 112, flip = false, manos = false, etiqueta = null, clase = '' }) {
   const t = typeof size === 'number' ? size + 'px' : size;
   const rol = etiqueta === null ? 'aria-hidden="true"' : `role="img" aria-label="${escAttr(etiqueta)}"`;
+  const clases = `pj pj--${pais}${flip ? ' pj--flip' : ''}${clase ? ' ' + clase : ''}`;
+  const oc = fuenteCara(pais, cara);
+  if (oc) {
+    const capa = ocs.ropa.get(pais + ':' + ropa);
+    return `<span class="${clases} pj--oc" style="--t:${t}" data-pais="${pais}" data-ropa="${ropa}" ${rol}><img class="pj__img" src="${oc.url}" alt="" draggable="false">${capa ? `<img class="pj__ropa" src="${capa.url}" alt="" draggable="false">` : ''}</span>`;
+  }
   const mano = manos ? '<span class="pj__mano pj__mano--a"></span><span class="pj__mano pj__mano--b"></span>' : '';
-  return `<span class="pj pj--${pais}${flip ? ' pj--flip' : ''}${clase ? ' ' + clase : ''}" style="--t:${t}" data-pais="${pais}" ${rol}><img class="pj__img" src="${ballURL(pais, cara)}" alt="" draggable="false">${mano}</span>`;
+  return `<span class="${clases}" style="--t:${t}" data-pais="${pais}" ${rol}><img class="pj__img" src="${ballURL(pais, cara)}" alt="" draggable="false">${mano}</span>`;
 }
 
 // Cambia la cara de un personaje ya pintado.
 export function cambiarCara(elemento, cara) {
   const img = elemento.querySelector('.pj__img');
-  if (img) img.src = ballURL(elemento.dataset.pais, cara);
+  if (!img) return;
+  const oc = fuenteCara(elemento.dataset.pais, cara);
+  img.src = oc ? oc.url : ballURL(elemento.dataset.pais, cara);
+}
+
+// Dibuja el personaje (OC o ball) en un canvas, para exportar imágenes.
+export async function dibujarPersonaje(ctx, { pais, cara = 'normal', ropa = 1, x, y, tamano, voltear = false }) {
+  const oc = fuenteCara(pais, cara);
+  if (!oc) { dibujarBall(ctx, pais, cara, x, y, tamano, voltear); return; }
+  const capas = [oc.blob];
+  const capa = ocs.ropa.get(pais + ':' + ropa);
+  if (capa) capas.push(capa.blob);
+  ctx.save();
+  ctx.imageSmoothingEnabled = true;
+  if (voltear) { ctx.translate(x + tamano, y); ctx.scale(-1, 1); x = 0; y = 0; }
+  for (const blob of capas) {
+    const bmp = await createImageBitmap(blob);
+    ctx.drawImage(bmp, x, y, tamano, tamano);
+    bmp.close();
+  }
+  ctx.restore();
 }

@@ -100,6 +100,15 @@ a { color: var(--oceano); }
 }
 .boton--oceano { background: var(--oceano); color: var(--papel); }
 .boton--coral { background: var(--coral); color: var(--papel); }
+.boton--borde {
+  min-height: 48px;
+  background: transparent;
+  border: 3px solid var(--oceano);
+  color: var(--oceano);
+  font-family: var(--f-texto);
+  font-weight: 700;
+}
+.boton:disabled { opacity: 0.6; cursor: progress; }
 
 /* Escenas ilustradas: tamaño lógico fijo que se escala entero (docs/RESPONSIVE.md §3).
    style="--ancho:400;--alto:330"; las piezas usan px lógicos multiplicados por --u. */
@@ -139,7 +148,10 @@ a { color: var(--oceano); }
   -ms-interpolation-mode: nearest-neighbor;
 }
 @supports (image-rendering: pixelated) { .pj__img { image-rendering: pixelated; } }
-.pj--flip .pj__img { transform: scaleX(-1); }
+.pj--flip .pj__img, .pj--flip .pj__ropa { transform: scaleX(-1); }
+/* OC dibujado: imagen suave (no pixel) con la capa de ropa encima */
+.pj--oc .pj__img { image-rendering: auto; }
+.pj__ropa { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .pj__mano {
   position: absolute;
   width: 18%;
