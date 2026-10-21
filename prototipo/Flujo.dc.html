@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Mapa del prototipo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Pixelify+Sans:wght@500&family=Karla:wght@400;600;700&display=swap">
+<style>
+body{margin:0}
+a{color:#1F4E79}a:hover{color:#B4452F}
+.card{background:#FFFBF3;border:2px solid #2B2622;padding:10px 12px;text-decoration:none;color:#2B2622;display:flex;flex-direction:column;gap:2px}
+.card strong{font-family:'Fraunces',serif;font-size:17px;font-weight:700}
+.card span{font-size:12.5px;color:#5B4F45}
+.arrow{text-align:center;font-family:'Pixelify Sans',monospace;font-size:13px;color:#5B4F45}
+.col{display:flex;flex-direction:column;gap:8px}
+.head{font-family:'Pixelify Sans',monospace;font-size:14px;color:#B4452F}
+</style>
+</helmet>
+<div style="width: 1400px; height: 1000px; box-sizing: border-box; background: #F3E8D6; color: #2B2622; font-family: 'Karla', sans-serif; padding: 36px 44px; display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 15px; color: #B4452F">PROTOTIPO COMPLETO · 28 PANTALLAS</span>
+<h1 style="margin: 0; font-family: 'Fraunces', serif; font-size: 50px; color: #1F4E79">Mapa del Pisco Sour Club</h1>
+<p style="margin: 0; font-size: 16px; color: #5B4F45">En Play, toca cualquier tarjeta para ir a esa pantalla. Desde ahí todo está enlazado.</p>
+</div>
+<div style="display: flex; gap: 12px; align-items: center">
+<a href="Bienvenida.dc.html" style="min-height: 52px; display: inline-flex; align-items: center; padding: 0 22px; background: #FFFBF3; border: 3px solid #2B2622; text-decoration: none; font-weight: 700; color: #2B2622">Bienvenida</a>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 22px">→</span>
+<a href="Home2.dc.html" style="min-height: 52px; display: inline-flex; align-items: center; padding: 0 22px; background: #1F4E79; border: 3px solid #2B2622; text-decoration: none; font-weight: 700; color: #FFFBF3">Home · escritorio</a>
+<a href="HomeMovil.dc.html" style="min-height: 52px; display: inline-flex; align-items: center; padding: 0 22px; background: #1F4E79; border: 3px solid #2B2622; text-decoration: none; font-weight: 700; color: #FFFBF3">Home · celular</a>
+</div>
+</div>
+
+<div style="height: 4px; background: #2B2622"></div>
+
+<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px; flex: 1">
+
+<div class="col">
+<span class="head">LA BARRA</span>
+<a class="card" href="Home2.dc.html#barra"><strong>Pisco del día</strong><span>Un prompt diario en la home</span></a>
+<span class="arrow">↓ toca la copa</span>
+<a class="card" href="Chat.dc.html"><strong>Conversa (IA)</strong><span>Chat con los dos</span></a>
+<span class="arrow">↓ al cerrar</span>
+<a class="card" href="ChatFin.dc.html"><strong>Cierre del día</strong><span>Resumen y prompt</span></a>
+<span class="arrow">↓</span>
+<a class="card" href="Tarjeta.dc.html"><strong>Tarjeta</strong><span>Para compartir</span></a>
+</div>
+
+<div class="col">
+<span class="head">¿SABÍAS QUE…?</span>
+<a class="card" href="Home2.dc.html#dato" style="background: #1F4E79; color: #FFFBF3"><strong>Dato del día</strong><span style="color: #CFE2EE">En la home</span></a>
+<span class="arrow">↓ el caminito</span>
+<a class="card" href="RunnerInicio.dc.html"><strong>Runner · inicio</strong><span>Cómo se juega</span></a>
+<span class="arrow">↓</span>
+<a class="card" href="Runner.dc.html"><strong>Runner · jugando</strong><span>Con trivia</span></a>
+<span class="arrow">↓ gana · pierde</span>
+<a class="card" href="RunnerFin.dc.html"><strong>Final feliz</strong><span>El beso pixel</span></a>
+<a class="card" href="RunnerGameOver.dc.html"><strong>Game over</strong><span>Reintentar</span></a>
+</div>
+
+<div class="col">
+<span class="head">LA CASITA</span>
+<a class="card" href="Taller.dc.html"><strong>Taller</strong><span>Tus OCs: 5 caras, 3 conjuntos y tus fondos</span></a>
+<span class="arrow">↓ guardar</span>
+<a class="card" href="TallerListo.dc.html"><strong>OCs guardados</strong><span>Ya viven en el club</span></a>
+<span class="arrow">↓ fotos</span>
+<a class="card" href="CasitaFoto.dc.html"><strong>Estudio de fotos</strong><span>Fondo + OCs + caras</span></a>
+<span class="arrow">↓ ¡clic!</span>
+<a class="card" href="Polaroid.dc.html" style="border-color: #B4452F"><strong>Foto con texto</strong><span>Escribes y descargas</span></a>
+</div>
+
+<div class="col">
+<span class="head">EL DEPA</span>
+<a class="card" href="Depa.dc.html"><strong>Entrada</strong><span>Llegan tus OCs</span></a>
+<span class="arrow">↓ elige cuarto</span>
+<a class="card" href="DepaSala.dc.html"><strong>Sala</strong><span>Radio: marinera o reguetón · Tele: pelea, perdón y besito</span></a>
+<a class="card" href="DepaCocina.dc.html"><strong>Cocina</strong><span>3 refri + 3 alacena, comida dibujada por ti</span></a>
+<a class="card" href="DepaPortal.dc.html"><strong>Portal</strong><span>Cámara: acomódalos en tu mundo</span></a>
+<a class="card" href="DepaAfuera.dc.html"><strong>Afuera</strong><span>Árbol, banca, la calle</span></a>
+<a class="card" href="DepaEditor.dc.html" style="border-color: #F2C14E"><strong>✎ Modo editor</strong><span>Cambia cualquier cosa por tu imagen</span></a>
+<a class="card" href="Accion.dc.html" style="border-color: #B4452F"><strong>▶ Acción</strong><span>Fotogramas, acciones y globos</span></a>
+<a class="card" href="DepaSecreto.dc.html"><strong>Escena secreta</strong><span>Por cuidarlos varios días</span></a>
+</div>
+
+<div class="col">
+<span class="head">QUIOSCO · BUZÓN</span>
+<a class="card" href="Kiosco.dc.html"><strong>Quiosco</strong><span>Carnet, wallpapers, stickers</span></a>
+<a class="card" href="Buzon.dc.html"><strong>El buzón</strong><span>Libro de firmas</span></a>
+<span class="arrow">↓ Rurú aprueba</span>
+<a class="card" href="Galeria.dc.html"><strong>Galería</strong><span>Dibujos colgados</span></a>
+</div>
+
+<div class="col">
+<span class="head">FARO · RADIO</span>
+<a class="card" href="Faro.dc.html"><strong>El faro</strong><span>Redes y hashtag</span></a>
+<a class="card" href="Radio.dc.html"><strong>Radio del muelle</strong><span>Playlist con recuerdos · Sugerir canción</span></a>
+<span class="arrow">↓ llega a Rurú</span>
+<a class="card" href="RadioPanel.dc.html"><strong>Panel de Rurú</strong><span>Aprobar canciones y recuerdos</span></a>
+<div style="margin-top: auto; background: #1F4E79; color: #FFFBF3; padding: 12px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; gap: 4px; align-items: flex-end"><dc-import name="Ball" kind="chile" size="40" hint-size="40px,40px"></dc-import><span style="font-family: 'Pixelify Sans', monospace">→</span><dc-import name="Oc" kind="peru" expr="feliz" size="48" hint-size="41px,48px"></dc-import></div>
+<span style="font-size: 12.5px; line-height: 1.4">Los balls se cambian por tus OCs cuando los guardas en la casita.</span>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1400,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>La casita · Taller</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Pixelify+Sans:wght@500&family=Karla:wght@400;600;700&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF1E4; color: #2B2622; font-family: 'Karla', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="position: relative; height: 84px; flex: none">
+<div style="position: absolute; inset: 0 0 22px 0; background: #B4452F; clip-path: polygon(50% 0, 100% 100%, 0 100%)"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 14px; height: 10px; background: #7A3B2E"></div>
+<a href="Home2.dc.html" style="position: absolute; left: 12px; top: 8px; min-height: 44px; display: inline-flex; align-items: center; padding: 0 10px; background: #FFFBF3; border: 3px solid #2B2622; color: #2B2622; text-decoration: none; font-weight: 700">‹ Malecón</a>
+<a href="CasitaFoto.dc.html" style="position: absolute; right: 12px; top: 8px; min-height: 44px; display: inline-flex; align-items: center; padding: 0 10px; background: #F2C14E; border: 3px solid #2B2622; color: #2B2622; text-decoration: none; font-weight: 700">Fotos →</a>
+</header>
+
+<div style="padding: 0 16px 14px; display: flex; flex-direction: column; gap: 10px; flex: 1; min-height: 0">
+<div role="tablist" style="display: flex; border: 3px solid #2B2622">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+<button type="button" role="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="flex: 1; min-height: 46px; border: none; background: {{t.bg}}; color: {{t.fg}}; font-family: 'Pixelify Sans', monospace; font-size: 15px; cursor: pointer">{{t.label}}</button>
+</sc-for>
+</div>
+
+<sc-if value="{{isChar}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+<div style="display: flex; border: 2px solid #2B2622">
+<sc-for list="{{parts}}" as="pt" hint-placeholder-count="2">
+<button type="button" onClick="{{pt.pick}}" aria-pressed="{{pt.sel}}" style="min-height: 40px; padding: 0 12px; border: none; background: {{pt.bg}}; color: {{pt.fg}}; font-weight: 700; font-size: 14px; cursor: pointer">{{pt.label}}</button>
+</sc-for>
+</div>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 12px; color: #5B4F45">{{progress}}</span>
+</div>
+<sc-if value="{{isRopa}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; gap: 6px">
+<sc-for list="{{ropas}}" as="r" hint-placeholder-count="3">
+<button type="button" onClick="{{r.pick}}" aria-pressed="{{r.sel}}" style="flex: 1; padding: 4px 2px 6px; border: 3px solid {{r.bd}}; background: {{r.bg}}; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px">
+<dc-import name="Oc" kind="{{kind}}" expr="normal" ropa="{{r.id}}" size="52" hint-size="44px,52px"></dc-import>
+<span style="font-size: 11px; font-weight: 700; color: #2B2622">{{r.label}}</span>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 10px; color: {{r.stc}}">{{r.st}}</span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{isCaras}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px">
+<sc-for list="{{exprs}}" as="e" hint-placeholder-count="6">
+<button type="button" onClick="{{e.pick}}" aria-pressed="{{e.sel}}" style="flex: none; width: 66px; padding: 4px 2px 6px; border: 3px solid {{e.bd}}; background: {{e.bg}}; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px">
+<span style="opacity: {{e.op}}"><dc-import name="Oc" kind="{{kind}}" expr="{{e.id}}" size="44" hint-size="37px,44px"></dc-import></span>
+<span style="font-size: 11px; font-weight: 700; color: #2B2622">{{e.label}}</span>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 10px; color: {{e.stc}}">{{e.st}}</span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+<div style="position: relative; height: 300px; flex: none; background-color: #FFFFFF; border: 4px solid #A8774F; background-image: linear-gradient(rgba(43,38,34,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(43,38,34,0.05) 1px, transparent 1px); background-size: 14px 14px; display: flex; align-items: center; justify-content: center">
+<span style="opacity: 0.18"><dc-import name="Oc" kind="{{kind}}" expr="normal" ropa="{{curRopa}}" size="230" hint-size="195px,230px"></dc-import></span>
+<span style="position: absolute; left: 8px; top: 8px; background: #FFFBF3; border: 2px solid #2B2622; padding: 2px 8px; font-family: 'Pixelify Sans', monospace; font-size: 11px">DIBUJANDO: {{curLabel}}</span>
+<span style="position: absolute; left: 8px; bottom: 6px; font-size: 11px; color: #5B4F45">{{guideText}}</span>
+</div>
+</sc-if>
+
+<sc-if value="{{isFondo}}" hint-placeholder-val="{{false}}">
+<h1 style="margin: 0; font-family: 'Fraunces', serif; font-size: 22px; color: #1F4E79">Tus fondos</h1>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+<button type="button" aria-label="Fondo 1: playa" style="height: 56px; border: 3px solid #B4452F; background: #CFE2EE; cursor: pointer; padding: 0; position: relative; overflow: hidden"><span style="position: absolute; left: 0; right: 0; bottom: 0; height: 18px; background: #EBD5B0"></span></button>
+<button type="button" aria-label="Fondo 2: cielo de noche" style="height: 56px; border: 2px solid #2B2622; background: #3B3560; cursor: pointer; padding: 0"></button>
+<button type="button" aria-label="Fondo nuevo" style="height: 56px; border: 2px dashed #A8774F; background: #FFFBF3; color: #8E3524; font-size: 20px; font-weight: 700; cursor: pointer">+</button>
+<button type="button" aria-label="Fondo nuevo" style="height: 56px; border: 2px dashed #A8774F; background: #FFFBF3; color: #8E3524; font-size: 20px; font-weight: 700; cursor: pointer">+</button>
+</div>
+<div style="position: relative; height: 300px; flex: none; background: #CFE2EE; border: 4px solid #A8774F; overflow: hidden">
+<svg width="100%" height="100%" viewBox="0 0 350 300" preserveAspectRatio="none" aria-hidden="true"><path d="M0 190 C60 175 120 200 180 188 C240 176 300 196 350 186 L350 300 L0 300 Z" fill="#EBD5B0" stroke="#C9A574" stroke-width="3"/><path d="M0 170 C70 160 140 178 210 166 C270 156 320 170 350 164" fill="none" stroke="#3E78A8" stroke-width="6" stroke-linecap="round"/><circle cx="280" cy="60" r="26" fill="#F2C14E" stroke="#D9A43A" stroke-width="3"/><path d="M40 60 q20 -18 40 0 q16 -12 30 4" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/><path d="M80 240 l10 -30 l10 30" fill="none" stroke="#6E8F5E" stroke-width="5" stroke-linecap="round"/></svg>
+<span style="position: absolute; left: 8px; top: 8px; background: #FFFBF3; border: 2px solid #2B2622; padding: 2px 8px; font-family: 'Pixelify Sans', monospace; font-size: 11px">FONDO 1 · PLAYA</span>
+</div>
+<div style="display: flex; gap: 6px; flex-wrap: wrap; font-size: 13px; font-weight: 700">
+<span style="color: #5B4F45">Empezar desde:</span><span style="text-decoration: underline">Playa</span><span style="text-decoration: underline">Cocina</span><span style="text-decoration: underline">Cielo</span><span style="text-decoration: underline">En blanco</span>
+</div>
+</sc-if>
+
+<div style="display: flex; gap: 6px; align-items: center">
+<button type="button" aria-label="Pincel" aria-pressed="true" style="width: 44px; height: 44px; border: 3px solid #2B2622; background: #F2C14E; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 L11 5 L13 7 L5 15 Z M11 5 L13 3 L15 5 L13 7" fill="none" stroke="#2B2622" stroke-width="1.6"/></svg></button>
+<button type="button" aria-label="Borrador" style="width: 44px; height: 44px; border: 3px solid #2B2622; background: #FFFBF3; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 11 L9 4 L14 9 L8 15 L4 15 Z" fill="none" stroke="#2B2622" stroke-width="1.6"/></svg></button>
+<button type="button" aria-label="Deshacer" style="width: 44px; height: 44px; border: 3px solid #2B2622; background: #FFFBF3; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 4 L2 7 L5 10 M2 7 H10 A4 4 0 0 1 10 15 H7" fill="none" stroke="#2B2622" stroke-width="1.6"/></svg></button>
+<span style="width: 1px; height: 30px; background: #C9B596"></span>
+<button type="button" aria-label="Rojo" style="width: 30px; height: 30px; border: 3px solid #2B2622; background: #D91023; outline: 2px solid #F2C14E; cursor: pointer"></button>
+<button type="button" aria-label="Azul" style="width: 30px; height: 30px; border: 2px solid #2B2622; background: #0039A6; cursor: pointer"></button>
+<button type="button" aria-label="Blanco" style="width: 30px; height: 30px; border: 2px solid #2B2622; background: #FFFFFF; cursor: pointer"></button>
+<button type="button" aria-label="Piel" style="width: 30px; height: 30px; border: 2px solid #2B2622; background: #C68B5E; cursor: pointer"></button>
+<button type="button" aria-label="Negro" style="width: 30px; height: 30px; border: 2px solid #2B2622; background: #2B2622; cursor: pointer"></button>
+</div>
+
+<a href="TallerListo.dc.html" style="min-height: 52px; display: flex; align-items: center; justify-content: center; background: #1F4E79; color: #FFFBF3; text-decoration: none; font-family: 'Pixelify Sans', monospace; font-size: 16px">{{saveLabel}}</a>
+<span style="font-size: 12px; color: #5B4F45; line-height: 1.4">Todo se guarda solo en este celular. En el depa y en las fotos eliges qué cara poner.</span>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const TABS = [{ id: 'pe', label: 'Tu Perú', c: '#D91023' }, { id: 'cl', label: 'Tu Chile', c: '#0039A6' }, { id: 'fondos', label: 'Fondos', c: '#2B2622' }];
+const EXPRS = [{ id: 'normal', label: 'Normal' }, { id: 'feliz', label: 'Feliz' }, { id: 'enojado', label: 'Enojado' }, { id: 'sonrojo', label: 'Sonrojo' }, { id: 'triste', label: 'Triste' }];
+const DONE = { normal: true, feliz: true, enojado: true, sonrojo: false, triste: false };
+const ROPAS = [{ id: 'casual', label: 'Conjunto 1', done: true }, { id: 'bufanda', label: 'Conjunto 2', done: true }, { id: 'gorro', label: 'Conjunto 3', done: false }];
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {};
+    const tab = s.tab || 'pe';
+    const ex = s.ex || 'sonrojo';
+    const cur = EXPRS.find((e) => e.id === ex);
+    const isChar = tab !== 'fondos';
+    const part = s.part || 'caras';
+    const ro = s.ro || 'gorro';
+    const curR = ROPAS.find((r) => r.id === ro);
+    return {
+      parts: [{ id: 'caras', label: 'Caras (5)' }, { id: 'ropa', label: 'Ropa (3)' }].map((p) => ({ label: p.label, sel: p.id === part ? 'true' : 'false', bg: p.id === part ? '#2B2622' : '#FFFBF3', fg: p.id === part ? '#FFFBF3' : '#2B2622', pick: () => this.setState({ part: p.id }) })),
+      isCaras: part === 'caras',
+      isRopa: part === 'ropa',
+      progress: part === 'caras' ? Object.keys(DONE).filter((k) => DONE[k]).length + ' DE 5 CARAS' : ROPAS.filter((r) => r.done).length + ' DE 3 CONJUNTOS',
+      ropas: ROPAS.map((r) => ({ id: r.id, label: r.label, sel: r.id === ro ? 'true' : 'false', bd: r.id === ro ? '#B4452F' : '#2B2622', bg: r.id === ro ? '#FFF1D6' : '#FFFBF3', st: r.done ? 'LISTO' : 'FALTA', stc: r.done ? '#4F7A45' : '#8E3524', pick: () => this.setState({ ro: r.id }) })),
+      curRopa: part === 'ropa' ? ro : 'casual',
+      guideText: part === 'ropa' ? 'Dibuja la ropa encima del calco de tu OC' : 'Calco suave de tu cara «Normal» para guiarte',
+      tabs: TABS.map((t) => ({ label: t.label, sel: t.id === tab ? 'true' : 'false', bg: t.id === tab ? t.c : '#FFFBF3', fg: t.id === tab ? '#FFFFFF' : '#2B2622', pick: () => this.setState({ tab: t.id }) })),
+      isChar: isChar,
+      isFondo: !isChar,
+      kind: tab === 'cl' ? 'chile' : 'peru',
+      doneCount: Object.keys(DONE).filter((k) => DONE[k]).length,
+      exprs: EXPRS.map((e) => ({
+        id: e.id, label: e.label,
+        sel: e.id === ex ? 'true' : 'false',
+        bd: e.id === ex ? '#B4452F' : '#2B2622',
+        bg: e.id === ex ? '#FFF1D6' : '#FFFBF3',
+        op: DONE[e.id] ? 1 : 0.3,
+        st: DONE[e.id] ? 'LISTA' : 'FALTA',
+        stc: DONE[e.id] ? '#4F7A45' : '#8E3524',
+        pick: () => this.setState({ ex: e.id })
+      })),
+      curLabel: part === 'ropa' ? curR.label.toUpperCase() : cur.label.toUpperCase(),
+      saveLabel: !isChar ? 'GUARDAR FONDO' : (part === 'ropa' ? 'GUARDAR «' + curR.label.toUpperCase() + '»' : 'GUARDAR CARA «' + cur.label.toUpperCase() + '»')
+    };
+  }
+}
+</script>
+</body>
+</html>

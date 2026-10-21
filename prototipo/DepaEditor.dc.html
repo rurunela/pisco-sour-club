@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>El depa · Modo editor</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Pixelify+Sans:wght@500&family=Karla:wght@400;600;700&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; box-sizing: border-box; background: #2B2622; color: #FFFBF3; font-family: 'Karla', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+<header style="padding: 10px 16px; display: flex; justify-content: space-between; align-items: center">
+<a href="Depa.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; color: #FFFBF3; text-decoration: none; font-weight: 700">‹ Salir</a>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 15px; color: #F2C14E">✎ MODO EDITOR</span>
+<span style="width: 56px"></span>
+</header>
+
+<div role="tablist" style="display: flex; margin: 0 16px; border: 3px solid #FFFBF3">
+<sc-for list="{{rooms}}" as="r" hint-placeholder-count="3">
+<button type="button" role="tab" aria-selected="{{r.sel}}" onClick="{{r.pick}}" style="flex: 1; min-height: 44px; border: none; background: {{r.bg}}; color: {{r.fg}}; font-family: 'Pixelify Sans', monospace; font-size: 14px; cursor: pointer">{{r.label}}</button>
+</sc-for>
+</div>
+
+<p style="margin: 10px 16px; font-size: 14px; color: #E5D8C3">Toca cualquier cosa del cuarto para cambiarla por una imagen tuya.</p>
+
+<div style="position: relative; height: 380px; flex: none; margin: 0 16px; border: 4px solid #FFFBF3; background: {{bg}}; overflow: hidden">
+<sc-for list="{{objs}}" as="o" hint-placeholder-count="6">
+<button type="button" onClick="{{o.pick}}" aria-label="{{o.aria}}" style="position: absolute; left: {{o.x}}; top: {{o.y}}; width: {{o.w}}; height: {{o.h}}; box-sizing: border-box; border: 3px dashed {{o.bd}}; background: {{o.fill}}; background-image: {{o.pat}}; background-size: 16px 16px; cursor: pointer; padding: 0; display: flex; align-items: flex-start; justify-content: flex-start">
+<span style="margin: 4px; background: #FFFBF3; color: #2B2622; border: 2px solid #2B2622; padding: 1px 6px; font-family: 'Pixelify Sans', monospace; font-size: 11px">{{o.tag}}</span>
+</button>
+</sc-for>
+</div>
+
+<sc-if value="{{hasSel}}" hint-placeholder-val="{{true}}">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; background: #FFFBF3; color: #2B2622; border-top: 4px solid #F2C14E; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<strong style="font-family: 'Fraunces', serif; font-size: 22px; color: #1F4E79">Cambiar: {{sel.label}}</strong>
+<button type="button" onClick="{{close}}" aria-label="Cerrar" style="width: 44px; height: 44px; border: none; background: none; font-size: 20px; cursor: pointer">✕</button>
+</div>
+<div style="display: flex; gap: 12px; align-items: center">
+<div style="width: 96px; height: 72px; flex: none; border: 3px solid #2B2622; background: {{sel.fill}}; background-image: {{sel.pat}}; background-size: 12px 12px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px; font-size: 14px">
+<span>Tamaño ideal: <strong>{{sel.px}}</strong></span>
+<span style="color: #5B4F45">PNG con fondo transparente si no es un cuadrado lleno. Si es más grande, la ajustamos sola.</span>
+</div>
+</div>
+<label style="min-height: 52px; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1F4E79; color: #FFFBF3; font-family: 'Pixelify Sans', monospace; font-size: 16px; cursor: pointer">SUBIR IMAGEN<input type="file" accept="image/png,image/jpeg,image/webp" onChange="{{upload}}" style="position: absolute; width: 1px; height: 1px; opacity: 0"></label>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{upload}}" style="flex: 1; min-height: 44px; border: 3px solid #2B2622; background: #FFFFFF; font-weight: 700; cursor: pointer">Probar (demo)</button>
+<button type="button" onClick="{{restore}}" style="flex: 1; min-height: 44px; border: 3px solid #2B2622; background: #FFFFFF; font-weight: 700; cursor: pointer">Restaurar original</button>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{noSel}}" hint-placeholder-val="{{false}}">
+<div style="margin: 14px 16px 0; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; color: #E5D8C3">Lo que cambies se guarda en este celular y aparece en el depa, en Acción y en el portal.</span>
+<a href="Accion.dc.html" style="min-height: 48px; display: flex; align-items: center; justify-content: center; background: #F2C14E; color: #2B2622; text-decoration: none; font-family: 'Pixelify Sans', monospace; font-size: 16px">▶ IR A ACCIÓN</a>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const ROOMS = {
+  sala: { label: 'Sala', bg: '#D6E4F0', objs: [
+    { id: 'pared', label: 'Pared', x: 0, y: 0, w: 350, h: 250, fill: '#D6E4F0', px: '1080 × 760 px' },
+    { id: 'ventana', label: 'Ventana', x: 130, y: 24, w: 90, h: 76, fill: '#CFE2EE', px: '280 × 240 px' },
+    { id: 'radio', label: 'Radio', x: 12, y: 100, w: 82, h: 52, fill: '#B4452F', px: '240 × 160 px' },
+    { id: 'tele', label: 'Tele', x: 228, y: 80, w: 112, h: 84, fill: '#2B2622', px: '320 × 240 px' },
+    { id: 'sillon', label: 'Sillón', x: 40, y: 200, w: 270, h: 84, fill: '#1F4E79', px: '820 × 260 px' },
+    { id: 'piso', label: 'Piso', x: 0, y: 290, w: 350, h: 82, fill: '#C99A6E', px: '1080 × 250 px' }
+  ] },
+  cocina: { label: 'Cocina', bg: '#FBF4E6', objs: [
+    { id: 'pared', label: 'Pared', x: 0, y: 0, w: 350, h: 250, fill: '#FBF4E6', px: '1080 × 760 px' },
+    { id: 'refri', label: 'Refri', x: 250, y: 60, w: 90, h: 220, fill: '#E5ECEF', px: '270 × 660 px' },
+    { id: 'alacena', label: 'Alacena', x: 20, y: 24, w: 150, h: 70, fill: '#C99A6E', px: '460 × 210 px' },
+    { id: 'mesa', label: 'Mesa', x: 40, y: 220, w: 190, h: 60, fill: '#A8774F', px: '580 × 180 px' },
+    { id: 'piso', label: 'Piso', x: 0, y: 290, w: 350, h: 82, fill: '#FFFFFF', px: '1080 × 250 px' }
+  ] },
+  afuera: { label: 'Afuera', bg: '#CFE2EE', objs: [
+    { id: 'cielo', label: 'Cielo', x: 0, y: 0, w: 350, h: 200, fill: '#CFE2EE', px: '1080 × 600 px' },
+    { id: 'edificio', label: 'Edificio de enfrente', x: 210, y: 40, w: 130, h: 210, fill: '#E9B872', px: '400 × 640 px' },
+    { id: 'arbol', label: 'Árbol', x: 14, y: 70, w: 90, h: 180, fill: '#6E8F5E', px: '280 × 560 px' },
+    { id: 'banca', label: 'Banca', x: 110, y: 230, w: 110, h: 50, fill: '#7A5233', px: '340 × 160 px' },
+    { id: 'vereda', label: 'Vereda', x: 0, y: 290, w: 350, h: 82, fill: '#B9B3A8', px: '1080 × 250 px' }
+  ] }
+};
+const CHECK = 'linear-gradient(45deg, #E5D8C3 25%, transparent 25%, transparent 75%, #E5D8C3 75%), linear-gradient(45deg, #E5D8C3 25%, #FFFFFF 25%, #FFFFFF 75%, #E5D8C3 75%)';
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {};
+    const room = s.room || 'sala';
+    const R = ROOMS[room];
+    const custom = s.custom || {};
+    const selId = s.sel === undefined ? 'tele' : s.sel;
+    const decorate = (o) => {
+      const key = room + ':' + o.id;
+      const mine = !!custom[key];
+      return { label: o.label, px: o.px, fill: mine ? '#FFFFFF' : o.fill, pat: mine ? CHECK : 'none', tag: mine ? 'TU IMAGEN' : o.label.toUpperCase() };
+    };
+    const selObj = R.objs.find((o) => o.id === selId);
+    const key = selObj ? room + ':' + selObj.id : '';
+    return {
+      rooms: Object.keys(ROOMS).map((k) => ({ label: ROOMS[k].label, sel: k === room ? 'true' : 'false', bg: k === room ? '#FFFBF3' : '#2B2622', fg: k === room ? '#2B2622' : '#FFFBF3', pick: () => this.setState({ room: k, sel: null }) })),
+      bg: R.bg,
+      objs: R.objs.map((o) => { const d = decorate(o); return Object.assign(d, { x: o.x + 'px', y: o.y + 'px', w: o.w + 'px', h: o.h + 'px', bd: o.id === selId ? '#F2C14E' : 'rgba(43,38,34,0.6)', aria: 'Cambiar ' + o.label, pick: () => this.setState({ sel: o.id }) }); }),
+      hasSel: !!selObj,
+      noSel: !selObj,
+      sel: selObj ? decorate(selObj) : { label: '', px: '', fill: 'none', pat: 'none' },
+      close: () => this.setState({ sel: null }),
+      upload: () => this.setState({ custom: Object.assign({}, custom, { [key]: true }) }),
+      restore: () => { const c = Object.assign({}, custom); delete c[key]; this.setState({ custom: c }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

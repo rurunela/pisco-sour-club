@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Quiosco de recuerdos</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Pixelify+Sans:wght@500&family=Karla:wght@400;600;700&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F3E8D6; color: #2B2622; font-family: 'Karla', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="flex: none">
+<div style="height: 46px; background: repeating-linear-gradient(90deg, #B4452F 0 26px, #FFFBF3 26px 52px); border-bottom: 4px solid #2B2622"></div>
+<div style="height: 14px; background: repeating-linear-gradient(90deg, #B4452F 0 13px, transparent 13px 26px); clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%)"></div>
+<div style="padding: 4px 16px 0; display: flex; justify-content: space-between; align-items: center">
+<a href="Home2.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; color: #1F4E79; text-decoration: none; font-weight: 700">‹ Malecón</a>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 14px; color: #B4452F">TODO GRATIS</span>
+</div>
+</header>
+
+<div style="padding: 4px 16px 16px; display: flex; flex-direction: column; gap: 12px; flex: 1; min-height: 0">
+<h1 style="margin: 0; font-family: 'Fraunces', serif; font-size: 30px; color: #1F4E79">Quiosco de recuerdos</h1>
+
+<div style="height: 250px; flex: none; display: flex; align-items: center; justify-content: center; background: #EAF1F6; border: 3px solid #2B2622">
+<sc-if value="{{isCarnet}}" hint-placeholder-val="{{true}}">
+<div style="width: 300px; height: 186px; background: #FFFBF3; border: 3px solid #2B2622; box-shadow: 6px 6px 0 #1F4E79; display: flex; flex-direction: column">
+<div style="height: 36px; background: #1F4E79; color: #FFFBF3; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; font-family: 'Pixelify Sans', monospace; font-size: 13px"><span>PISCO SOUR CLUB</span><span>SOCIO</span></div>
+<div style="flex: 1; display: flex; gap: 12px; padding: 12px; align-items: center">
+<div style="width: 84px; height: 96px; flex: none; background: #CFE2EE; border: 2px solid #2B2622; display: flex; align-items: center; justify-content: center"><dc-import name="Ball" kind="peru" size="64" hint-size="64px,64px"></dc-import></div>
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<strong style="font-family: 'Fraunces', serif; font-size: 20px">[Tu nombre]</strong>
+<span style="font-size: 12px; color: #5B4F45">Equipo: Perú</span>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 12px">N.º 000127</span>
+<span style="font-size: 11px; color: #5B4F45">Socio desde oct. 2026</span>
+</div>
+</div>
+<div style="height: 8px; background: repeating-linear-gradient(90deg, #D91023 0 20px, #FFFBF3 20px 40px, #0039A6 40px 60px)"></div>
+</div>
+</sc-if>
+<sc-if value="{{notCarnet}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; padding: 16px">
+<div style="display: flex; gap: 4px"><dc-import name="Ball" kind="chile" size="70" hint-size="70px,70px"></dc-import><dc-import name="Ball" kind="peru" size="70" flip="{{true}}" hint-size="70px,70px"></dc-import></div>
+<strong style="font-family: 'Fraunces', serif; font-size: 22px; color: #1F4E79">{{selTitle}}</strong>
+<span style="font-size: 14px; color: #5B4F45; max-width: 280px">{{selDesc}}</span>
+</div>
+</sc-if>
+</div>
+
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700">Tu nombre o @<input type="text" placeholder="@tu_usuario" style="min-height: 44px; border: 2px solid #2B2622; background: #FFFBF3; padding: 0 12px; font-size: 16px"></label>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{items}}" as="it" hint-placeholder-count="6">
+<button type="button" onClick="{{it.pick}}" aria-pressed="{{it.sel}}" style="min-height: 64px; padding: 6px; border: 3px solid #2B2622; background: {{it.bg}}; color: {{it.fg}}; font-family: 'Karla', sans-serif; font-size: 13px; font-weight: 700; line-height: 1.2; cursor: pointer">{{it.label}}</button>
+</sc-for>
+</div>
+
+<button type="button" style="min-height: 52px; border: none; background: #B4452F; color: #FFFBF3; font-family: 'Pixelify Sans', monospace; font-size: 17px; cursor: pointer; margin-top: auto">DESCARGAR PNG</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const ITEMS = [
+  { id: 'carnet', label: 'Carnet de socio', desc: '' },
+  { id: 'postal', label: 'Postal', desc: 'Una escena del malecón con tu mensaje, lista para WhatsApp o Discord.' },
+  { id: 'wall', label: 'Wallpaper', desc: 'Manuel y Miguel en la playa, la once, la barra o de noche.' },
+  { id: 'stickers', label: 'Stickers', desc: 'Pack de caras: drama, deadpan, sonrojo y «ya fue».' },
+  { id: 'lineart', label: 'Lineart', desc: 'Plantillas de ball y chibi para colorear a tus OCs.' },
+  { id: 'calendario', label: 'Calendario', desc: 'Un mes de prompts, uno por día.' }
+];
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {};
+    const sel = s.sel || 'carnet';
+    const cur = ITEMS.find((i) => i.id === sel);
+    return {
+      isCarnet: sel === 'carnet',
+      notCarnet: sel !== 'carnet',
+      selTitle: cur.label,
+      selDesc: cur.desc,
+      items: ITEMS.map((i) => ({ label: i.label, sel: i.id === sel ? 'true' : 'false', bg: i.id === sel ? '#1F4E79' : '#FFFBF3', fg: i.id === sel ? '#FFFBF3' : '#2B2622', pick: () => this.setState({ sel: i.id }) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>El depa · Cocina</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Pixelify+Sans:wght@500&family=Karla:wght@400;600;700&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; box-sizing: border-box; background: #FBF4E6; color: #2B2622; font-family: 'Karla', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+<header style="padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; background: #E9B872; border-bottom: 4px solid #2B2622">
+<a href="DepaSala.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; color: #2B2622; text-decoration: none; font-weight: 700">‹ Sala</a>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 15px">LA COCINA</span>
+<a href="Depa.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; color: #2B2622; text-decoration: none; font-weight: 700">Depa</a>
+</header>
+
+<div style="padding: 12px 16px 0; display: flex; gap: 10px">
+<div style="flex: 1; background: #E5ECEF; border: 4px solid #2B2622; padding: 8px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 12px">REFRI</span>
+<sc-for list="{{fridge}}" as="f" hint-placeholder-count="3">
+<button type="button" onClick="{{f.pick}}" aria-label="{{f.aria}}" aria-pressed="{{f.sel}}" style="height: 62px; border: 3px {{f.bs}} {{f.bd}}; background: {{f.bg}}; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 0 6px; font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 700; color: #2B2622">
+<span style="width: 40px; height: 40px; flex: none; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #8E3524">{{f.plus}}<svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" style="display: {{f.show}}"><path d="{{f.d1}}" fill="{{f.c1}}" stroke="#2B2622" stroke-width="2.5" stroke-linejoin="round"/><path d="{{f.d2}}" fill="{{f.c2}}" stroke="#2B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>{{f.name}}
+</button>
+</sc-for>
+</div>
+<div style="flex: 1; background: #C99A6E; border: 4px solid #2B2622; padding: 8px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 12px">ALACENA</span>
+<sc-for list="{{pantry}}" as="f" hint-placeholder-count="3">
+<button type="button" onClick="{{f.pick}}" aria-label="{{f.aria}}" aria-pressed="{{f.sel}}" style="height: 62px; border: 3px {{f.bs}} {{f.bd}}; background: {{f.bg}}; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 0 6px; font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 700; color: #2B2622">
+<span style="width: 40px; height: 40px; flex: none; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #8E3524">{{f.plus}}<svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" style="display: {{f.show}}"><path d="{{f.d1}}" fill="{{f.c1}}" stroke="#2B2622" stroke-width="2.5" stroke-linejoin="round"/><path d="{{f.d2}}" fill="{{f.c2}}" stroke="#2B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>{{f.name}}
+</button>
+</sc-for>
+</div>
+</div>
+
+<div style="position: relative; height: 330px; flex: none; margin-top: 12px; background-image: repeating-linear-gradient(90deg, rgba(180,69,47,0.06) 0 16px, transparent 16px 32px)">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 70px; background: repeating-linear-gradient(90deg, #FFFFFF 0 24px, #E5D8C3 24px 48px); border-top: 4px solid #2B2622"></div>
+<div style="position: absolute; left: 70px; right: 70px; bottom: 70px; height: 16px; background: #A8774F; border: 3px solid #2B2622"></div>
+<sc-if value="{{hasBubble}}" hint-placeholder-val="{{false}}">
+<p style="position: absolute; left: 50%; top: 4px; transform: translateX(-50%); margin: 0; width: 250px; background: #FFFFFF; border: 3px solid #2B2622; padding: 6px 10px; font-size: 14px; font-weight: 700; text-align: center">{{bubble}}</p>
+</sc-if>
+<button type="button" onClick="{{feedC}}" aria-label="Darle a Chile" style="position: absolute; left: 24px; bottom: 82px; border: 3px dashed {{cTarget}}; background: none; padding: 4px; cursor: pointer"><dc-import name="Oc" kind="chile" expr="{{cExpr}}" size="160" hint-size="135px,160px"></dc-import></button>
+<button type="button" onClick="{{feedP}}" aria-label="Darle a Perú" style="position: absolute; right: 24px; bottom: 82px; border: 3px dashed {{pTarget}}; background: none; padding: 4px; cursor: pointer"><dc-import name="Oc" kind="peru" expr="{{pExpr}}" size="160" flip="{{true}}" hint-size="135px,160px"></dc-import></button>
+<div style="position: absolute; left: 24px; bottom: 14px; width: 140px; display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Pixelify Sans', monospace; font-size: 11px">MANUEL · PANZA</span><div style="height: 10px; background: #E5D8C3; border: 2px solid #2B2622"><div style="height: 100%; width: {{cBar}}; background: #4F7A45"></div></div></div>
+<div style="position: absolute; right: 24px; bottom: 14px; width: 140px; display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Pixelify Sans', monospace; font-size: 11px">MIGUEL · PANZA</span><div style="height: 10px; background: #E5D8C3; border: 2px solid #2B2622"><div style="height: 100%; width: {{pBar}}; background: #4F7A45"></div></div></div>
+</div>
+
+<p style="margin: 10px 16px 0; font-size: 14px; color: #5B4F45; line-height: 1.4">{{hint}}</p>
+
+<sc-if value="{{modal}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; inset: 0; background: rgba(43,38,34,0.55); display: flex; align-items: center; justify-content: center; padding: 16px">
+<div style="width: 100%; background: #FFFBF3; border: 4px solid #2B2622; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 13px; color: #B4452F">DIBUJA UNA COMIDA PARA {{modalPlace}}</span>
+<div style="height: 220px; background-color: #FFFFFF; border: 3px solid #2B2622; background-image: linear-gradient(rgba(43,38,34,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(43,38,34,0.05) 1px, transparent 1px); background-size: 14px 14px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #5B4F45">Lienzo cuadrado · dibuja aquí</div>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700">¿Cómo se llama?<input type="text" placeholder="Pastel de choclo" style="min-height: 44px; border: 2px solid #2B2622; padding: 0 10px; font-size: 16px"></label>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{closeModal}}" style="flex: 1; min-height: 48px; border: 3px solid #2B2622; background: #FFFFFF; font-weight: 700; cursor: pointer">Cancelar</button>
+<button type="button" onClick="{{closeModal}}" style="flex: 1; min-height: 48px; border: none; background: #1F4E79; color: #FFFBF3; font-family: 'Pixelify Sans', monospace; font-size: 15px; cursor: pointer">GUARDAR</button>
+</div>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const FOOD = {
+  ceviche: { name: 'Ceviche', d1: 'M5 20 h30 a15 13 0 0 1 -30 0 z', c1: '#FFFFFF', d2: 'M12 18 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0 M22 16 q4 -6 8 0', c2: '#F2A65A', p: '¡Esto es ceviche de verdad, causa!', c: '…Está bueno. No le digas a nadie.' },
+  jugo: { name: 'Chicha', d1: 'M12 8 h16 l-2 26 h-12 z', c1: '#6B2C6E', d2: 'M28 12 q6 2 0 10', c2: 'none', p: '¡Chicha morada! Igualito que en casa.', c: 'Es dulce. Me gusta. …No te emociones.' },
+  pan: { name: 'Pan con palta', d1: 'M4 22 q16 -16 32 0 q-16 10 -32 0 z', c1: '#E2B470', d2: 'M10 20 q10 -6 20 0', c2: '#6E8F5E', p: 'Rico… pero le falta ají.', c: 'Pan con palta. Así se empieza la once.' },
+  empanada: { name: 'Empanada', d1: 'M4 26 q16 -24 32 0 z', c1: '#D99A55', d2: 'M7 26 l3 -3 l3 3 l3 -3 l3 3 l3 -3 l3 3 l3 -3 l3 3', c2: 'none', p: 'Ya, ya, está buena. Pero la mía tiene más relleno.', c: 'De pino, como debe ser.' }
+};
+const FRIDGE = ['ceviche', 'jugo', null];
+const PANTRY = ['pan', 'empanada', null];
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {};
+    const sel = s.sel || null;
+    const fed = s.fed || null;
+    const mk = (arr, place) => arr.map((id, i) => {
+      if (!id) return { name: 'Dibujar', aria: 'Espacio vacío: dibujar comida', sel: 'false', plus: '+', show: 'none', d1: 'M0 0', d2: 'M0 0', c1: 'none', c2: 'none', bs: 'dashed', bd: '#8E3524', bg: 'rgba(255,255,255,0.6)', pick: () => this.setState({ modal: place }) };
+      const f = FOOD[id];
+      const on = sel === id;
+      return { name: f.name, aria: 'Elegir ' + f.name, sel: on ? 'true' : 'false', plus: '', show: 'block', d1: f.d1, d2: f.d2, c1: f.c1, c2: f.c2, bs: 'solid', bd: on ? '#B4452F' : '#2B2622', bg: on ? '#FFF1D6' : '#FFFFFF', pick: () => this.setState({ sel: on ? null : id }) };
+    });
+    const feed = (who) => () => { if (!sel) return; const cb = s.cb ?? 4, pb = s.pb ?? 3; this.setState({ fed: { who: who, food: sel }, sel: null, cb: who === 'c' ? Math.min(10, cb + 3) : cb, pb: who === 'p' ? Math.min(10, pb + 3) : pb }); };
+    const f = fed ? FOOD[fed.food] : null;
+    return {
+      fridge: mk(FRIDGE, 'LA REFRI'),
+      pantry: mk(PANTRY, 'LA ALACENA'),
+      cExpr: fed && fed.who === 'c' ? 'feliz' : (sel ? 'sonrojo' : 'normal'),
+      pExpr: fed && fed.who === 'p' ? 'feliz' : (sel ? 'feliz' : 'normal'),
+      cTarget: sel ? '#B4452F' : 'transparent',
+      pTarget: sel ? '#B4452F' : 'transparent',
+      hasBubble: !!f,
+      bubble: f ? (fed.who === 'p' ? 'Miguel: ' + f.p : 'Manuel: ' + f.c) : '',
+      feedC: feed('c'),
+      feedP: feed('p'),
+      cBar: ((s.cb ?? 4) * 10) + '%',
+      pBar: ((s.pb ?? 3) * 10) + '%',
+      hint: sel ? 'Ahora toca a quién se lo das.' : 'Toca una comida de la refri o la alacena y luego a quién dársela. Los espacios vacíos son para que dibujes la tuya.',
+      modal: !!s.modal,
+      modalPlace: s.modal || '',
+      closeModal: () => this.setState({ modal: null })
+    };
+  }
+}
+</script>
+</body>
+</html>

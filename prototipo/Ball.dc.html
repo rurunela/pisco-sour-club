@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Countryball</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div role="img" aria-label="{{label}}" style="position: relative; width: {{sizePx}}; height: {{sizePx}}">
+<div style="display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); grid-template-rows: repeat(20, minmax(0, 1fr)); width: 100%; height: 100%; transform: {{flipT}}">
+<sc-for list="{{px}}" as="p" hint-placeholder-count="400">
+<div style="background: {{p.c}}"></div>
+</sc-for>
+</div>
+<sc-if value="{{hands}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; left: -12%; bottom: 10%; width: 18%; height: 18%; border-radius: 30%; box-sizing: border-box; border: 3px solid {{outline}}; background: {{handColor}}"></div>
+<div style="position: absolute; right: -12%; bottom: 22%; width: 18%; height: 18%; border-radius: 30%; box-sizing: border-box; border: 3px solid {{outline}}; background: {{handColor}}"></div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"kind":{"editor":"enum","options":["chile","peru"],"default":"chile"},"size":{"editor":"int","default":160,"min":32,"max":480},"flip":{"editor":"boolean","default":false},"hands":{"editor":"boolean","default":false},"blush":{"editor":"boolean","default":true},"outline":{"editor":"color","default":"#1A1A1A"},"$preview":{"width":160,"height":160}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const kind = this.props.kind ?? 'chile';
+    const size = Number(this.props.size ?? 160);
+    const outline = this.props.outline ?? '#1A1A1A';
+    const blush = this.props.blush ?? true;
+    const RED_PE = '#D91023', RED_CL = '#D52B1E', BLUE = '#0039A6', WHITE = '#FFFFFF', PINK = '#FF8FAB';
+    const LIGHT = { '#D91023': '#EE4D5C', '#D52B1E': '#EA5A4C', '#0039A6': '#3A6BD0', '#FFFFFF': '#FFFFFF' };
+    const star = { '4,4': 1, '3,5': 1, '4,5': 1, '5,5': 1, '4,6': 1 };
+    const shine = { '13,3': 1, '14,3': 1, '15,4': 1 };
+    const N = 20, R = 10;
+    const eye = (x, y, x0) => {
+      const cx = x - x0, cy = y - 7;
+      if (cx < 0 || cx > 3 || cy < 0 || cy > 3) return null;
+      const corner = (cx === 0 || cx === 3) && (cy === 0 || cy === 3);
+      if (corner) return null;
+      if (cx === 0 || cx === 3 || cy === 0 || cy === 3) return outline;
+      return WHITE;
+    };
+    const px = [];
+    for (let y = 0; y < N; y++) {
+      for (let x = 0; x < N; x++) {
+        const dx = x + 0.5 - R, dy = y + 0.5 - R;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        let c = 'transparent';
+        if (d <= R) {
+          if (d > R - 1.15) {
+            c = outline;
+          } else {
+            if (kind === 'peru') {
+              c = (x < 7 || x >= 13) ? RED_PE : WHITE;
+            } else {
+              c = y < 10 ? (x < 8 ? BLUE : WHITE) : RED_CL;
+              if (star[x + ',' + y]) c = WHITE;
+            }
+            if (shine[x + ',' + y]) c = LIGHT[c] || c;
+            const e = eye(x, y, 8) || eye(x, y, 13);
+            if (e) c = e;
+            if (blush && y === 12 && (x === 8 || x === 9 || x === 15 || x === 16)) c = PINK;
+          }
+        }
+        px.push({ c: c });
+      }
+    }
+    return {
+      px: px,
+      sizePx: size + 'px',
+      flipT: this.props.flip ? 'scaleX(-1)' : 'none',
+      hands: !!this.props.hands,
+      outline: outline,
+      handColor: kind === 'peru' ? RED_PE : WHITE,
+      label: kind === 'peru' ? 'Perú, countryball' : 'Chile, countryball'
+    };
+  }
+}
+</script>
+</body>
+</html>

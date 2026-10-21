@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Radio · Panel de Rurú</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Pixelify+Sans:wght@500&family=Karla:wght@400;600;700&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #2B2622; color: #FFFBF3; font-family: 'Karla', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+<header style="padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #F2C14E">
+<a href="Radio.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; color: #FFFBF3; text-decoration: none; font-weight: 700">‹ Radio</a>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 14px; color: #F2C14E">PANEL DE RURÚ · SOLO TÚ</span>
+</header>
+<div style="padding: 12px 16px 4px; display: flex; justify-content: space-between; align-items: baseline">
+<h1 style="margin: 0; font-family: 'Fraunces', serif; font-size: 26px">Canciones que te mandaron</h1>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 13px; color: #E5D8C3">{{pending}} NUEVAS</span>
+</div>
+
+<div style="flex: 1; min-height: 0; overflow-y: auto; padding: 8px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{items}}" as="it" hint-placeholder-count="3">
+<div style="background: #FFFBF3; color: #2B2622; border: 3px solid {{it.bd}}; padding: 12px; display: flex; flex-direction: column; gap: 8px; opacity: {{it.op}}">
+<div style="display: flex; justify-content: space-between; gap: 8px">
+<div style="display: flex; flex-direction: column; min-width: 0">
+<strong style="font-size: 16px">{{it.song}}</strong>
+<span style="font-size: 12px; color: #5B4F45">{{it.artist}} · de {{it.from}}</span>
+</div>
+<span style="flex: none; align-self: flex-start; padding: 2px 8px; background: {{it.badgeBg}}; color: #2B2622; font-family: 'Pixelify Sans', monospace; font-size: 11px">{{it.badge}}</span>
+</div>
+<p style="margin: 0; background: #FFF1D6; border-left: 4px solid #F2C14E; padding: 6px 10px; font-size: 14px; line-height: 1.4">«{{it.why}}»</p>
+<sc-if value="{{it.open}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; gap: 6px">
+<button type="button" onClick="{{it.add}}" style="flex: 2; min-height: 44px; border: none; background: #1F4E79; color: #FFFBF3; font-weight: 700; cursor: pointer">{{it.addLabel}}</button>
+<button type="button" onClick="{{it.skip}}" style="flex: 1; min-height: 44px; border: 2px solid #2B2622; background: #FFFFFF; font-weight: 700; cursor: pointer">Descartar</button>
+</div>
+</sc-if>
+<sc-if value="{{it.done}}" hint-placeholder-val="{{false}}">
+<span style="font-size: 13px; font-weight: 700; color: #4F7A45">{{it.doneText}}</span>
+</sc-if>
+</div>
+</sc-for>
+</div>
+<p style="margin: 0; padding: 10px 16px 16px; font-size: 12px; color: #E5D8C3; line-height: 1.4">Agregar a Spotify lo haces tú en la app; aquí marcas la canción y su recuerdo se publica debajo de ella en la radio.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const IN = [
+  { id: 'a', song: '[Canción nueva]', artist: '[Artista]', from: '@usuario6', why: 'Me recuerda al final del runner, cuando por fin llega.', exists: false },
+  { id: 'b', song: '[Canción 01]', artist: '[Artista]', from: '@usuario7', why: 'La escuché en el viaje a Arica y pensé en ellos dos todo el camino.', exists: true },
+  { id: 'c', song: '[Otra canción]', artist: '[Artista]', from: '@usuario8', why: 'Es muy de Manuel cuando se hace el que no le importa.', exists: false }
+];
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {};
+    const st = s.st || {};
+    const set = (id, v) => this.setState({ st: Object.assign({}, st, { [id]: v }) });
+    return {
+      pending: IN.filter((x) => !st[x.id]).length,
+      items: IN.map((x) => {
+        const v = st[x.id];
+        return {
+          song: x.song, artist: x.artist, from: x.from, why: x.why,
+          badge: x.exists ? 'YA ESTÁ EN LA PLAYLIST' : 'NUEVA',
+          badgeBg: x.exists ? '#9EE3C9' : '#F2C14E',
+          addLabel: x.exists ? 'Publicar como recuerdo' : 'Añadida a la playlist ✓',
+          open: !v, done: !!v,
+          doneText: v === 'skip' ? 'Descartada' : (x.exists ? 'Recuerdo publicado debajo de la canción' : 'Publicada con su recuerdo'),
+          bd: v === 'add' ? '#4F7A45' : '#F2C14E',
+          op: v === 'skip' ? 0.5 : 1,
+          add: () => set(x.id, 'add'),
+          skip: () => set(x.id, 'skip')
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

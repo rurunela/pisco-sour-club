@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>OC dibujado</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: {{wpx}}; height: {{hpx}}">
+<svg width="100%" height="100%" viewBox="0 0 110 130" role="img" aria-label="{{label}}" style="transform: {{flipT}}; overflow: visible">
+<path d="M55 40 C25 40 18 70 22 92 C28 118 82 122 90 96 C96 72 86 40 55 40 Z" fill="{{skin}}" stroke="#2B2622" stroke-width="3" stroke-linejoin="round"/>
+<path d="{{hairD}}" fill="{{hair}}" stroke="#2B2622" stroke-width="3" stroke-linejoin="round"/>
+<path d="{{browsD}}" fill="none" stroke="#2B2622" stroke-width="3.5" stroke-linecap="round"/>
+<path d="{{eyesD}}" fill="none" stroke="#2B2622" stroke-width="{{eyeW}}" stroke-linecap="round"/>
+<path d="M32 93 h9 M70 93 h9" fill="none" stroke="#F4A7B9" stroke-width="{{blushW}}" stroke-linecap="round" opacity="{{blushO}}"/>
+<path d="{{mouthD}}" fill="{{mouthFill}}" stroke="#2B2622" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M72 88 q-4 7 0 10 q4 -3 0 -10 z" fill="#9BC2D6" stroke="#2B2622" stroke-width="1.5" opacity="{{tearO}}"/>
+<path d="M30 118 L28 128 M82 118 L84 128" stroke="{{accent}}" stroke-width="6" stroke-linecap="round"/>
+<path d="M26 102 Q55 118 86 102 L88 111 Q55 127 24 111 Z M68 112 l4 16 l8 -3 l-5 -14 z" fill="{{accent}}" stroke="#2B2622" stroke-width="2.5" stroke-linejoin="round" opacity="{{scarfO}}"/>
+<path d="M24 60 Q55 10 88 60 Z" fill="{{accent}}" stroke="#2B2622" stroke-width="3" stroke-linejoin="round" opacity="{{hatO}}"/>
+<path d="M22 60 H90" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="{{hatO}}"/>
+<circle cx="56" cy="22" r="6" fill="#FFFFFF" stroke="#2B2622" stroke-width="2.5" opacity="{{hatO}}"/>
+</svg>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"kind":{"editor":"enum","options":["chile","peru"],"default":"chile"},"expr":{"editor":"enum","options":["normal","feliz","enojado","sonrojo","triste","sorpresa"],"default":"normal"},"size":{"editor":"int","default":130,"min":30,"max":520},"flip":{"editor":"boolean","default":false},"ropa":{"editor":"enum","options":["casual","bufanda","gorro"],"default":"casual"},"$preview":{"width":110,"height":130}}'>
+const DOT = 'M44 82 l0 0.1 M68 82 l0 0.1';
+const EX = {
+  normal: { eyes: DOT, w: 7, brows: '', mouth: 'M48 98 Q56 103 64 98', fill: 'none', blush: 0.5, bw: 4, tear: 0 },
+  feliz: { eyes: 'M38 84 Q44 76 50 84 M62 84 Q68 76 74 84', w: 3.5, brows: '', mouth: 'M44 95 Q56 110 68 95 Z', fill: '#FFFFFF', blush: 0.8, bw: 4, tear: 0 },
+  enojado: { eyes: DOT, w: 7, brows: 'M37 72 L50 77 M75 72 L62 77', mouth: 'M46 102 Q56 94 66 102', fill: 'none', blush: 0, bw: 4, tear: 0 },
+  sonrojo: { eyes: DOT, w: 6, brows: '', mouth: 'M47 99 q3 -3 6 0 q3 3 6 0 q3 -3 6 0', fill: 'none', blush: 1, bw: 7, tear: 0 },
+  triste: { eyes: DOT, w: 6, brows: 'M37 76 L50 72 M75 76 L62 72', mouth: 'M46 103 Q56 95 66 103', fill: 'none', blush: 0, bw: 4, tear: 1 },
+  sorpresa: { eyes: 'M39 82 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0 M63 82 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0', w: 3, brows: 'M38 70 Q44 66 50 70 M62 70 Q68 66 74 70', mouth: 'M51 100 a5 6 0 1 0 10 0 a5 6 0 1 0 -10 0', fill: '#2B2622', blush: 0.3, bw: 4, tear: 0 }
+};
+const KIND = {
+  chile: { skin: '#FFF6EC', hair: '#4A3426', accent: '#0039A6', hairD: 'M24 70 C26 38 50 22 70 30 C88 36 94 52 92 70 C80 56 64 50 46 56 C38 58 30 64 24 70 Z', label: 'Tu OC de Chile' },
+  peru: { skin: '#E7B48A', hair: '#1E1A18', accent: '#D91023', hairD: 'M20 72 C18 40 44 20 66 28 C90 34 98 56 92 74 C86 60 72 52 58 50 C46 50 32 58 20 72 Z', label: 'Tu OC de Perú' }
+};
+class Component extends DCLogic {
+  renderVals() {
+    const k = KIND[this.props.kind ?? 'chile'] || KIND.chile;
+    const e = EX[this.props.expr ?? 'normal'] || EX.normal;
+    const size = Number(this.props.size ?? 130);
+    return {
+      wpx: Math.round(size * 110 / 130) + 'px',
+      hpx: size + 'px',
+      flipT: this.props.flip ? 'scaleX(-1)' : 'none',
+      skin: k.skin, hair: k.hair, accent: k.accent, hairD: k.hairD, label: k.label,
+      eyesD: e.eyes, eyeW: e.w, browsD: e.brows || 'M0 0', mouthD: e.mouth, mouthFill: e.fill,
+      blushO: e.blush, blushW: e.bw, tearO: e.tear,
+      scarfO: (this.props.ropa === 'bufanda') ? 1 : 0,
+      hatO: (this.props.ropa === 'gorro') ? 1 : 0
+    };
+  }
+}
+</script>
+</body>
+</html>

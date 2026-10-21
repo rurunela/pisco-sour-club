@@ -20,10 +20,6 @@ Notas:
 - La ficha de Perú pide consultar a su creadora (Kuraudia) antes de cualquier uso pagado. La web y los descargables son gratis.
 - Mientras un enlace de `data/redes.json` sea un marcador (no empieza con `http`), la web lo muestra como "pendiente" y no lo enlaza.
 
-## Faltan en el repo
-
-- `docs/BOSQUEJO.md`, `docs/PANTALLAS.md`, `docs/DATOS.md`, `docs/ANIMACION.md`, `docs/FASES.md` y la carpeta `prototipo/` del paquete original: copiarlos antes de la fase 2.
-
 ## Decisiones de la fase 1
 
 - Las frases de `data/frases.json` ahora son siempre listas (`bienvenida`, `sala.*`, `runner.*`; `afuera` y `sala.tele` son listas de escenas), como pide `docs/CONTENIDO.md`.

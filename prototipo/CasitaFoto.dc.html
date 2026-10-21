@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>La casita · Estudio de fotos</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Pixelify+Sans:wght@500&family=Karla:wght@400;600;700&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF1E4; color: #2B2622; font-family: 'Karla', sans-serif; display: flex; flex-direction: column; padding: 12px 16px 16px; gap: 10px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<a href="Taller.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; color: #1F4E79; text-decoration: none; font-weight: 700">‹ Taller</a>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 13px; color: #B4452F">ESTUDIO DE FOTOS</span>
+</div>
+
+<div style="display: flex; gap: 4px; align-items: center; background: #FFFBF3; border: 3px solid #2B2622; padding: 4px">
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 11px; padding: 0 4px; color: #5B4F45">{{selName}}</span>
+<sc-for list="{{faces}}" as="f" hint-placeholder-count="6">
+<button type="button" onClick="{{f.pick}}" aria-label="{{f.label}}" aria-pressed="{{f.sel}}" style="flex: 1; height: 50px; border: 2px solid {{f.bd}}; background: {{f.bg}}; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center"><dc-import name="Oc" kind="{{f.kind}}" expr="{{f.id}}" size="40" hint-size="34px,40px"></dc-import></button>
+</sc-for>
+</div>
+
+<div style="position: relative; height: 400px; flex: none; border: 4px solid #2B2622; overflow: hidden; background: #CFE2EE">
+<svg style="position: absolute; inset: 0" width="100%" height="100%" viewBox="0 0 350 400" preserveAspectRatio="none" aria-hidden="true"><path d="M0 270 C60 255 120 280 180 268 C240 256 300 276 350 266 L350 400 L0 400 Z" fill="#EBD5B0" stroke="#C9A574" stroke-width="3"/><path d="M0 250 C70 240 140 258 210 246 C270 236 320 250 350 244" fill="none" stroke="#3E78A8" stroke-width="7" stroke-linecap="round"/><circle cx="290" cy="64" r="28" fill="#F2C14E" stroke="#D9A43A" stroke-width="3"/><path d="M36 70 q20 -18 40 0 q16 -12 30 4" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/></svg>
+<sc-for list="{{ocs}}" as="o" hint-placeholder-count="2">
+<div style="position: absolute; left: {{o.x}}; top: 150px; transform: rotate({{o.rot}}deg) scale({{o.sc}}); transform-origin: 50% 100%">
+<button type="button" onClick="{{o.pick}}" aria-label="{{o.aria}}" style="display: block; border: 2px dashed {{o.bd}}; background: none; padding: 4px; cursor: pointer; position: relative">
+<dc-import name="Oc" kind="{{o.kind}}" expr="{{o.expr}}" size="170" flip="{{o.flip}}" hint-size="144px,170px"></dc-import>
+<sc-if value="{{o.on}}" hint-placeholder-val="{{false}}">
+<span style="position: absolute; left: -7px; top: -7px; width: 12px; height: 12px; background: #FFFFFF; border: 2px solid #B4452F"></span>
+<span style="position: absolute; right: -7px; top: -7px; width: 12px; height: 12px; background: #FFFFFF; border: 2px solid #B4452F"></span>
+<span style="position: absolute; left: -7px; bottom: -7px; width: 12px; height: 12px; background: #FFFFFF; border: 2px solid #B4452F"></span>
+<span style="position: absolute; right: -7px; bottom: -7px; width: 12px; height: 12px; background: #FFFFFF; border: 2px solid #B4452F"></span>
+<span style="position: absolute; left: 50%; top: -30px; width: 16px; height: 16px; margin-left: -8px; border-radius: 999px; background: #B4452F"></span>
+</sc-if>
+</button>
+</div>
+</sc-for>
+<span style="position: absolute; left: 8px; bottom: 8px; background: #FFFBF3; border: 2px solid #2B2622; padding: 2px 8px; font-size: 11px">Arrastra para mover · pellizca para agrandar</span>
+</div>
+
+<div style="display: flex; gap: 6px">
+<button type="button" onClick="{{flip}}" style="flex: 1; min-height: 44px; border: 3px solid #2B2622; background: #FFFBF3; font-weight: 700; cursor: pointer">Voltear</button>
+<button type="button" onClick="{{smaller}}" aria-label="Más pequeño" style="width: 44px; min-height: 44px; border: 3px solid #2B2622; background: #FFFBF3; font-size: 20px; font-weight: 700; cursor: pointer">−</button>
+<button type="button" onClick="{{bigger}}" aria-label="Más grande" style="width: 44px; min-height: 44px; border: 3px solid #2B2622; background: #FFFBF3; font-size: 20px; font-weight: 700; cursor: pointer">+</button>
+<button type="button" onClick="{{rotL}}" aria-label="Girar a la izquierda" style="width: 44px; min-height: 44px; border: 3px solid #2B2622; background: #FFFBF3; font-size: 18px; cursor: pointer">↺</button>
+<button type="button" onClick="{{rotR}}" aria-label="Girar a la derecha" style="width: 44px; min-height: 44px; border: 3px solid #2B2622; background: #FFFBF3; font-size: 18px; cursor: pointer">↻</button>
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px; margin-top: auto">
+<div style="display: flex; gap: 4px; flex: 1">
+<span style="width: 40px; height: 40px; background: #CFE2EE; border: 3px solid #B4452F"></span>
+<span style="width: 40px; height: 40px; background: #3B3560; border: 2px solid #2B2622"></span>
+<a href="Taller.dc.html" aria-label="Dibujar un fondo nuevo" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px dashed #A8774F; color: #8E3524; text-decoration: none; font-weight: 700; box-sizing: border-box">+</a>
+</div>
+<a href="Polaroid.dc.html" aria-label="Tomar la foto" style="width: 72px; height: 72px; flex: none; border-radius: 999px; background: #FFFBF3; border: 5px solid #2B2622; box-sizing: border-box; display: flex; align-items: center; justify-content: center"><span style="width: 48px; height: 48px; border-radius: 999px; background: #B4452F"></span></a>
+<span style="flex: 1; font-size: 12px; color: #5B4F45; text-align: right">Fondo: tus dibujos</span>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const EXPRS = [{ id: 'normal', label: 'Normal' }, { id: 'feliz', label: 'Feliz' }, { id: 'enojado', label: 'Enojado' }, { id: 'sonrojo', label: 'Sonrojo' }, { id: 'triste', label: 'Triste' }];
+const DEF = { cl: { expr: 'sonrojo', flip: false, sc: 1, rot: 0 }, pe: { expr: 'feliz', flip: true, sc: 1, rot: -6 } };
+class Component extends DCLogic {
+  get(k) { const s = this.state || {}; return Object.assign({}, DEF[k], s[k] || {}); }
+  upd(patch) { const s = this.state || {}; const k = s.sel || 'pe'; this.setState({ [k]: Object.assign(this.get(k), patch) }); }
+  renderVals() {
+    const s = this.state || {};
+    const sel = s.sel || 'pe';
+    const cur = this.get(sel);
+    const mk = (k, kind, x, name) => {
+      const v = this.get(k);
+      return { kind: kind, expr: v.expr, flip: v.flip, sc: v.sc, rot: v.rot, x: x, on: k === sel, bd: k === sel ? '#B4452F' : 'transparent', aria: 'Seleccionar a ' + name, pick: () => this.setState({ sel: k }) };
+    };
+    return {
+      selName: sel === 'pe' ? 'PERÚ:' : 'CHILE:',
+      faces: EXPRS.map((e) => ({ id: e.id, label: 'Cara ' + e.label, kind: sel === 'pe' ? 'peru' : 'chile', sel: e.id === cur.expr ? 'true' : 'false', bd: e.id === cur.expr ? '#B4452F' : '#E5D8C3', bg: e.id === cur.expr ? '#FFF1D6' : '#FFFFFF', pick: () => this.upd({ expr: e.id }) })),
+      ocs: [mk('cl', 'chile', '24px', 'Chile'), mk('pe', 'peru', '178px', 'Perú')],
+      flip: () => this.upd({ flip: !cur.flip }),
+      smaller: () => this.upd({ sc: Math.max(0.6, +(cur.sc - 0.1).toFixed(2)) }),
+      bigger: () => this.upd({ sc: Math.min(1.3, +(cur.sc + 0.1).toFixed(2)) }),
+      rotL: () => this.upd({ rot: cur.rot - 10 }),
+      rotR: () => this.upd({ rot: cur.rot + 10 })
+    };
+  }
+}
+</script>
+</body>
+</html>

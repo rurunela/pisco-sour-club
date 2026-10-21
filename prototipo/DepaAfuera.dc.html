@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>El depa · Afuera</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Pixelify+Sans:wght@500&family=Karla:wght@400;600;700&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F3E8D6; color: #2B2622; font-family: 'Karla', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+<header style="padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; background: #E9B872; border-bottom: 4px solid #2B2622">
+<a href="Depa.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; color: #2B2622; text-decoration: none; font-weight: 700">‹ El depa</a>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 15px">AFUERA</span>
+<a href="DepaEditor.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; color: #2B2622; text-decoration: none; font-weight: 700">✎ Editar</a>
+</header>
+
+<div style="position: relative; height: 520px; flex: none; background: #CFE2EE; overflow: hidden">
+<div style="position: absolute; left: 40px; top: 40px; width: 60px; height: 14px; background: #FFFFFF"></div>
+<div style="position: absolute; left: 150px; top: 70px; width: 44px; height: 12px; background: #FFFFFF"></div>
+<div style="position: absolute; right: 16px; top: 90px; width: 140px; height: 330px; background: #E9B872; border: 4px solid #2B2622; box-sizing: border-box"></div>
+<div style="position: absolute; right: 36px; top: 116px; width: 28px; height: 28px; background: #CFE2EE; border: 3px solid #2B2622"></div>
+<div style="position: absolute; right: 94px; top: 116px; width: 28px; height: 28px; background: #F2C14E; border: 3px solid #2B2622"></div>
+<div style="position: absolute; right: 36px; top: 176px; width: 28px; height: 28px; background: #CFE2EE; border: 3px solid #2B2622"></div>
+<div style="position: absolute; right: 94px; top: 176px; width: 28px; height: 28px; background: #CFE2EE; border: 3px solid #2B2622"></div>
+<div style="position: absolute; left: 20px; top: 160px; width: 110px; height: 110px; border-radius: 999px; background: #6E8F5E; border: 4px solid #2B2622"></div>
+<div style="position: absolute; left: 66px; top: 262px; width: 18px; height: 160px; background: #7A5233; border: 3px solid #2B2622"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 100px; background: #B9B3A8; background-image: repeating-linear-gradient(90deg, transparent 0 58px, #A49C90 58px 60px); border-top: 4px solid #2B2622"></div>
+<div style="position: absolute; left: 100px; width: 170px; bottom: 96px; height: 14px; background: #7A5233; border: 3px solid #2B2622"></div>
+<div style="position: absolute; left: 112px; width: 10px; bottom: 60px; height: 40px; background: #5B4F45"></div>
+<div style="position: absolute; left: 248px; width: 10px; bottom: 60px; height: 40px; background: #5B4F45"></div>
+<div style="position: absolute; right: 168px; bottom: 96px; width: 8px; height: 160px; background: #2B2622"></div>
+<div style="position: absolute; right: 158px; bottom: 250px; width: 28px; height: 22px; background: #F2C14E; border: 3px solid #2B2622"></div>
+
+<button type="button" onClick="{{tap}}" aria-label="Tocar a Manuel y Miguel" style="position: absolute; left: 92px; bottom: 104px; border: none; background: none; padding: 0; cursor: pointer; display: flex; align-items: flex-end">
+<dc-import name="Oc" kind="chile" expr="{{ce}}" ropa="gorro" size="120" hint-size="102px,120px"></dc-import>
+<dc-import name="Oc" kind="peru" expr="{{pe}}" ropa="bufanda" size="120" flip="{{true}}" hint-size="102px,120px"></dc-import>
+</button>
+<p style="position: absolute; left: 16px; right: 16px; top: 14px; margin: 0; background: #FFFFFF; border: 3px solid #2B2622; padding: 8px 10px; font-size: 14px; font-weight: 700">{{line}}</p>
+</div>
+
+<div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; color: #5B4F45; line-height: 1.4">Afuera también se puede editar: cambia el cielo, el árbol, la banca o el edificio por dibujos tuyos.</span>
+<div style="display: flex; gap: 8px">
+<a href="Accion.dc.html" style="flex: 1; min-height: 52px; display: flex; align-items: center; justify-content: center; background: #B4452F; color: #FFFBF3; text-decoration: none; font-family: 'Pixelify Sans', monospace; font-size: 16px">▶ ACCIÓN</a>
+<a href="DepaEditor.dc.html" style="flex: 1; min-height: 52px; display: flex; align-items: center; justify-content: center; border: 3px solid #1F4E79; color: #1F4E79; text-decoration: none; font-weight: 700">✎ Editar afuera</a>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const LINES = [
+  { t: 'Manuel: Hace frío. Me encanta.', c: 'feliz', p: 'triste' },
+  { t: 'Miguel: ¡Préstame tu gorro, causa!', c: 'enojado', p: 'feliz' },
+  { t: 'Manuel: …Ya, toma. Pero me lo devuelves.', c: 'sonrojo', p: 'sonrojo' }
+];
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {};
+    const i = s.i || 0;
+    const L = LINES[i];
+    return { line: L.t, ce: L.c, pe: L.p, tap: () => this.setState({ i: (i + 1) % LINES.length }) };
+  }
+}
+</script>
+</body>
+</html>

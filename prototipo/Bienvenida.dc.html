@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Bienvenida</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Pixelify+Sans:wght@500&family=Karla:wght@400;600;700&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #F3E8D6; color: #2B2622; font-family: 'Karla', sans-serif">
+<div style="height: 10px; background: repeating-linear-gradient(90deg, #1F4E79 0 10px, #3E78A8 10px 20px)"></div>
+<div style="position: relative; height: 330px; margin: 20px 16px 0; background: #CFE2EE; overflow: hidden; border: 10px solid #FFFBF3; box-shadow: 0 6px 0 #E2D2B8; transform: rotate(-1.5deg)">
+<div style="position: absolute; right: 30px; top: 24px; width: 44px; height: 44px; background: #F2C14E"></div>
+<div style="position: absolute; left: 30px; top: 40px; width: 50px; height: 12px; background: #FFFFFF"></div>
+<div style="position: absolute; left: 0; right: 0; top: 56%; height: 16%; background: repeating-linear-gradient(90deg, #1F4E79 0 14px, #2C6094 14px 28px)"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 28%; background: #EBD5B0"></div>
+<p style="position: absolute; left: 14px; top: 92px; margin: 0; background: #FFFFFF; border: 2px solid #2B2622; padding: 6px 10px; font-size: 13px; font-weight: 700; max-width: 130px">…Hola. Pasa, nomás.</p>
+<p style="position: absolute; right: 14px; top: 92px; margin: 0; background: #FFFFFF; border: 2px solid #2B2622; padding: 6px 10px; font-size: 13px; font-weight: 700; max-width: 140px">¡Bienvenid@, causa! ¿Ya comiste?</p>
+<div style="position: absolute; left: 0; right: 0; bottom: 22px; display: flex; justify-content: center; gap: 22px"><dc-import name="Ball" kind="chile" size="104" hands="{{true}}" hint-size="104px,104px"></dc-import><dc-import name="Ball" kind="peru" size="104" flip="{{true}}" hands="{{true}}" hint-size="104px,104px"></dc-import></div>
+</div>
+
+<div style="padding: 28px 20px 0; display: flex; flex-direction: column; gap: 14px">
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 14px; color: #B4452F">UNA PÁGINA AL CHIRÚ</span>
+<h1 style="margin: 0; font-family: 'Fraunces', serif; font-size: 40px; line-height: 1; color: #1F4E79">Pisco Sour <span style="font-style: italic; color: #B4452F">Club</span></h1>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #5B4F45">Aquí casi nada dice «juega». Toca lo que te dé curiosidad. ¿De qué lado de la barra te sientas?</p>
+<div style="display: flex; gap: 8px">
+<sc-for list="{{teams}}" as="t" hint-placeholder-count="3">
+<button type="button" onClick="{{t.pick}}" aria-pressed="{{t.sel}}" style="flex: 1; min-height: 48px; border: 3px solid #2B2622; background: {{t.bg}}; color: {{t.fg}}; font-family: 'Karla', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">{{t.label}}</button>
+</sc-for>
+</div>
+<a href="Home2.dc.html" style="min-height: 56px; display: flex; align-items: center; justify-content: center; background: #1F4E79; color: #FFFBF3; text-decoration: none; font-family: 'Pixelify Sans', monospace; font-size: 18px">ENTRAR AL CLUB</a>
+<span style="font-size: 12px; color: #5B4F45; text-align: center">Proyecto fan de Rurú · Personajes de Latin Hetalia</span>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const TEAMS = [{ id: 'pe', label: 'Perú', bg: '#D91023' }, { id: 'cl', label: 'Chile', bg: '#0039A6' }, { id: 'ambos', label: 'Los dos', bg: '#B4452F' }];
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {};
+    const sel = s.team || 'ambos';
+    return {
+      teams: TEAMS.map((t) => ({ label: t.label, sel: t.id === sel ? 'true' : 'false', bg: t.id === sel ? t.bg : '#FFFBF3', fg: t.id === sel ? '#FFFFFF' : '#2B2622', pick: () => this.setState({ team: t.id }) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

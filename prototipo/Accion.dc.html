@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Acción · Crear animación</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Pixelify+Sans:wght@500&family=Karla:wght@400;600;700&display=swap">
+<style>
+body{margin:0}
+@keyframes hopA{0%,100%{transform:translateY(0)}50%{transform:translateY(-64px)}}
+@keyframes hopB{0%,100%{transform:translateY(0)}50%{transform:translateY(-64px)}}
+@keyframes jumpA{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-54px)}80%{transform:translateY(-18px)}}
+@keyframes jumpB{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-54px)}80%{transform:translateY(-18px)}}
+@keyframes danceA{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-14px) rotate(6deg)}}
+@keyframes danceB{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-14px) rotate(6deg)}}
+@keyframes spinA{to{transform:rotate(360deg)}}
+@keyframes spinB{to{transform:rotate(360deg)}}
+@keyframes shakeA{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+@keyframes shakeB{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.hop0{animation:hopA 1.4s ease-in-out 1}
+.hop1{animation:hopB 1.4s ease-in-out 1}
+.saltar0{animation:jumpA 1.1s ease-out 1}
+.saltar1{animation:jumpB 1.1s ease-out 1}
+.bailar0{animation:danceA .4s ease-in-out infinite}
+.bailar1{animation:danceB .4s ease-in-out infinite}
+.girar0{animation:spinA .45s linear 3}
+.girar1{animation:spinB .45s linear 3}
+.pegarse0{animation:shakeA .2s linear 6}
+.pegarse1{animation:shakeB .2s linear 6}
+.mov{transition:left 1.4s ease-in-out,bottom 1.4s ease-in-out}
+@media (prefers-reduced-motion: reduce){.hop0,.hop1,.saltar0,.saltar1,.bailar0,.bailar1,.girar0,.girar1,.pegarse0,.pegarse1{animation:none}.mov{transition:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F3E8D6; color: #2B2622; font-family: 'Karla', sans-serif; display: flex; flex-direction: column; padding: 8px 16px 12px; gap: 8px; overflow: hidden">
+
+<div style="display: flex; justify-content: space-between; align-items: center">
+<a href="Depa.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; color: #1F4E79; text-decoration: none; font-weight: 700">‹ Depa</a>
+<strong style="font-family: 'Fraunces', serif; font-size: 22px; color: #1F4E79">Acción</strong>
+<div style="display: flex; gap: 4px">
+<span style="padding: 4px 8px; background: #2B2622; color: #FFFBF3; font-size: 12px; font-weight: 700">Sala</span>
+<span style="padding: 4px 8px; border: 2px solid #2B2622; font-size: 12px; font-weight: 700">Cocina</span>
+<span style="padding: 4px 8px; border: 2px solid #2B2622; font-size: 12px; font-weight: 700">Afuera</span>
+</div>
+</div>
+
+<div style="position: relative; height: 300px; flex: none; border: 4px solid #2B2622; background: #D6E4F0; background-image: repeating-linear-gradient(90deg, rgba(31,78,121,0.06) 0 16px, transparent 16px 32px); overflow: hidden">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: #C99A6E; background-image: repeating-linear-gradient(90deg, transparent 0 46px, #B5875C 46px 48px)"></div>
+<div style="position: absolute; left: 140px; top: 24px; width: 80px; height: 64px; background: #CFE2EE; border: 5px solid #7A3B2E; box-sizing: border-box"></div>
+<div style="position: absolute; left: 120px; width: 120px; bottom: 60px; height: 58px; background: #1F4E79; border: 4px solid #2B2622; box-sizing: border-box"></div>
+<div style="position: absolute; left: 110px; width: 18px; bottom: 60px; height: 76px; background: #1F4E79; border: 4px solid #2B2622; box-sizing: border-box"></div>
+<div style="position: absolute; left: 232px; width: 18px; bottom: 60px; height: 76px; background: #1F4E79; border: 4px solid #2B2622; box-sizing: border-box"></div>
+<span style="position: absolute; left: 150px; bottom: 122px; font-family: 'Pixelify Sans', monospace; font-size: 10px; color: #1F4E79">SILLÓN</span>
+
+<sc-for list="{{ghosts}}" as="g" hint-placeholder-count="2">
+<div style="position: absolute; left: {{g.x}}; bottom: {{g.b}}; opacity: 0.25"><dc-import name="Oc" kind="{{g.kind}}" expr="{{g.e}}" size="104" flip="{{g.flip}}" hint-size="88px,104px"></dc-import></div>
+<div style="position: absolute; left: {{g.lx}}; width: {{g.lw}}; bottom: 54px; border-top: 3px dashed #B4452F"></div>
+</sc-for>
+
+<sc-for list="{{chars}}" as="o" hint-placeholder-count="2">
+<div class="mov" style="position: absolute; left: {{o.x}}; bottom: {{o.b}}">
+<div class="{{o.hop}}"><div class="{{o.act}}">
+<button type="button" onClick="{{o.pick}}" aria-label="{{o.aria}}" style="display: block; border: 2px dashed {{o.bd}}; background: none; padding: 2px; cursor: pointer"><dc-import name="Oc" kind="{{o.kind}}" expr="{{o.e}}" ropa="{{o.ropa}}" size="104" flip="{{o.flip}}" hint-size="88px,104px"></dc-import></button>
+</div></div>
+<sc-if value="{{o.hasT}}" hint-placeholder-val="{{false}}">
+<p style="position: absolute; left: 0; bottom: 116px; margin: 0; white-space: nowrap; background: #FFFFFF; border: 2px solid #2B2622; padding: 3px 8px; font-size: 13px; font-weight: 700">{{o.t}}</p>
+</sc-if>
+</div>
+</sc-for>
+
+<sc-if value="{{heart}}" hint-placeholder-val="{{false}}">
+<span style="position: absolute; left: 176px; bottom: 232px; font-family: 'Pixelify Sans', monospace; font-size: 26px; color: #D91023">♥</span>
+</sc-if>
+<sc-if value="{{pum}}" hint-placeholder-val="{{false}}">
+<span style="position: absolute; left: 160px; bottom: 230px; font-family: 'Pixelify Sans', monospace; font-size: 22px; color: #B4452F">¡PUM!</span>
+</sc-if>
+<span style="position: absolute; right: 6px; top: 6px; background: #FFFBF3; border: 2px solid #2B2622; padding: 2px 6px; font-family: 'Pixelify Sans', monospace; font-size: 11px">{{badge}}</span>
+</div>
+
+<div style="display: flex; gap: 6px; align-items: center">
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="5">
+<button type="button" onClick="{{f.pick}}" aria-label="{{f.aria}}" aria-pressed="{{f.sel}}" style="width: 44px; height: 44px; border: 3px solid #2B2622; background: {{f.bg}}; color: {{f.fg}}; font-family: 'Pixelify Sans', monospace; font-size: 15px; cursor: pointer">{{f.n}}</button>
+</sc-for>
+<button type="button" onClick="{{addFrame}}" aria-label="Añadir fotograma" style="width: 44px; height: 44px; border: 3px dashed #2B2622; background: transparent; font-size: 20px; font-weight: 700; cursor: pointer">+</button>
+<button type="button" onClick="{{play}}" style="margin-left: auto; min-height: 44px; padding: 0 14px; border: none; background: #B4452F; color: #FFFBF3; font-family: 'Pixelify Sans', monospace; font-size: 15px; cursor: pointer">{{playLabel}}</button>
+</div>
+
+<div style="display: flex; gap: 6px; align-items: center">
+<sc-for list="{{whoBtns}}" as="w" hint-placeholder-count="2">
+<button type="button" onClick="{{w.pick}}" aria-pressed="{{w.sel}}" style="min-height: 40px; padding: 0 12px; border: 3px solid #2B2622; background: {{w.bg}}; color: {{w.fg}}; font-weight: 700; cursor: pointer">{{w.label}}</button>
+</sc-for>
+<button type="button" onClick="{{moveL}}" aria-label="Mover a la izquierda" style="margin-left: auto; width: 44px; height: 40px; border: 3px solid #2B2622; background: #FFFBF3; font-size: 18px; cursor: pointer">←</button>
+<button type="button" onClick="{{moveR}}" aria-label="Mover a la derecha" style="width: 44px; height: 40px; border: 3px solid #2B2622; background: #FFFBF3; font-size: 18px; cursor: pointer">→</button>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 11px; color: #5B4F45">ACCIÓN EN ESTE FOTOGRAMA</span>
+<div style="display: flex; gap: 5px; overflow-x: auto">
+<sc-for list="{{acts}}" as="a" hint-placeholder-count="7">
+<button type="button" onClick="{{a.pick}}" aria-pressed="{{a.sel}}" style="flex: none; min-height: 40px; padding: 0 10px; border: 2px solid #2B2622; background: {{a.bg}}; color: {{a.fg}}; font-size: 13px; font-weight: 700; cursor: pointer">{{a.label}}</button>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; gap: 4px; align-items: center">
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 11px; color: #5B4F45; width: 38px">CARA</span>
+<sc-for list="{{faces}}" as="c" hint-placeholder-count="5">
+<button type="button" onClick="{{c.pick}}" aria-label="{{c.label}}" aria-pressed="{{c.sel}}" style="flex: 1; height: 44px; border: 2px solid {{c.bd}}; background: {{c.bg}}; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center"><dc-import name="Oc" kind="{{c.kind}}" expr="{{c.id}}" size="36" hint-size="30px,36px"></dc-import></button>
+</sc-for>
+</div>
+
+<label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700">Globo
+<input type="text" maxlength="40" value="{{tVal}}" onInput="{{setT}}" placeholder="Escribe lo que dice aquí…" style="flex: 1; min-width: 0; min-height: 40px; border: 2px solid #2B2622; background: #FFFBF3; padding: 0 10px; font-size: 15px"></label>
+
+<div style="display: flex; gap: 8px; margin-top: auto">
+<button type="button" style="flex: 1; min-height: 46px; border: 3px solid #1F4E79; background: transparent; color: #1F4E79; font-weight: 700; cursor: pointer">Guardar</button>
+<button type="button" style="flex: 1; min-height: 46px; border: none; background: #1F4E79; color: #FFFBF3; font-weight: 700; cursor: pointer">Descargar video</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const SOFA = [120, 240];
+const W = 46;
+const DEF = [
+  { c: { x: 6, a: '', e: 'normal', t: '¿Vienes o no?' }, p: { x: 262, a: '', e: 'normal', t: '' } },
+  { c: { x: 140, a: 'saltar', e: 'feliz', t: '' }, p: { x: 262, a: '', e: 'sonrojo', t: '¡Ya voy, ya voy!' } },
+  { c: { x: 136, a: 'abrazo', e: 'feliz', t: '' }, p: { x: 190, a: 'abrazo', e: 'feliz', t: '' } },
+  { c: { x: 146, a: 'beso', e: 'sonrojo', t: '…' }, p: { x: 182, a: 'beso', e: 'sonrojo', t: '' } },
+  { c: { x: 146, a: 'girar', e: 'feliz', t: '' }, p: { x: 182, a: 'girar', e: 'feliz', t: '¡Wiii!' } }
+];
+const ACTS = [{ id: '', label: 'Caminar' }, { id: 'saltar', label: 'Saltar' }, { id: 'bailar', label: 'Bailar' }, { id: 'girar', label: 'Girar 360°' }, { id: 'abrazo', label: 'Abrazo' }, { id: 'beso', label: 'Beso' }, { id: 'pegarse', label: 'Pegarse' }];
+const PAIR = { abrazo: 1, beso: 1 };
+const EXPRS = [{ id: 'normal', label: 'Normal' }, { id: 'feliz', label: 'Feliz' }, { id: 'enojado', label: 'Enojado' }, { id: 'sonrojo', label: 'Sonrojo' }, { id: 'triste', label: 'Triste' }];
+const onSofa = (x) => x + W > SOFA[0] && x + W < SOFA[1];
+const crosses = (a, b) => onSofa(a) !== onSofa(b) || (a + W < SOFA[0] && b + W > SOFA[1]) || (a + W > SOFA[1] && b + W < SOFA[0]);
+class Component extends DCLogic {
+  componentWillUnmount() { clearTimeout(this._t); }
+  frames() { const s = this.state || {}; return s.frames || DEF; }
+  updFrame(patchFn) {
+    const s = this.state || {};
+    const fr = this.frames().map((f) => ({ c: Object.assign({}, f.c), p: Object.assign({}, f.p) }));
+    patchFn(fr[s.fi || 0], s.who || 'c');
+    this.setState({ frames: fr });
+  }
+  renderVals() {
+    const s = this.state || {};
+    const frames = this.frames();
+    const playing = !!s.playing;
+    const fi = playing ? s.pf : Math.min(s.fi || 0, frames.length - 1);
+    const fr = frames[fi];
+    const prev = frames[fi - 1] || fr;
+    const who = s.who || 'c';
+    const cur = fr[who];
+    const par = fi % 2;
+    const mkChar = (k, kind, flip, name) => {
+      const v = fr[k], pv = prev[k];
+      return {
+        kind: kind, flip: flip, e: v.e, ropa: k === 'p' ? 'bufanda' : 'casual',
+        x: v.x + 'px', b: onSofa(v.x) ? '112px' : '58px',
+        hop: fi > 0 && crosses(pv.x, v.x) ? 'hop' + par : '',
+        act: v.a && !PAIR[v.a] ? v.a + par : '',
+        hasT: !!v.t, t: v.t,
+        bd: !playing && k === who ? '#B4452F' : 'transparent',
+        aria: 'Editar a ' + name,
+        pick: () => this.setState({ who: k })
+      };
+    };
+    const ghosts = (!playing && fi > 0) ? ['c', 'p'].filter((k) => prev[k].x !== fr[k].x).map((k) => ({
+      kind: k === 'c' ? 'chile' : 'peru', flip: k === 'p', e: prev[k].e,
+      x: prev[k].x + 'px', b: onSofa(prev[k].x) ? '112px' : '58px',
+      lx: (Math.min(prev[k].x, fr[k].x) + W) + 'px', lw: Math.abs(fr[k].x - prev[k].x) + 'px'
+    })) : [];
+    const stepPlay = (i) => {
+      if (i >= frames.length) { this.setState({ playing: false }); return; }
+      this.setState({ playing: true, pf: i });
+      this._t = setTimeout(() => stepPlay(i + 1), 1800);
+    };
+    return {
+      chars: [mkChar('c', 'chile', false, 'Manuel'), mkChar('p', 'peru', true, 'Miguel')],
+      ghosts: ghosts,
+      heart: fr.c.a === 'beso' && fr.p.a === 'beso',
+      pum: fr.c.a === 'pegarse' || fr.p.a === 'pegarse',
+      badge: playing ? '▶ ' + (fi + 1) + ' / ' + frames.length : 'EDITANDO ' + (fi + 1) + ' / ' + frames.length,
+      frames: frames.map((f, i) => ({ n: String(i + 1), aria: 'Fotograma ' + (i + 1), sel: i === fi ? 'true' : 'false', bg: i === fi ? '#1F4E79' : '#FFFBF3', fg: i === fi ? '#FFFBF3' : '#2B2622', pick: () => { clearTimeout(this._t); this.setState({ fi: i, playing: false }); } })),
+      addFrame: () => { const fr2 = frames.slice(); const c = fr2[fi]; fr2.splice(fi + 1, 0, { c: Object.assign({}, c.c, { a: '', t: '' }), p: Object.assign({}, c.p, { a: '', t: '' }) }); this.setState({ frames: fr2, fi: fi + 1, playing: false }); },
+      play: () => { clearTimeout(this._t); if (playing) { this.setState({ playing: false }); } else { stepPlay(0); } },
+      playLabel: playing ? '■ PARAR' : '▶ REPRODUCIR',
+      whoBtns: [{ k: 'c', label: 'Manuel' }, { k: 'p', label: 'Miguel' }].map((w) => ({ label: w.label, sel: w.k === who ? 'true' : 'false', bg: w.k === who ? (w.k === 'c' ? '#0039A6' : '#D91023') : '#FFFBF3', fg: w.k === who ? '#FFFFFF' : '#2B2622', pick: () => this.setState({ who: w.k }) })),
+      moveL: () => this.updFrame((f, k) => { f[k].x = Math.max(0, f[k].x - 30); }),
+      moveR: () => this.updFrame((f, k) => { f[k].x = Math.min(268, f[k].x + 30); }),
+      acts: ACTS.map((a) => ({ label: a.label, sel: a.id === cur.a ? 'true' : 'false', bg: a.id === cur.a ? '#F2C14E' : '#FFFBF3', fg: '#2B2622', pick: () => this.updFrame((f, k) => { if (PAIR[a.id] || PAIR[f[k].a]) { f.c.a = a.id; f.p.a = a.id; } else { f[k].a = a.id; } }) })),
+      faces: EXPRS.map((e) => ({ id: e.id, label: 'Cara ' + e.label, kind: who === 'c' ? 'chile' : 'peru', sel: e.id === cur.e ? 'true' : 'false', bd: e.id === cur.e ? '#B4452F' : '#E5D8C3', bg: e.id === cur.e ? '#FFF1D6' : '#FFFFFF', pick: () => this.updFrame((f, k) => { f[k].e = e.id; }) })),
+      tVal: cur.t,
+      setT: (ev) => { const v = ev && ev.target ? ev.target.value : ''; this.updFrame((f, k) => { f[k].t = v; }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

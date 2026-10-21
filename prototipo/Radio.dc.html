@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Radio del muelle</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Pixelify+Sans:wght@500&family=Karla:wght@400;600;700&family=Caveat:wght@600&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #D6E4F0; color: #2B2622; font-family: 'Karla', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+<header style="padding: 10px 16px 12px; background: #B4452F; border-bottom: 4px solid #2B2622; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<a href="Home2.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; color: #FFFBF3; text-decoration: none; font-weight: 700">‹ Volver</a>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 13px; color: #FFE3C2">28.07 FM · RADIO DEL MUELLE</span>
+</div>
+<div style="display: flex; gap: 12px; align-items: center">
+<div style="width: 56px; height: 56px; flex: none; border-radius: 999px; border: 3px solid #2B2622; background: repeating-radial-gradient(#2B2622 0 3px, #5B4F45 3px 6px)"></div>
+<div style="flex: 1; min-width: 0; background: #FFF6E8; border: 3px solid #2B2622; padding: 6px 10px">
+<strong style="display: block; font-size: 15px">[Nombre de tu playlist]</strong>
+<span style="font-size: 12px; color: #5B4F45">Curada por Rurú · 18 canciones</span>
+</div>
+<button type="button" aria-label="Reproducir en Spotify" style="width: 48px; height: 48px; flex: none; border-radius: 999px; border: 3px solid #2B2622; background: #F2C14E; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2 L14 8 L4 14 Z" fill="#2B2622"/></svg></button>
+</div>
+</header>
+
+<div role="tablist" style="display: flex; margin: 12px 16px 0; border: 3px solid #2B2622">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
+<button type="button" role="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="flex: 1; min-height: 46px; border: none; background: {{t.bg}}; color: {{t.fg}}; font-family: 'Pixelify Sans', monospace; font-size: 15px; cursor: pointer">{{t.label}}</button>
+</sc-for>
+</div>
+
+<sc-if value="{{isList}}" hint-placeholder-val="{{true}}">
+<div style="flex: 1; min-height: 0; overflow-y: auto; padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{songs}}" as="s" hint-placeholder-count="3">
+<div style="background: #FFFBF3; border: 3px solid #2B2622; padding: 12px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; gap: 10px; align-items: center">
+<span style="width: 34px; height: 34px; flex: none; background: #1F4E79; color: #FFFBF3; display: flex; align-items: center; justify-content: center; font-family: 'Pixelify Sans', monospace; font-size: 13px">{{s.n}}</span>
+<div style="display: flex; flex-direction: column; min-width: 0">
+<strong style="font-size: 15px">{{s.title}}</strong>
+<span style="font-size: 12px; color: #5B4F45">{{s.by}}</span>
+</div>
+</div>
+<sc-for list="{{s.comments}}" as="c" hint-placeholder-count="2">
+<div style="background: #FFF1D6; border-left: 4px solid #F2C14E; padding: 6px 10px; display: flex; flex-direction: column; gap: 2px">
+<span style="font-family: 'Caveat', cursive; font-size: 21px; line-height: 1.15">«{{c.t}}»</span>
+<span style="font-size: 12px; color: #5B4F45">— {{c.who}}</span>
+</div>
+</sc-for>
+<sc-if value="{{s.more}}" hint-placeholder-val="{{false}}">
+<span style="font-size: 13px; font-weight: 700; color: #1F4E79">Ver {{s.moreN}} recuerdos más</span>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{isForm}}" hint-placeholder-val="{{false}}">
+<div style="flex: 1; min-height: 0; padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 10px">
+<sc-if value="{{sent}}" hint-placeholder-val="{{false}}">
+<div style="background: #FFFBF3; border: 3px solid #2B2622; padding: 18px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+<div style="display: flex; align-items: flex-end"><dc-import name="Oc" kind="chile" expr="feliz" size="70" hint-size="59px,70px"></dc-import><dc-import name="Oc" kind="peru" expr="feliz" size="70" flip="{{true}}" hint-size="59px,70px"></dc-import></div>
+<strong style="font-family: 'Fraunces', serif; font-size: 22px; color: #1F4E79">¡Llegó tu canción!</strong>
+<span style="font-size: 14px; color: #5B4F45">Rurú la va a escuchar. Si entra a la playlist, tu recuerdo aparece debajo de ella.</span>
+<button type="button" onClick="{{again}}" style="min-height: 44px; padding: 0 16px; border: 3px solid #1F4E79; background: transparent; color: #1F4E79; font-weight: 700; cursor: pointer">Sugerir otra</button>
+</div>
+</sc-if>
+<sc-if value="{{notSent}}" hint-placeholder-val="{{true}}">
+<p style="margin: 0; font-size: 14px; color: #5B4F45">¿Qué canción te recuerda a ellos dos? Cuéntale a Rurú por qué.</p>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700">Canción<input type="text" placeholder="Nombre de la canción" style="min-height: 44px; border: 2px solid #2B2622; background: #FFFBF3; padding: 0 10px; font-size: 16px"></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700">Artista<input type="text" placeholder="Quién la canta" style="min-height: 44px; border: 2px solid #2B2622; background: #FFFBF3; padding: 0 10px; font-size: 16px"></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700">Link (opcional)<input type="url" placeholder="Spotify o YouTube" style="min-height: 44px; border: 2px solid #2B2622; background: #FFFBF3; padding: 0 10px; font-size: 16px"></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700">¿Qué te recuerda? ¿Por qué la pondrías?<textarea rows="3" placeholder="Me recuerda a cuando…" style="border: 2px solid #2B2622; background: #FFFBF3; padding: 8px 10px; font-size: 16px; font-family: 'Karla', sans-serif; resize: none"></textarea></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700">Firma<input type="text" placeholder="@tu_usuario" style="min-height: 44px; border: 2px solid #2B2622; background: #FFFBF3; padding: 0 10px; font-size: 16px"></label>
+<button type="button" onClick="{{send}}" style="min-height: 52px; margin-top: auto; border: none; background: #B4452F; color: #FFFBF3; font-family: 'Pixelify Sans', monospace; font-size: 17px; cursor: pointer">MANDAR A LA RADIO</button>
+</sc-if>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const SONGS = [
+  { title: '[Canción 01]', by: '[Artista] · sugerida por @usuario1', comments: [{ t: 'Me recuerda a la primera vez que leí un fic de ellos en el bus.', who: '@usuario1' }, { t: 'Es tan Miguel cocinando de madrugada.', who: '@usuario4' }], more: 3 },
+  { title: '[Canción 02]', by: '[Artista] · elegida por Rurú', comments: [{ t: 'Esta la escucho cuando dibujo a Manuel leyendo.', who: '@usuario2' }], more: 0 },
+  { title: '[Canción 03]', by: '[Artista] · sugerida por @usuario3', comments: [{ t: 'Me recuerda al verano, a la playa y a mi mejor amiga.', who: '@usuario3' }, { t: 'La pelea por el pisco en versión canción.', who: '@usuario5' }], more: 1 }
+];
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {};
+    const tab = s.tab || 'list';
+    return {
+      tabs: [{ id: 'list', label: 'LA PLAYLIST' }, { id: 'form', label: 'SUGERIR' }].map((t) => ({ label: t.label, sel: t.id === tab ? 'true' : 'false', bg: t.id === tab ? '#2B2622' : '#FFFBF3', fg: t.id === tab ? '#FFFBF3' : '#2B2622', pick: () => this.setState({ tab: t.id }) })),
+      isList: tab === 'list',
+      isForm: tab === 'form',
+      songs: SONGS.map((x, i) => ({ n: String(i + 1).padStart(2, '0'), title: x.title, by: x.by, comments: x.comments, more: x.more > 0, moreN: x.more })),
+      sent: !!s.sent,
+      notSent: !s.sent,
+      send: () => this.setState({ sent: true }),
+      again: () => this.setState({ sent: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

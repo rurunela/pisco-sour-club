@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Foto con texto</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Pixelify+Sans:wght@500&family=Karla:wght@400;600;700&family=Caveat:wght@600&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #E5D8C3; color: #2B2622; font-family: 'Karla', sans-serif; display: flex; flex-direction: column; padding: 12px 16px 16px; gap: 12px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<a href="CasitaFoto.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; color: #1F4E79; text-decoration: none; font-weight: 700">‹ Otra foto</a>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 13px; color: #B4452F">¡CLIC!</span>
+</div>
+
+<div style="align-self: center; width: 320px; flex: none; transform: rotate(-2deg); background: #FFFFFF; padding: 14px 14px 0; box-shadow: 0 8px 0 rgba(43,38,34,0.18); display: flex; flex-direction: column">
+<div style="position: relative; height: 320px; overflow: hidden; background: #CFE2EE">
+<svg style="position: absolute; inset: 0" width="100%" height="100%" viewBox="0 0 292 320" preserveAspectRatio="none" aria-hidden="true"><path d="M0 220 C50 208 100 228 150 218 C200 208 250 224 292 216 L292 320 L0 320 Z" fill="#EBD5B0" stroke="#C9A574" stroke-width="3"/><path d="M0 202 C60 194 120 208 180 198 C230 190 270 200 292 196" fill="none" stroke="#3E78A8" stroke-width="6" stroke-linecap="round"/><circle cx="240" cy="54" r="24" fill="#F2C14E" stroke="#D9A43A" stroke-width="3"/></svg>
+<div style="position: absolute; left: 22px; top: 110px"><dc-import name="Oc" kind="chile" expr="sonrojo" size="160" hint-size="135px,160px"></dc-import></div>
+<div style="position: absolute; left: 146px; top: 104px; transform: rotate(-6deg)"><dc-import name="Oc" kind="peru" expr="feliz" size="160" flip="{{true}}" hint-size="135px,160px"></dc-import></div>
+</div>
+<p style="margin: 0; min-height: 76px; display: flex; align-items: center; justify-content: center; text-align: center; font-family: 'Caveat', cursive; font-size: 28px; line-height: 1.1; color: #2B2622; padding: 6px 4px">{{caption}}</p>
+</div>
+
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700">Escribe algo debajo de la foto
+<input type="text" maxlength="60" value="{{raw}}" onInput="{{setCap}}" placeholder="primera foto en la playa ♥" style="min-height: 48px; border: 3px solid #2B2622; background: #FFFBF3; padding: 0 12px; font-size: 16px"></label>
+<label style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700"><input type="checkbox" checked style="width: 22px; height: 22px">Poner la fecha y «Pisco Sour Club» en la esquina</label>
+
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto">
+<button type="button" style="min-height: 52px; border: none; background: #B4452F; color: #FFFBF3; font-family: 'Pixelify Sans', monospace; font-size: 17px; cursor: pointer">DESCARGAR FOTO</button>
+<div style="display: flex; gap: 8px">
+<a href="Buzon.dc.html" style="flex: 1; min-height: 48px; display: flex; align-items: center; justify-content: center; border: 3px solid #1F4E79; color: #1F4E79; text-decoration: none; font-weight: 700">Mandar al buzón</a>
+<a href="Home2.dc.html" style="flex: 1; min-height: 48px; display: flex; align-items: center; justify-content: center; border: 3px solid #1F4E79; color: #1F4E79; text-decoration: none; font-weight: 700">Al club</a>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {};
+    const raw = s.cap === undefined ? 'primera foto en la playa ♥' : s.cap;
+    return {
+      raw: raw,
+      caption: raw || ' ',
+      setCap: (e) => this.setState({ cap: e && e.target ? e.target.value : '' })
+    };
+  }
+}
+</script>
+</body>
+</html>

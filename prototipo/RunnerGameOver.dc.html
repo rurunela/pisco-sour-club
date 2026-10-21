@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Ruta del desierto · Game over</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Pixelify+Sans:wght@500&family=Karla:wght@400;600;700&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #3B3560; color: #2B2622; font-family: 'Karla', sans-serif">
+<span style="position: absolute; left: 50px; top: 80px; width: 6px; height: 6px; background: #FFE29A"></span>
+<span style="position: absolute; left: 290px; top: 60px; width: 6px; height: 6px; background: #FFE29A"></span>
+<span style="position: absolute; left: 200px; top: 130px; width: 4px; height: 4px; background: #FFE29A"></span>
+<div style="position: absolute; right: 60px; top: 110px; width: 40px; height: 40px; background: #E8E4F2"></div>
+<div style="position: absolute; left: 0; right: 0; top: 330px; bottom: 0; background: #7A5E58"></div>
+<svg style="position: absolute; left: 250px; top: 268px" width="40" height="56" viewBox="0 0 10 14" shape-rendering="crispEdges" aria-hidden="true"><rect x="4" y="0" width="2" height="14" fill="#3E5A38"/><rect x="1" y="4" width="2" height="4" fill="#3E5A38"/><rect x="3" y="7" width="1" height="1" fill="#3E5A38"/><rect x="7" y="2" width="2" height="5" fill="#3E5A38"/><rect x="6" y="6" width="1" height="1" fill="#3E5A38"/></svg>
+<div style="position: absolute; left: 110px; top: 262px; transform: rotate(-18deg)"><dc-import name="Ball" kind="chile" size="76" blush="{{false}}" hint-size="76px,76px"></dc-import></div>
+<span style="position: absolute; left: 96px; top: 240px; font-family: 'Pixelify Sans', monospace; font-size: 18px; color: #FFE29A">✶ ✶</span>
+
+<div style="position: absolute; left: 16px; right: 16px; top: 380px; bottom: 20px; background: #FFFBF3; border: 4px solid #2B2622; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 14px; color: #B4452F">SE ACABARON LOS CORAZONES</span>
+<h1 style="margin: 0; font-family: 'Fraunces', serif; font-size: 30px; line-height: 1.1; color: #1F4E79">Manuel se quedó a 600 m</h1>
+<div style="display: flex; gap: 10px; align-items: flex-start; background: #EAF1F6; padding: 10px">
+<dc-import name="Ball" kind="peru" size="40" hint-size="40px,40px"></dc-import>
+<p style="margin: 0; font-size: 15px; line-height: 1.4"><strong style="color: #8E3524">Miguel (por teléfono):</strong> ¿Ya vienes? Se enfría la comida… ya fue, la recaliento.</p>
+</div>
+<div style="display: flex; gap: 16px; font-family: 'Pixelify Sans', monospace; font-size: 15px"><span>640 m</span><span>12 limones</span><span>1/2 preguntas</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto">
+<a href="Runner.dc.html" style="min-height: 52px; display: flex; align-items: center; justify-content: center; background: #B4452F; color: #FFFBF3; text-decoration: none; font-family: 'Pixelify Sans', monospace; font-size: 18px">REINTENTAR</a>
+<a href="Home2.dc.html" style="min-height: 48px; display: flex; align-items: center; justify-content: center; border: 3px solid #1F4E79; color: #1F4E79; text-decoration: none; font-weight: 700">Volver al club</a>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

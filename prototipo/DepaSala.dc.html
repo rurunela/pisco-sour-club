@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>El depa · Sala</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Pixelify+Sans:wght@500&family=Karla:wght@400;600;700&display=swap">
+<style>
+body{margin:0}
+@keyframes sway{0%{transform:rotate(-10deg)}100%{transform:rotate(10deg)}}
+@keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@keyframes floaty{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-40px);opacity:0}}
+.marinera{animation:sway .9s ease-in-out infinite alternate;transform-origin:50% 100%}
+.marinera2{animation:sway .9s ease-in-out .45s infinite alternate;transform-origin:50% 100%}
+.regueton{animation:hop .45s ease-in-out infinite}
+.regueton2{animation:hop .45s ease-in-out .22s infinite}
+.pelea{animation:shake .25s linear infinite}
+.quieto{}
+.nota{animation:floaty 1.4s ease-out infinite}
+@media (prefers-reduced-motion: reduce){.marinera,.marinera2,.regueton,.regueton2,.pelea,.nota{animation:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F3E8D6; color: #2B2622; font-family: 'Karla', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+<header style="padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; background: #E9B872; border-bottom: 4px solid #2B2622">
+<a href="Depa.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; color: #2B2622; text-decoration: none; font-weight: 700">‹ El depa</a>
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 15px">LA SALA</span>
+<a href="DepaCocina.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; color: #2B2622; text-decoration: none; font-weight: 700">Cocina ›</a>
+</header>
+
+<div style="position: relative; height: 520px; flex: none; background: #D6E4F0; background-image: repeating-linear-gradient(90deg, rgba(31,78,121,0.06) 0 16px, transparent 16px 32px); overflow: hidden">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 110px; background: #C99A6E; background-image: repeating-linear-gradient(90deg, transparent 0 46px, #B5875C 46px 48px)"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 110px; height: 10px; background: #A8774F"></div>
+<div style="position: absolute; left: 140px; top: 30px; width: 100px; height: 80px; background: #CFE2EE; border: 6px solid #7A3B2E; box-sizing: border-box"></div>
+<div style="position: absolute; left: 50px; right: 50px; bottom: 96px; height: 56px; background: #1F4E79; border: 4px solid #2B2622; box-sizing: border-box"></div>
+<div style="position: absolute; left: 34px; bottom: 96px; width: 26px; height: 92px; background: #1F4E79; border: 4px solid #2B2622; box-sizing: border-box"></div>
+<div style="position: absolute; right: 34px; bottom: 96px; width: 26px; height: 92px; background: #1F4E79; border: 4px solid #2B2622; box-sizing: border-box"></div>
+
+<div style="position: absolute; left: 14px; top: 130px; width: 90px; height: 10px; background: #7A3B2E"></div>
+<button type="button" onClick="{{tapRadio}}" aria-label="Prender la radio" style="position: absolute; left: 18px; top: 82px; width: 80px; height: 50px; border: 3px solid #2B2622; border-radius: 12px; background: #B4452F; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: space-around">
+<span style="width: 26px; height: 26px; border-radius: 999px; background: repeating-radial-gradient(#2B2622 0 2px, #5B4F45 2px 4px)"></span>
+<span style="width: 30px; height: 14px; background: {{radioLed}}; border: 2px solid #2B2622"></span>
+</button>
+
+<button type="button" onClick="{{tapTv}}" aria-label="Prender la tele" style="position: absolute; right: 16px; top: 64px; width: 120px; height: 84px; border: 4px solid #5B4F45; background: #2B2622; cursor: pointer; padding: 6px; box-sizing: border-box">
+<span style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; background: {{tvScreen}}; color: #FFFFFF; font-family: 'Pixelify Sans', monospace; font-size: 12px; text-align: center; line-height: 1.2; white-space: pre-line">{{tvText}}</span>
+</button>
+<div style="position: absolute; right: 70px; top: 148px; width: 10px; height: 20px; background: #5B4F45"></div>
+
+<sc-if value="{{music}}" hint-placeholder-val="{{false}}">
+<span class="nota" style="position: absolute; left: 110px; top: 200px; font-family: 'Pixelify Sans', monospace; font-size: 26px; color: #1F4E79">♪</span>
+<span class="nota" style="position: absolute; left: 250px; top: 220px; font-family: 'Pixelify Sans', monospace; font-size: 22px; color: #B4452F; animation-delay: .6s">♫</span>
+</sc-if>
+
+<sc-if value="{{showChileBubble}}" hint-placeholder-val="{{false}}">
+<p style="position: absolute; left: 12px; top: 186px; margin: 0; max-width: 170px; background: #FFFFFF; border: 3px solid #2B2622; padding: 6px 10px; font-size: 14px; font-weight: 700">{{chileLine}}</p>
+</sc-if>
+<sc-if value="{{showPeruBubble}}" hint-placeholder-val="{{false}}">
+<p style="position: absolute; right: 12px; top: 246px; margin: 0; max-width: 170px; background: #FFFFFF; border: 3px solid #2B2622; padding: 6px 10px; font-size: 14px; font-weight: 700">{{peruLine}}</p>
+</sc-if>
+
+<div style="position: absolute; left: {{cx}}; bottom: 120px"><div class="{{cClass}}"><dc-import name="Oc" kind="chile" expr="{{cExpr}}" size="150" hint-size="127px,150px"></dc-import></div></div>
+<div style="position: absolute; left: {{px}}; bottom: 120px"><div class="{{pClass}}"><dc-import name="Oc" kind="peru" expr="{{pExpr}}" size="150" flip="{{true}}" hint-size="127px,150px"></dc-import></div></div>
+<sc-if value="{{panuelos}}" hint-placeholder-val="{{false}}">
+<span class="marinera" style="position: absolute; left: 70px; bottom: 250px; width: 26px; height: 18px; background: #FFFFFF; border: 2px solid #2B2622; transform: rotate(-20deg)"></span>
+<span class="marinera2" style="position: absolute; right: 70px; bottom: 250px; width: 26px; height: 18px; background: #FFFFFF; border: 2px solid #2B2622"></span>
+</sc-if>
+<sc-if value="{{kiss}}" hint-placeholder-val="{{false}}">
+<svg style="position: absolute; left: 178px; bottom: 300px" width="36" height="30" viewBox="0 0 7 6" shape-rendering="crispEdges" aria-hidden="true"><rect x="1" y="0" width="2" height="1" fill="#D91023"/><rect x="4" y="0" width="2" height="1" fill="#D91023"/><rect x="0" y="1" width="7" height="2" fill="#D91023"/><rect x="1" y="3" width="5" height="1" fill="#D91023"/><rect x="2" y="4" width="3" height="1" fill="#D91023"/><rect x="3" y="5" width="1" height="1" fill="#D91023"/></svg>
+<span style="position: absolute; left: 150px; bottom: 336px; font-family: 'Pixelify Sans', monospace; font-size: 14px; color: #B4452F">*besito*</span>
+</sc-if>
+
+<sc-if value="{{radioMenu}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; left: 14px; top: 140px; background: #FFFBF3; border: 3px solid #2B2622; padding: 8px; display: flex; flex-direction: column; gap: 6px; width: 160px">
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 12px">¿QUÉ SUENA?</span>
+<button type="button" onClick="{{playMarinera}}" style="min-height: 44px; border: 2px solid #2B2622; background: #F6D5CF; font-weight: 700; cursor: pointer">Marinera</button>
+<button type="button" onClick="{{playRegueton}}" style="min-height: 44px; border: 2px solid #2B2622; background: #DCEFD3; font-weight: 700; cursor: pointer">Reguetón</button>
+<button type="button" onClick="{{stop}}" style="min-height: 44px; border: 2px solid #2B2622; background: #FFFFFF; font-weight: 700; cursor: pointer">Apagar</button>
+</div>
+</sc-if>
+</div>
+
+<div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-family: 'Pixelify Sans', monospace; font-size: 13px; color: #B4452F">{{status}}</span>
+<p style="margin: 0; font-size: 14px; line-height: 1.45; color: #5B4F45">Toca la <strong>radio</strong> para que bailen, o la <strong>tele</strong> para ver el partido… y lo que pasa después.</p>
+<span style="font-size: 12px; color: #5B4F45">Música: pistas libres de derechos o grabadas por ti.</span>
+<div style="display: flex; gap: 8px">
+<a href="Accion.dc.html" style="flex: 1; min-height: 48px; display: flex; align-items: center; justify-content: center; background: #B4452F; color: #FFFBF3; text-decoration: none; font-family: 'Pixelify Sans', monospace; font-size: 15px">▶ ACCIÓN</a>
+<a href="DepaEditor.dc.html" style="flex: 1; min-height: 48px; display: flex; align-items: center; justify-content: center; border: 3px solid #1F4E79; color: #1F4E79; text-decoration: none; font-weight: 700">✎ Editar sala</a>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const M = {
+  idle: { c: 'normal', p: 'normal', cc: 'quieto', pc: 'quieto', cx: '40px', px: '200px', cl: '', pl: '', st: 'LA SALA ESTÁ TRANQUILA', tv: 'off' },
+  marinera: { c: 'feliz', p: 'feliz', cc: 'marinera', pc: 'marinera2', cx: '40px', px: '200px', cl: '…Ya, pero yo marco el paso.', pl: '¡Pañuelo arriba, causa!', st: '♪ SUENA UNA MARINERA', tv: 'off' },
+  regueton: { c: 'sonrojo', p: 'feliz', cc: 'regueton', pc: 'regueton2', cx: '40px', px: '200px', cl: '¿Desde cuándo sé bailar esto?', pl: '¡Dale, que tú puedes!', st: '♪ SUENA UN REGUETÓN', tv: 'off' },
+  tv1: { c: 'enojado', p: 'enojado', cc: 'pelea', pc: 'pelea', cx: '60px', px: '180px', cl: '¡Ese penal no fue!', pl: '¡Claro que fue, ciego!', st: 'PARTIDO PERÚ VS. CHILE · SE PELEAN', tv: 'on' },
+  tv2: { c: 'triste', p: 'sonrojo', cc: 'quieto', pc: 'quieto', cx: '70px', px: '170px', cl: '…Ya. Lo siento.', pl: 'Yo también, tonto.', st: 'SE PIDEN PERDÓN', tv: 'on' },
+  tv3: { c: 'sonrojo', p: 'sonrojo', cc: 'quieto', pc: 'quieto', cx: '100px', px: '140px', cl: '', pl: '', st: '♥ FIN DEL PARTIDO', tv: 'on' }
+};
+class Component extends DCLogic {
+  componentWillUnmount() { (this._t || []).forEach(clearTimeout); }
+  go(mode) { (this._t || []).forEach(clearTimeout); this._t = []; this.setState({ mode: mode, radioMenu: false }); }
+  renderVals() {
+    const s = this.state || {};
+    const mode = s.mode || 'idle';
+    const m = M[mode];
+    const music = mode === 'marinera' || mode === 'regueton';
+    return {
+      cExpr: m.c, pExpr: m.p, cClass: m.cc, pClass: m.pc, cx: m.cx, px: m.px,
+      chileLine: m.cl, peruLine: m.pl,
+      showChileBubble: !!m.cl, showPeruBubble: !!m.pl,
+      status: m.st,
+      music: music,
+      panuelos: mode === 'marinera',
+      kiss: mode === 'tv3',
+      radioMenu: !!s.radioMenu,
+      radioLed: music ? '#9EE3C9' : '#5B4F45',
+      tvScreen: m.tv === 'on' ? '#4F7A45' : '#1A1A1A',
+      tvText: m.tv === 'on' ? 'PE 1 - 1 CL\n¡PENAL!' : '',
+      tapRadio: () => this.setState({ radioMenu: !s.radioMenu }),
+      playMarinera: () => this.go('marinera'),
+      playRegueton: () => this.go('regueton'),
+      stop: () => this.go('idle'),
+      tapTv: () => {
+        this.go('tv1');
+        this._t.push(setTimeout(() => this.setState({ mode: 'tv2' }), 2400));
+        this._t.push(setTimeout(() => this.setState({ mode: 'tv3' }), 4800));
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
